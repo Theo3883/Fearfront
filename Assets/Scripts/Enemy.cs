@@ -31,10 +31,34 @@ public class Enemy : MonoBehaviour
             transform.position = waypoints[0].position;
             UpdateRotationTowardPath();
         }
+        
+        // Listen for grab events if SpiderInteractable is present
+        RegisterGrabCallbacks();
+    }
+    
+    private void RegisterGrabCallbacks()
+    {
+        SpiderInteractable spiderInteractable = GetComponent<SpiderInteractable>();
+        if (spiderInteractable != null)
+        {
+            // We'll use a simple check in Update instead of events
+            // since we don't have direct access to grab events from here
+        }
     }
 
     private void Update()
     {
+        // Check if spider is grabbed - stop movement
+        SpiderInteractable spiderInteractable = GetComponent<SpiderInteractable>();
+        if (spiderInteractable != null && spiderInteractable.IsGrabbed())
+        {
+            if (isMoving)
+            {
+                StopMoving();
+            }
+            return; // Don't move while grabbed
+        }
+        
         if (!isMoving || waypoints == null || waypoints.Length == 0)
             return;
 

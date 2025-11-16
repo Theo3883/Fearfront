@@ -96,6 +96,28 @@ public class EnemySpawner : MonoBehaviour
 
         Transform[] waypoints = randomRoute.GetWaypoints();
         enemy.Initialize(waypoints, this);
+        
+        // Setup spider interactivity
+        SetupSpiderInteraction(newEnemyObject);
+    }
+    
+    private void SetupSpiderInteraction(GameObject spider)
+    {
+        // Check if already has SpiderInteractable (skip if prefab already configured)
+        if (spider.GetComponent<SpiderInteractable>() != null)
+        {
+            return; // Already setup in prefab
+        }
+        
+        // Add RuntimeSpiderSetup if not present
+        RuntimeSpiderSetup setupScript = spider.GetComponent<RuntimeSpiderSetup>();
+        if (setupScript == null)
+        {
+            setupScript = spider.AddComponent<RuntimeSpiderSetup>();
+        }
+        
+        // Trigger setup
+        setupScript.SetupThisSpider();
     }
 
     private EnemyRoute GetRandomRoute()
