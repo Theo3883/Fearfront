@@ -1,61 +1,94 @@
-﻿using DefaultNamespace;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
+using System.Collections;
 
 public class ResourceNode : MonoBehaviour
 {
+    public enum ResourceType { Tree, Stone }
+    [SerializeField] private ParticleSystem sawdustFX;
+
     [Header("Config")]
     public ResourceType type = ResourceType.Tree;
-    public int amountTotal = 50;
+    public int startAmount = 50;
     public int amountPerCollect = 10;
-    public float respawnSeconds = 30f;
 
-    private bool isDepleted = false;
+    [Header("(Doar dacă NU folosești spawner)")]
+    public bool selfRespawn = false;
+    public float selfRespawnSeconds = 30f;
+
+    public event Action<ResourceNode> OnDepleted; 
+
+    int amount;
+    bool depleted;
+    Collider col; Renderer[] rends;
+    PlayerInventory inv;
+
+    void Awake()
+    {
+        amount = startAmount;
+        col = GetComponent<Collider>();
+        rends = GetComponentsInChildren<Renderer>(true);
+        inv = FindObjectOfType<PlayerInventory>();
+    }
 
     void Start()
     {
-        Debug.Log($"<color=#00CCFF>[ResourceNode]</color> '{name}' initialized as <b>{type}</b> with {amountTotal} units.");
+        Debug.Log($"[ResourceNode] '{name}' initialized as {type} with {amount} units.");
     }
+    [SerializeField] private Transform fxAnchor;
 
     public void OnActivated()
     {
-        if (isDepleted)
+        
+
+        if (depleted) return;
+        if (!inv) { Debug.LogError("[ResourceNode] No PlayerInventory found in scene!"); return; }
+
+        int give = Mathf.Min(amountPerCollect, amount);
+        amount -= give;
+        inv.Add((PlayerInventory.ResourceType)type, give); // vezi PlayerInventory de mai jos
+        Debug.Log($"[ResourceNode] Collected {give} {type} from '{name}'. Remaining: {amount}");
+        if (sawdustFX)
         {
-            Debug.LogWarning($"<color=#FF8800>[ResourceNode]</color> '{name}' is depleted. Waiting for respawn...");
-            return;
-        }
+            Vector3 pos = fxAnchor ? fxAnchor.position : transform.position + Vector3.up * 1f;
+            Quaternion rot = Quaternion.identity; // sau: Quaternion.LookRotation(Vector3.up);
 
-        var inv = FindObjectOfType<PlayerInventory>();
-        if (!inv)
-        {
-            Debug.LogError("<color=#FF0000>[ResourceNode]</color> No PlayerInventory found in scene!");
-            return;
-        }
+            var fx = Instantiate(sawdustFX, pos, rot);
+            var main = fx.main;
+            Destroy(fx.gameObject, main.duration + main.startLifetime.constantMax);
+        }   
+        if (amount <= 0) Deplete();
 
-        int collect = Mathf.Min(amountPerCollect, amountTotal);
-        amountTotal -= collect;
-        inv.Add(type, collect);
-
-        Debug.Log($"<color=#00CCFF>[ResourceNode]</color> Collected {collect} {type} from '{name}'. Remaining: {amountTotal}");
-
-        if (amountTotal <= 0)
-        {
-            Deplete();
-        }
     }
 
-    private void Deplete()
+  
+
+    void SelfRespawn()
     {
-        isDepleted = true;
-        Debug.Log($"<color=#FF8800>[ResourceNode]</color> '{name}' is now depleted. Respawning in {respawnSeconds}s.");
-        gameObject.SetActive(false);
-        Invoke(nameof(Respawn), respawnSeconds);
+        amount = startAmount;
+        depleted = false;
+        if (col) col.enabled = true;
+        foreach (var r in rends) r.enabled = true;
+        Debug.Log($"[ResourceNode] '{name}' self-respawned with {amount}.");
     }
 
-    private void Respawn()
+    void Deplete()
     {
-        amountTotal = 50;
-        isDepleted = false;
-        gameObject.SetActive(true);
-        Debug.Log($"<color=#00FF00>[ResourceNode]</color> '{name}' has respawned with {amountTotal} {type}!");
+        OnDepleted?.Invoke(this);   // anunță spawnerul
+        Destroy(gameObject);        // dispare, va fi refăcut de spawner în wave
     }
+
+    IEnumerator FadeAndKill()
+    {
+        // opțional: dezactivează coliziunea ca să nu mai fie clicabil
+        var col = GetComponent<Collider>();
+        if (col) col.enabled = false;
+
+        // mic „fade” al materialului (dacă shaderul permite)
+        var rends = GetComponentsInChildren<Renderer>();
+        float t = 0f;
+        while (t < 0.25f) { t += Time.deltaTime; yield return null; }
+        Destroy(gameObject);
+    }
+
 }

@@ -1,24 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using DefaultNamespace;
 
 public class PlayerInventory : MonoBehaviour
 {
-    private Dictionary<ResourceType, int> resources = new();
+    public enum ResourceType { Tree, Stone }
+    private readonly System.Collections.Generic.Dictionary<ResourceType,int> bag =
+        new System.Collections.Generic.Dictionary<ResourceType,int>() {
+            { ResourceType.Tree, 0 }, { ResourceType.Stone, 0 }
+        };
 
-    private void Awake()
-    {
-        foreach (ResourceType type in System.Enum.GetValues(typeof(ResourceType)))
-            resources[type] = 0;
-
-        Debug.Log("<color=#00FFAA>[Inventory]</color> Initialized inventory for Tree & Stone.");
-    }
-
-    public void Add(ResourceType type, int amount)
-    {
-        resources[type] += amount;
-        Debug.Log($"<color=#00FFAA>[Inventory]</color> Added <b>{amount}</b> of <b>{type}</b>. Total: {resources[type]}");
-    }
-
-    public int Get(ResourceType type) => resources[type];
+    void Awake(){ Debug.Log("[Inventory] Ready."); }
+    public void Add(ResourceType t, int a){ bag[t]+=a; Debug.Log($"[Inventory] +{a} {t}. Total: {bag[t]}"); }
+    public int Get(ResourceType t)=> bag[t];
 }
