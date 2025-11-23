@@ -51,12 +51,12 @@ public class ResourceNode : MonoBehaviour
         if (sawdustFX)
         {
             Vector3 pos = fxAnchor ? fxAnchor.position : transform.position + Vector3.up * 1f;
-            Quaternion rot = Quaternion.identity; // sau: Quaternion.LookRotation(Vector3.up);
+            var fx = Instantiate(sawdustFX, pos, Quaternion.identity);
+            fx.Play();  // pornește burst-ul
 
-            var fx = Instantiate(sawdustFX, pos, rot);
             var main = fx.main;
-            Destroy(fx.gameObject, main.duration + main.startLifetime.constantMax);
-        }   
+            Destroy(fx.gameObject, main.duration + main.startLifetime.constantMax + 0.1f);
+        }  
         if (amount <= 0) Deplete();
 
     }

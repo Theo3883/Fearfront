@@ -2,27 +2,84 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class FixedPointSpawnerWave : MonoBehaviour
+public class FixedPointSpawner : MonoBehaviour
 {
     [System.Serializable]
     public class Slot
     {
-        public Transform point;         // poziție fixă
-        public GameObject prefab;       // prefabul Tree/Stone (cu ResourceNode)
-        [HideInInspector] public bool alive;   // e spawn-uit și ne-epuizat?
+        public Transform point;          // poziția fixă
+        public GameObject prefab;        // prefab-ul (Tree, Rock, etc.)
+        [HideInInspector] public bool active;
+        [HideInInspector] public bool usedThisRound;
     }
 
-    [Header("Slots (toți copacii)")]
+    [Header("Puncte (Tree + Rock)")]
     public List<Slot> slots = new();
 
-    [Header("Respawn Wave")]
-    [Min(0f)] public float waveRespawnDelay = 30f;
-    bool waveRunning = false;
+    [Header("Control random")]
+    [Min(1)] public int targetActive = 4;    // câte resurse simultan
+    public bool useEachSlotOnce = true;      // folosește toate punctele înainte de reset
+    public float spawnReplaceDelay = 0.25f;  // delay mic între spawn-uri
+    public float roundRefillDelay = 10f;     // pauză între "runde"
+
+    private bool refillRunning = false;
 
     void Start()
     {
-        // spawn inițial în TOATE sloturile
-        foreach (var s in slots) SpawnInto(s);
+        StartCoroutine(RefillUntilTarget());
+    }
+
+    IEnumerator RefillUntilTarget()
+    {
+        if (refillRunning) yield break;
+        refillRunning = true;
+
+        while (CountActive() < targetActive)
+        {
+            var s = PickRandomAvailableSlot();
+            if (s == null)
+            {
+                // toate punctele folosite => așteptăm o rundă nouă
+                if (useEachSlotOnce)
+                {
+                    Debug.Log($"[Spawner] Toate punctele au fost folosite. Încep rundă nouă în {roundRefillDelay}s...");
+                    yield return new WaitForSeconds(roundRefillDelay);
+                    ResetRoundFlags();
+                    continue;
+                }
+                else break;
+            }
+
+            SpawnInto(s);
+            yield return new WaitForSeconds(spawnReplaceDelay);
+        }
+
+        refillRunning = false;
+    }
+
+    int CountActive()
+    {
+        int count = 0;
+        foreach (var s in slots)
+            if (s.active) count++;
+        return count;
+    }
+
+    Slot PickRandomAvailableSlot()
+    {
+        List<Slot> available = new();
+        foreach (var s in slots)
+            if (!s.active && !s.usedThisRound)
+                available.Add(s);
+
+        if (available.Count == 0) return null;
+        return available[Random.Range(0, available.Count)];
+    }
+
+    void ResetRoundFlags()
+    {
+        foreach (var s in slots)
+            s.usedThisRound = false;
     }
 
     void SpawnInto(Slot s)
@@ -33,42 +90,22 @@ public class FixedPointSpawnerWave : MonoBehaviour
         var node = go.GetComponent<ResourceNode>();
         if (!node)
         {
-            Debug.LogError("[WaveSpawner] Prefab-ul nu are ResourceNode!");
+            Debug.LogError("[Spawner] Prefab-ul nu are ResourceNode!");
+            Destroy(go);
             return;
         }
 
-        s.alive = true;               // slotul e activ acum
+        s.active = true;
+        s.usedThisRound = true;
+
+        // abonare la evenimentul OnDepleted
         node.OnDepleted += _ => OnSlotDepleted(s);
     }
 
     void OnSlotDepleted(Slot s)
     {
-        s.alive = false;
-
-        // dacă toate sloturile sunt moarte și nu rulează deja un wave → pornește wave-ul
-        if (!waveRunning && AllSlotsDepleted())
-            StartCoroutine(RespawnWaveAfterDelay());
-    }
-
-    bool AllSlotsDepleted()
-    {
-        foreach (var s in slots)
-            if (s.alive) return false;
-        return true;
-    }
-
-    IEnumerator RespawnWaveAfterDelay()
-    {
-        waveRunning = true;
-        Debug.Log($"[WaveSpawner] Toți copacii epuizați. Respawn wave în {waveRespawnDelay}s…");
-        yield return new WaitForSeconds(waveRespawnDelay);
-
-        // respawn în TOATE sloturile
-        foreach (var s in slots)
-            SpawnInto(s);
-
-        waveRunning = false;
-        Debug.Log("[WaveSpawner] Wave complet: toți copacii au reapărut.");
+        s.active = false;
+        StartCoroutine(RefillUntilTarget());
     }
 
 #if UNITY_EDITOR
