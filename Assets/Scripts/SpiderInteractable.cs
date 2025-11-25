@@ -69,11 +69,6 @@ public class SpiderInteractable : MonoBehaviour
         if (grabInteractable != null)
         {
             grabInteractable.enabled = canBeGrabbed;
-            Debug.Log($"🕷️ SpiderInteractable initialized on {spiderName}");
-            Debug.Log($"   - XRGrabInteractable enabled: {grabInteractable.enabled}");
-            Debug.Log($"   - Interaction Layers: {grabInteractable.interactionLayers.value} (binary: {System.Convert.ToString(grabInteractable.interactionLayers.value, 2).PadLeft(32, '0')})");
-            Debug.Log($"   - Colliders: {(GetComponent<Collider>() != null ? "YES" : "NO")}");
-            Debug.Log($"   - Rigidbody: {(rb != null ? "YES" : "NO")}");
         }
         else
         {
@@ -87,8 +82,8 @@ public class SpiderInteractable : MonoBehaviour
         {
             grabInteractable.selectEntered.AddListener(OnGrab);
             grabInteractable.selectExited.AddListener(OnRelease);
-            grabInteractable.hoverEntered.AddListener(OnHoverEnter);
-            grabInteractable.hoverExited.AddListener(OnHoverExit);
+            grabInteractable.hoverEntered.AddListener(OnHoverEntered);
+            grabInteractable.hoverExited.AddListener(OnHoverExited);
         }
     }
     
@@ -98,15 +93,13 @@ public class SpiderInteractable : MonoBehaviour
         {
             grabInteractable.selectEntered.RemoveListener(OnGrab);
             grabInteractable.selectExited.RemoveListener(OnRelease);
-            grabInteractable.hoverEntered.RemoveListener(OnHoverEnter);
-            grabInteractable.hoverExited.RemoveListener(OnHoverExit);
+            grabInteractable.hoverEntered.RemoveListener(OnHoverEntered);
+            grabInteractable.hoverExited.RemoveListener(OnHoverExited);
         }
     }
     
     private void OnGrab(SelectEnterEventArgs args)
     {
-        Debug.Log($"🟢 SELECT ENTER (GRAB) on {spiderName}! Interactor: {args.interactorObject.transform.name}");
-        
         isGrabbed = true;
         
         // Visual feedback
@@ -114,8 +107,6 @@ public class SpiderInteractable : MonoBehaviour
         
         // Audio feedback
         PlaySound(grabSound);
-        
-        Debug.Log($"{spiderName} grabbed! Throw it away to defeat it!");
     }
     
     private void OnRelease(SelectExitEventArgs args)
@@ -129,12 +120,10 @@ public class SpiderInteractable : MonoBehaviour
             
             if (velocity > throwVelocityThreshold)
             {
-                Debug.Log($"{spiderName} thrown at {velocity:F2} m/s - DEFEATED!");
                 DestroySpider();
             }
             else
             {
-                Debug.Log($"{spiderName} released (velocity too low: {velocity:F2} m/s)");
                 SetSpiderColor(normalColor);
             }
         }
@@ -144,9 +133,8 @@ public class SpiderInteractable : MonoBehaviour
         }
     }
     
-    private void OnHoverEnter(HoverEnterEventArgs args)
+    private void OnHoverEntered(HoverEnterEventArgs args)
     {
-        Debug.Log($"🔴 HOVER ENTER on {spiderName}! Interactor: {args.interactorObject.transform.name}");
         
         if (!isGrabbed)
         {
@@ -154,9 +142,8 @@ public class SpiderInteractable : MonoBehaviour
         }
     }
     
-    private void OnHoverExit(HoverExitEventArgs args)
+    private void OnHoverExited(HoverExitEventArgs args)
     {
-        Debug.Log($"⚪ HOVER EXIT on {spiderName}");
         
         if (!isGrabbed)
         {
@@ -215,9 +202,6 @@ public class SpiderInteractable : MonoBehaviour
             Instantiate(destroyEffect, transform.position, Quaternion.identity);
         }
         
-        // Log destruction
-        Debug.Log($"{spiderName} destroyed!");
-        
         // Destroy the spider
         Destroy(gameObject, 0.1f);
     }
@@ -236,8 +220,6 @@ public class SpiderInteractable : MonoBehaviour
         // Exemplu: Spider moare daca loveste un anumit obiect
         if (collision.relativeVelocity.magnitude > throwVelocityThreshold)
         {
-            Debug.Log($"{spiderName} hit {collision.gameObject.name} at high speed!");
-            
             // Optional: Destroy on hard impact
             // DestroySpider();
         }

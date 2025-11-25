@@ -32,11 +32,8 @@ public class RuntimeSpiderSetup : MonoBehaviour
     {
         if (isSetup)
         {
-            Debug.Log($"Spider {gameObject.name} already setup, skipping...");
             return;
         }
-        
-        Debug.Log($"🕷️ Setting up spider at runtime: {gameObject.name}");
         
         // 1. Add or configure Rigidbody
         Rigidbody rb = GetComponent<Rigidbody>();
@@ -62,7 +59,6 @@ public class RuntimeSpiderSetup : MonoBehaviour
                 capsule.radius = 0.3f;
                 capsule.height = 0.5f;
                 capsule.isTrigger = false; // CRITICAL: Must NOT be trigger for XR interactions
-                Debug.Log($"  ✓ Added CapsuleCollider to {gameObject.name}");
             }
         }
         
@@ -71,7 +67,7 @@ public class RuntimeSpiderSetup : MonoBehaviour
         {
             if (col.isTrigger)
             {
-                Debug.LogWarning($"  ⚠️ Collider on {gameObject.name} was a TRIGGER! Setting to non-trigger for XR interaction");
+                Debug.LogWarning($"⚠️ Collider on {gameObject.name} was a TRIGGER! Setting to non-trigger");
                 col.isTrigger = false;
             }
             
@@ -80,14 +76,9 @@ public class RuntimeSpiderSetup : MonoBehaviour
             {
                 if (!meshCol.convex)
                 {
-                    Debug.LogWarning($"  ⚠️ MeshCollider on {gameObject.name} was NOT CONVEX! Setting to convex for dynamic rigidbody");
+                    Debug.LogWarning($"⚠️ MeshCollider on {gameObject.name} was NOT CONVEX! Setting to convex");
                     meshCol.convex = true;
                 }
-                Debug.Log($"  ✓ MeshCollider verified: isTrigger = {col.isTrigger}, convex = {meshCol.convex}");
-            }
-            else
-            {
-                Debug.Log($"  ✓ Collider verified: isTrigger = {col.isTrigger} (should be false)");
             }
         }
         
@@ -102,14 +93,11 @@ public class RuntimeSpiderSetup : MonoBehaviour
             
             // CRITICAL: Set Interaction Layers to Everything so ray interactor can detect it
             grabInteractable.interactionLayers = -1; // -1 means "Everything" (all bits set)
-            
-            Debug.Log($"  ✓ Added XRGrabInteractable to {gameObject.name}");
         }
         else if (grabInteractable != null)
         {
             // Ensure Interaction Layers are set correctly even if component already exists
             grabInteractable.interactionLayers = -1; // -1 means "Everything" (all bits set)
-            Debug.Log($"  ✓ XRGrabInteractable already exists on {gameObject.name}, set layers to Everything");
         }
         
         // 4. Add SpiderInteractable script
@@ -117,19 +105,9 @@ public class RuntimeSpiderSetup : MonoBehaviour
         if (spiderScript == null)
         {
             spiderScript = gameObject.AddComponent<SpiderInteractable>();
-            Debug.Log($"  ✓ Added SpiderInteractable script to {gameObject.name}");
-            
-            // Note: We can't set private serialized fields at runtime easily
-            // So SpiderInteractable will use its default values
-            // Or we can make a version that accepts parameters
-        }
-        else
-        {
-            Debug.Log($"  ✓ SpiderInteractable already exists on {gameObject.name}");
         }
         
         isSetup = true;
-        Debug.Log($"  Runtime setup complete for {gameObject.name}!");
     }
 }
 
