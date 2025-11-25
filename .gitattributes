@@ -1,0 +1,86 @@
+# Unity files should use LF line endings
+*.cs text eol=lf
+*.shader text eol=lf
+*.cginc text eol=lf
+*.hlsl text eol=lf
+*.glslin text eol=lf
+
+# Unity YAML files
+*.meta text eol=lf
+*.unity text eol=lf
+*.prefab text eol=lf
+*.mat text eol=lf
+*.asset text eol=lf
+*.lighting text eol=lf
+*.shadergraph text eol=lf
+*.shadersubgraph text eol=lf
+
+# Unity text-based assets
+*.asmdef text eol=lf
+*.controller text eol=lf
+*.overrideController text eol=lf
+*.physicMaterial text eol=lf
+*.physicsMaterial2D text eol=lf
+
+# Configuration files
+*.json text eol=lf
+*.xml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Documentation
+*.md text eol=lf
+*.txt text eol=lf
+
+# UserSettings should stay as-is
+UserSettings/** text eol=lf
+
+# Binary files
+*.dll binary
+*.so binary
+*.pdb binary
+*.mdb binary
+*.unitypackage binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.bmp binary
+*.tga binary
+*.exr binary
+*.psd binary
+*.ai binary
+*.fbx binary
+*.obj binary
+*.max binary
+*.blend binary
+*.dae binary
+*.3ds binary
+*.dxf binary
+*.mb binary
+*.ma binary
+*.mp3 binary
+*.wav binary
+*.ogg binary
+*.aif binary
+*.aiff binary
+*.mod binary
+*.it binary
+*.s3m binary
+*.xm binary
+*.mov binary
+*.avi binary
+*.asf binary
+*.mpg binary
+*.mpeg binary
+*.mp4 binary
+*.flv binary
+*.ogv binary
+*.wmv binary
+*.ttf binary
+*.otf binary
+*.zip binary
+*.7z binary
+*.rar binary
+*.tar binary
+*.gz binary
