@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 357758238921488238}
   - component: {fileID: 7768979060727585409}
   m_Layer: 0
-  m_Name: spider
+  m_Name: spider(old)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
