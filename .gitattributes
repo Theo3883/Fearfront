@@ -5,22 +5,26 @@
 *.hlsl text eol=lf
 *.glslin text eol=lf
 
-# Unity binary assets — do not treat as text (prevents CRLF conversions/merges)
-*.asset     -text
-*.unity     merge=unityyamlmerge
-*.prefab    merge=unityyamlmerge
-*.mat       -text
-*.fbx       -text
-
-# Unity YAML files
+# Unity YAML files (text-based, safe to merge with unityyamlmerge)
 *.meta text eol=lf
-*.unity text eol=lf
-*.prefab text eol=lf
-*.mat text eol=lf
-*.asset text eol=lf
+*.unity text eol=lf merge=unityyamlmerge
+*.prefab text eol=lf merge=unityyamlmerge
 *.lighting text eol=lf
 *.shadergraph text eol=lf
 *.shadersubgraph text eol=lf
+
+# Unity binary assets — MUST be treated as binary (no text normalization/merging)
+*.asset binary
+*.mat binary
+*.fbx binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.tga binary
+*.gif binary
+*.psd binary
+*.ai binary
+*.cubemap binary
 
 # Unity text-based assets
 *.asmdef text eol=lf
