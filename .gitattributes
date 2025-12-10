@@ -5,6 +5,13 @@
 *.hlsl text eol=lf
 *.glslin text eol=lf
 
+# Unity binary assets — do not treat as text (prevents CRLF conversions/merges)
+*.asset     -text
+*.unity     merge=unityyamlmerge
+*.prefab    merge=unityyamlmerge
+*.mat       -text
+*.fbx       -text
+
 # Unity YAML files
 *.meta text eol=lf
 *.unity text eol=lf
