@@ -100,4 +100,5 @@ crashlytics-build.properties
 /.idea/.fleet/
 
 
-*.dwlt
+**.dwlt
+
