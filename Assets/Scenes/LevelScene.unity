@@ -388,6 +388,18 @@ PrefabInstance:
       value: XR Interaction Simulator
       objectReference: {fileID: 0}
     - target: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.06587
       objectReference: {fileID: 0}
@@ -23131,6 +23143,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 414804521}
     m_Modifications:
+    - target: {fileID: 3831596280851641935, guid: 1392f805216c47742996d4742c80721c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831596280851641935, guid: 1392f805216c47742996d4742c80721c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3831596280851641935, guid: 1392f805216c47742996d4742c80721c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 4496633296992529653, guid: 1392f805216c47742996d4742c80721c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8270855663187062767, guid: 1392f805216c47742996d4742c80721c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -23174,6 +23202,10 @@ PrefabInstance:
     - target: {fileID: 8758423527188247893, guid: 1392f805216c47742996d4742c80721c, type: 3}
       propertyPath: m_Name
       value: XR Controller Left
+      objectReference: {fileID: 0}
+    - target: {fileID: 8758423527188247893, guid: 1392f805216c47742996d4742c80721c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -23286,7 +23318,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 873971954}
@@ -26856,6 +26888,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: XR Controller Right
       objectReference: {fileID: 0}
+    - target: {fileID: 4312999587465610534, guid: 9f3369e30fbd31f4bb596b1a99babe83, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312999587465610534, guid: 9f3369e30fbd31f4bb596b1a99babe83, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312999587465610534, guid: 9f3369e30fbd31f4bb596b1a99babe83, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -29698,7 +29742,7 @@ TerrainCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_TerrainData: {fileID: 15600000, guid: 9b8600143f577794081628861cc6c17b, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: 8ce82a9db66ed034eac661473a1dc61f, type: 2}
   m_EnableTreeColliders: 1
 --- !u!218 &1486651300
 Terrain:
@@ -29709,7 +29753,7 @@ Terrain:
   m_GameObject: {fileID: 1486651298}
   m_Enabled: 1
   serializedVersion: 6
-  m_TerrainData: {fileID: 15600000, guid: 9b8600143f577794081628861cc6c17b, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: 8ce82a9db66ed034eac661473a1dc61f, type: 2}
   m_TreeDistance: 5000
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
