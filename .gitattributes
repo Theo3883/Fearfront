@@ -25,6 +25,9 @@
 *.psd binary
 *.ai binary
 *.cubemap binary
+*.terrainlayer binary
+*.mask binary
+*.brush binary
 
 # Unity text-based assets
 *.asmdef text eol=lf
@@ -32,6 +35,10 @@
 *.overrideController text eol=lf
 *.physicMaterial text eol=lf
 *.physicsMaterial2D text eol=lf
+*.anim text eol=lf
+*.compute text eol=lf
+*.rendertexture text eol=lf
+*.spriteatlas text eol=lf
 
 # Configuration files
 *.json text eol=lf
