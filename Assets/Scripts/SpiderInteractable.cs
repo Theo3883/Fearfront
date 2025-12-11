@@ -10,7 +10,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class SpiderInteractable : MonoBehaviour
 {
     [Header("Spider Settings")]
-    [SerializeField] private string spiderName = "Spider";
     [SerializeField] private float health = 1f; // Pentru feature "kill spider"
     
     [Header("Visual Feedback")]
@@ -214,16 +213,6 @@ public class SpiderInteractable : MonoBehaviour
         }
     }
     
-    // Collision detection (optional - pentru a detecta impact cu obiecte)
-    private void OnCollisionEnter(Collision collision)
-    {
-        // Exemplu: Spider moare daca loveste un anumit obiect
-        if (collision.relativeVelocity.magnitude > throwVelocityThreshold)
-        {
-            // Optional: Destroy on hard impact
-            // DestroySpider();
-        }
-    }
     
     // Public methods pentru control extern
     public bool IsGrabbed()

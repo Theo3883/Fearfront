@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using Fearfront.Common;
 
 public class ResourceNode : MonoBehaviour
 {
-    public enum ResourceType { Tree, Stone }
     [SerializeField] private ParticleSystem sawdustFX;
 
     [Header("Config")]
@@ -28,12 +28,11 @@ public class ResourceNode : MonoBehaviour
         amount = startAmount;
         col = GetComponent<Collider>();
         rends = GetComponentsInChildren<Renderer>(true);
-        inv = FindObjectOfType<PlayerInventory>();
+        inv = FindFirstObjectByType<PlayerInventory>();
     }
 
     void Start()
     {
-        Debug.Log($"[ResourceNode] '{name}' initialized as {type} with {amount} units.");
     }
     [SerializeField] private Transform fxAnchor;
 
@@ -46,8 +45,7 @@ public class ResourceNode : MonoBehaviour
 
         int give = Mathf.Min(amountPerCollect, amount);
         amount -= give;
-        inv.Add((PlayerInventory.ResourceType)type, give); // vezi PlayerInventory de mai jos
-        Debug.Log($"[ResourceNode] Collected {give} {type} from '{name}'. Remaining: {amount}");
+        inv.Add(type, give); // vezi PlayerInventory de mai jos
         if (sawdustFX)
         {
             Vector3 pos = fxAnchor ? fxAnchor.position : transform.position + Vector3.up * 1f;
@@ -69,7 +67,6 @@ public class ResourceNode : MonoBehaviour
         depleted = false;
         if (col) col.enabled = true;
         foreach (var r in rends) r.enabled = true;
-        Debug.Log($"[ResourceNode] '{name}' self-respawned with {amount}.");
     }
 
     void Deplete()
@@ -77,18 +74,4 @@ public class ResourceNode : MonoBehaviour
         OnDepleted?.Invoke(this);   // anunță spawnerul
         Destroy(gameObject);        // dispare, va fi refăcut de spawner în wave
     }
-
-    IEnumerator FadeAndKill()
-    {
-        // opțional: dezactivează coliziunea ca să nu mai fie clicabil
-        var col = GetComponent<Collider>();
-        if (col) col.enabled = false;
-
-        // mic „fade” al materialului (dacă shaderul permite)
-        var rends = GetComponentsInChildren<Renderer>();
-        float t = 0f;
-        while (t < 0.25f) { t += Time.deltaTime; yield return null; }
-        Destroy(gameObject);
-    }
-
 }

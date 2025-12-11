@@ -32,18 +32,6 @@ public class Enemy : MonoBehaviour
             UpdateRotationTowardPath();
         }
         
-        // Listen for grab events if SpiderInteractable is present
-        RegisterGrabCallbacks();
-    }
-    
-    private void RegisterGrabCallbacks()
-    {
-        SpiderInteractable spiderInteractable = GetComponent<SpiderInteractable>();
-        if (spiderInteractable != null)
-        {
-            // We'll use a simple check in Update instead of events
-            // since we don't have direct access to grab events from here
-        }
     }
 
     private void Update()
