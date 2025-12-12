@@ -4,22 +4,22 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                      GAME SCENE                                  │
+│                      GAME SCENE                                 │
 ├─────────────────────────────────────────────────────────────────┤
-│                                                                   │
-│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐      │
-│  │ XROrigin     │    │ EnemySpawner │    │ NavMesh      │      │
-│  │ (Player)     │    │              │    │ (Baked)      │      │
-│  ├──────────────┤    ├──────────────┤    └──────────────┘      │
-│  │ PlayerHealth │    │ - Spawns     │                            │
-│  │ PlayerDamage │    │   enemies    │    ┌──────────────┐      │
-│  │ Rigidbody    │    │ - Controls   │    │ Enemy Routes │      │
-│  │ Collider     │    │   waves      │    │ (Waypoints)  │      │
-│  └──────────────┘    │ - Selects    │    └──────────────┘      │
-│       ▲              │   type       │                            │
-│       │              └──────────────┘                            │
-│       │                     │                                     │
-│       │                     ▼                                     │
+│                                                                 │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐       │
+│  │ XROrigin     │    │ EnemySpawner │    │ NavMesh      │       │
+│  │ (Player)     │    │              │    │ (Baked)      │       │
+│  ├──────────────┤    ├──────────────┤    └──────────────┘       │
+│  │ PlayerHealth │    │ - Spawns     │                           │
+│  │ PlayerDamage │    │   enemies    │    ┌──────────────┐       │
+│  │ Rigidbody    │    │ - Controls   │    │ Enemy Routes │       │
+│  │ Collider     │    │   waves      │    │ (Waypoints)  │       │
+│  └──────────────┘    │ - Selects    │    └──────────────┘       │
+│       ▲              │   type       │                           │
+│       │              └──────────────┘                           │
+│       │                     │                                   │
+│       │                     ▼                                   │
 │       │              ┌──────────────────────────┐               │
 │       │              │  EnemyData Presets       │               │
 │       │              │  (ScriptableObjects)     │               │
@@ -29,8 +29,8 @@
 │       │              │ • VenomSpider.asset      │               │
 │       │              │ • GoliathSpider.asset    │               │
 │       │              └──────────────────────────┘               │
-│       │                     │                                     │
-│       │                     ▼                                     │
+│       │                     │                                   │
+│       │                     ▼                                   │
 │       │        ┌────────────────────────┐                       │
 │       │        │  Enemy Instance        │                       │
 │       │        │  (Prefab Clone)        │                       │
@@ -41,12 +41,12 @@
 │       │        │ • Renderer (color)     │                       │
 │       │        │ • Collider             │                       │
 │       │        └────────────────────────┘                       │
-│       │                  ▲                                        │
-│       │                  │ Detects                               │
-│       │                  │ Attacks                               │
-│       │                  │                                        │
-│       └──────────────────┘                                        │
-│                                                                   │
+│       │                  ▲                                      │
+│       │                  │ Detects                              │
+│       │                  │ Attacks                              │
+│       │                  │                                      │
+│       └──────────────────┘                                      │
+│                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -206,8 +206,8 @@ UpdateState()
                     │  waypoints)  │               │
                     └──────────────┘               │
                           │                        │
-                          │ Player detected       │ Player leaves
-                          │ within range          │ range
+                          │ Player detected        │ Player leaves
+                          │ within range           │ range
                           ▼                        │
                     ┌──────────────┐               │
                     │  ATTACKING   │───────────────┘
@@ -244,33 +244,33 @@ Events:
 ┌─────────────────────────────────────────────────┐
 │         EnemyData.asset (ScriptableObject)      │
 ├─────────────────────────────────────────────────┤
-│                                                  │
+│                                                 │
 │  ENEMY TYPE IDENTIFICATION                      │
-│  • Type: enum (FastSpider, TankSpider, etc.)   │
+│  • Type: enum (FastSpider, TankSpider, etc.)    │
 │  • Name: string (UI display)                    │
-│                                                  │
-│  MOVEMENT STATS                                  │
+│                                                 │
+│  MOVEMENT STATS                                 │
 │  • MoveSpeed: float (3.5 m/s)                   │
-│                                                  │
-│  HEALTH STATS                                    │
+│                                                 │
+│  HEALTH STATS                                   │
 │  • Health: float (current, copy)                │
 │  • MaxHealth: float (20, 80, 120, etc.)         │
-│                                                  │
-│  COMBAT STATS                                    │
-│  • AttackDamage: float (8, 15, 12, 20)         │
+│                                                 │
+│  COMBAT STATS                                   │
+│  • AttackDamage: float (8, 15, 12, 20)          │
 │  • AttackRange: float (2, 3 meters)             │
 │  • AttackCooldown: float (1.5 seconds)          │
-│                                                  │
-│  DETECTION STATS                                 │
+│                                                 │
+│  DETECTION STATS                                │
 │  • DetectionRadius: float (5, 8 meters)         │
-│                                                  │
-│  VISUAL STATS                                    │
+│                                                 │
+│  VISUAL STATS                                   │
 │  • TypeColor: Color (Red, Blue, Green, etc.)    │
-│  • VisualScale: float (0.8, 1.0, 1.2, 1.3)     │
-│                                                  │
-│  VALIDATION                                      │
+│  • VisualScale: float (0.8, 1.0, 1.2, 1.3)      │
+│                                                 │
+│  VALIDATION                                     │
 │  • IsValid(): Checks all values > 0             │
-│                                                  │
+│                                                 │
 └─────────────────────────────────────────────────┘
          ▲
          │ Loaded by
