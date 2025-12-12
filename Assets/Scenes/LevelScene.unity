@@ -27476,6 +27476,13 @@ MonoBehaviour:
   infiniteWaves: 1
   delayBetweenWaves: 3
   waveTimeThreshold: 15
+  minScale: 0.8
+  maxScale: 1.2
+  colorVariantA: {r: 1, g: 1, b: 1, a: 1}
+  colorVariantB: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  colorVariantC: {r: 0, g: 0, b: 0, a: 1}
+  colorVariantD: {r: 1, g: 0, b: 0, a: 1}
+  colorVariantE: {r: 0.23762906, g: 0.5660378, b: 0.23762906, a: 1}
 --- !u!4 &1417352933
 Transform:
   m_ObjectHideFlags: 0

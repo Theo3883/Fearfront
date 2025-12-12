@@ -731,6 +731,7 @@ GameObject:
   - component: {fileID: 2573798023985658827}
   - component: {fileID: 4134831851999766932}
   - component: {fileID: 981580797620613314}
+  - component: {fileID: 4633814526327979848}
   m_Layer: 0
   m_Name: Spider
   m_TagString: Untagged
@@ -793,6 +794,7 @@ MonoBehaviour:
   stoppingDistance: 0.1
   lookaheadDistance: 3
   rotationOffset: {x: 0, y: -90, z: 0}
+  maxHealth: 1
 --- !u!54 &981580797620613314
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -820,6 +822,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 1
+--- !u!114 &4633814526327979848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946628644984969152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf7933e111d79489693e49fa72002429, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::SpiderDismantle
+  bodyParts:
+  - {fileID: 1574587854815540252}
+  - {fileID: 2768092093518332774}
+  - {fileID: 5140726887088857243}
+  - {fileID: 6831713125823016996}
+  - {fileID: 453608263118182874}
+  - {fileID: 2312217123115076459}
+  explosionForce: 1
+  dismantleDelay: 2
+  sinkSpeed: 1
 --- !u!1 &8590256008144508787
 GameObject:
   m_ObjectHideFlags: 0

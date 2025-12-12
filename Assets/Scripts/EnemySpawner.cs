@@ -12,6 +12,26 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float delayBetweenWaves = 3f;
     [SerializeField] private float waveTimeThreshold = 30f;
 
+    // --- NEW VARIABLES START ---
+    [Header("Randomization Settings")]
+    [Tooltip("Minimum size of the spider")]
+    [SerializeField] private float minScale = 0.7f; 
+    
+    [Tooltip("Maximum size of the spider")]
+    [SerializeField] private float maxScale = 1.3f;
+
+    [Tooltip("The spider will be a random blend between Color A and Color E")]
+    [SerializeField] private Color colorVariantA = Color.white; 
+    [SerializeField] private Color colorVariantB = Color.gray;
+    [SerializeField] private Color colorVariantC = Color.black;
+    [SerializeField] private Color colorVariantD = Color.red;
+    [SerializeField] private Color colorVariantE = Color.green;
+    // --- NEW VARIABLES END ---
+    
+    [Header("Life Settings")]
+    [Tooltip("How many seconds until the spider dies automatically?")]
+    [SerializeField] private float enemyLifeTime = 5f; // <--- ADD THIS VARIABLE
+
     private int waveCount = 0;
     private float waveStartTime = 0f;
 
@@ -77,6 +97,10 @@ public class EnemySpawner : MonoBehaviour
     private void SpawnEnemy()
     {
         GameObject newEnemyObject = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+
+        // --- NEW LOGIC START ---
+        ApplyRandomization(newEnemyObject);
+        // --- NEW LOGIC END ---
         
         Enemy enemy = newEnemyObject.GetComponent<Enemy>();
         if (enemy == null)
@@ -85,6 +109,11 @@ public class EnemySpawner : MonoBehaviour
             Destroy(newEnemyObject);
             return;
         }
+        
+        // --- NEW LINE HERE ---
+        // Tell the enemy to self-destruct after X seconds
+        enemy.ActivateSelfDestruct(enemyLifeTime); 
+        // ---------------------
 
         EnemyRoute randomRoute = GetRandomRoute();
         if (randomRoute == null || !randomRoute.IsValid())
@@ -98,6 +127,37 @@ public class EnemySpawner : MonoBehaviour
         enemy.Initialize(waypoints, this);
     }
 
+    // --- NEW HELPER FUNCTION ---
+    private void ApplyRandomization(GameObject spider)
+    {
+        // 1. Randomize Scale
+        float randomScale = Random.Range(minScale, maxScale);
+        spider.transform.localScale = Vector3.one * randomScale;
+
+        // 2. Randomize Color (The correct way for 5 specific colors)
+        // We pick a random number between 0 and 4 (because there are 4 gaps between 5 colors)
+        float randomVal = Random.Range(0f, 4f); 
+
+        Color resultColor;
+
+        if (randomVal < 1f)
+            resultColor = Color.Lerp(colorVariantA, colorVariantB, randomVal);       // 0 to 1
+        else if (randomVal < 2f)
+            resultColor = Color.Lerp(colorVariantB, colorVariantC, randomVal - 1f);  // 1 to 2
+        else if (randomVal < 3f)
+            resultColor = Color.Lerp(colorVariantC, colorVariantD, randomVal - 2f);  // 2 to 3
+        else
+            resultColor = Color.Lerp(colorVariantD, colorVariantE, randomVal - 3f);  // 3 to 4
+
+        // Apply to all renderers
+        Renderer[] renderers = spider.GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in renderers)
+        {
+            r.material.color = resultColor;
+        }
+    }
+    // ---------------------------
+
     private EnemyRoute GetRandomRoute()
     {
         if (availableRoutes.Length == 0)
@@ -110,29 +170,11 @@ public class EnemySpawner : MonoBehaviour
     public void OnEnemyReachedEnd(Enemy enemy)
     {
     }
-
-    public void SetEnemiesToSpawn(int count)
-    {
-        enemiesToSpawn = count;
-    }
-
-    public void SetSpawnInterval(float interval)
-    {
-        spawnInterval = Mathf.Max(0.1f, interval);
-    }
-
-    public void SetInfiniteWaves(bool infinite)
-    {
-        infiniteWaves = infinite;
-    }
-
-    public void SetWaveTimeThreshold(float threshold)
-    {
-        waveTimeThreshold = Mathf.Max(0.1f, threshold);
-    }
-
-    public int GetWaveCount()
-    {
-        return waveCount;
-    }
+    
+    // ... (Rest of your setters/getters remain unchanged)
+    public void SetEnemiesToSpawn(int count) { enemiesToSpawn = count; }
+    public void SetSpawnInterval(float interval) { spawnInterval = Mathf.Max(0.1f, interval); }
+    public void SetInfiniteWaves(bool infinite) { infiniteWaves = infinite; }
+    public void SetWaveTimeThreshold(float threshold) { waveTimeThreshold = Mathf.Max(0.1f, threshold); }
+    public int GetWaveCount() { return waveCount; }
 }

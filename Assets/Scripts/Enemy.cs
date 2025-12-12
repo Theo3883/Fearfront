@@ -8,15 +8,31 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float lookaheadDistance = 3f;
     [SerializeField] private Vector3 rotationOffset = Vector3.zero;
     
+    // --- NEW: Health Settings ---
+    [Header("Health & Death")]
+    [SerializeField] private int maxHealth = 1;
+    private int currentHealth;
+    // ----------------------------
+
     private Transform[] waypoints;
     private int currentWaypointIndex = 0;
     private EnemySpawner spawner;
     private bool isMoving = true;
     private Rigidbody rb;
+    
+    // --- NEW: Reference to Dismantle Script ---
+    private SpiderDismantle spiderDismantle; 
+    private bool isDead = false;
+    // ------------------------------------------
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        
+        // --- NEW: Grab the component ---
+        spiderDismantle = GetComponent<SpiderDismantle>();
+        currentHealth = maxHealth;
+        // -------------------------------
     }
 
     public void Initialize(Transform[] path, EnemySpawner enemySpawner)
@@ -26,16 +42,25 @@ public class Enemy : MonoBehaviour
         currentWaypointIndex = 0;
         isMoving = true;
         
+        // --- NEW: Reset Health on Initialize (for object pooling if used later) ---
+        isDead = false;
+        currentHealth = maxHealth;
+        // -------------------------------------------------------------------------
+        
         if (waypoints.Length > 0)
         {
             transform.position = waypoints[0].position;
             UpdateRotationTowardPath();
         }
-        
     }
 
     private void Update()
     {
+        // --- NEW: Guard Clause ---
+        // If we are dead, do absolutely nothing. Don't move, don't rotate.
+        if (isDead) return;
+        // -------------------------
+
         // Check if spider is grabbed - stop movement
         SpiderInteractable spiderInteractable = GetComponent<SpiderInteractable>();
         if (spiderInteractable != null && spiderInteractable.IsGrabbed())
@@ -52,6 +77,8 @@ public class Enemy : MonoBehaviour
 
         MoveAlongPath();
     }
+
+    // ... [MoveAlongPath, UpdateRotationTowardPath, GetLookaheadDirection, GetLookaheadPosition remain unchanged] ...
 
     private void MoveAlongPath()
     {
@@ -135,6 +162,56 @@ public class Enemy : MonoBehaviour
         spawner.OnEnemyReachedEnd(this);
         Destroy(gameObject);
     }
+    
+    // --- ADD THIS NEW METHOD ---
+    public void ActivateSelfDestruct(float delay)
+    {
+        // "Invoke" is a built-in Unity function that runs a method after a delay
+        Invoke("Die", delay);
+    }
+    // ---------------------------
+    
+    // --- NEW: Health and Death Logic ---
+    public void TakeDamage(int damageAmount)
+    {
+        if (isDead) return;
+
+        currentHealth -= damageAmount;
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+        isMoving = false;
+
+        // 1. Stop Physics immediately
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true; // Stop the root object from falling/moving
+        }
+
+        // 2. Trigger the Dismantle Effect
+        if (spiderDismantle != null)
+        {
+            spiderDismantle.ActivateDismantle();
+        }
+        else
+        {
+            // Fallback if you forgot to add the script
+            Destroy(gameObject);
+        }
+
+        // 3. Disable this script so Update() stops running entirely
+        this.enabled = false;
+    }
+    // -----------------------------------
 
     public void SetMoveSpeed(float speed)
     {
