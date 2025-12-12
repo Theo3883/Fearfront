@@ -5,12 +5,12 @@ using System;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 12f;
     [SerializeField] private float rotationSpeed = 10f;
-    [SerializeField] private float stoppingDistance = 1.0f;
+    [SerializeField] private float stoppingDistance = 2.5f;
     [SerializeField] private float lookaheadDistance = 3f;
-    [SerializeField] private Vector3 rotationOffset = Vector3.zero;
-    [SerializeField] private float waypointSpreadRadius = 2f;
+    [SerializeField] private Vector3 rotationOffset = new Vector3(0, 90, 0);
+    [SerializeField] private float waypointSpreadRadius = 5f;
     
     [SerializeField] private float detectionRadius = 5f;
     [SerializeField] private float attackRange = 2f;
@@ -34,6 +34,14 @@ public class Enemy : MonoBehaviour
     
     private Transform playerTransform;
     private PlayerHealth playerHealth;
+    [SerializeField] private Transform modelRoot;
+    private Animator animator;
+    [SerializeField] private float animationSpeedBaseline = 12f;
+    [SerializeField] private float separationRadius = 1.5f;
+    [SerializeField] private float separationWeight = 1.5f;
+    [SerializeField] private LayerMask enemyLayer;
+    
+    private Vector3 modelInitialLocalEuler;
 
     private void Awake()
     {
@@ -46,21 +54,71 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            agent.radius = 0.5f;
+            agent.updateRotation = true;
+            agent.angularSpeed = 150f;
+            agent.autoBraking = false;
+            agent.acceleration = UnityEngine.Random.Range(6f, 10f);
             agent.stoppingDistance = stoppingDistance;
+            agent.radius = 0.7f;
             agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
-            agent.avoidancePriority = UnityEngine.Random.Range(40, 60);
         }
         
         playerHealth = PlayerHealth.Instance;
         
         LoadStatsFromData();
+        ConfigureAvoidanceBasedOnSpeed();
+
+        // If no model root specified, use first child (visual model)
+        if (modelRoot == null && transform.childCount > 0)
+        {
+            modelRoot = transform.GetChild(0);
+        }
+        if (modelRoot != null)
+        {
+            modelInitialLocalEuler = modelRoot.localEulerAngles;
+        }
+        // Setup animator random start and speed if available
+        SetupAnimation();
+    }
+
+    private void LateUpdate()
+    {
+        // Keep NavMeshAgent controlling transform rotation, but apply rotation offset to visual model
+        if (modelRoot != null)
+        {
+            // Preserve the model's original pitch/roll and apply yaw from agent + Y offset
+            float yaw = transform.eulerAngles.y + rotationOffset.y;
+            modelRoot.rotation = Quaternion.Euler(modelInitialLocalEuler.x, yaw, modelInitialLocalEuler.z);
+        }
+    }
+
+    private void SetupAnimation()
+    {
+        animator = GetComponentInChildren<Animator>();
+        if (animator == null || animator.runtimeAnimatorController == null)
+            return;
+
+        // Start the animation at a random normalized time so multiple spiders are unsynced
+        float normalized = UnityEngine.Random.value;
+        animator.Play(0, -1, normalized);
+
+        // Match animation speed to movement speed relative to baseline
+        animator.speed = moveSpeed / Mathf.Max(0.01f, animationSpeedBaseline);
     }
 
     /// <summary>
     /// Loads enemy stats from EnemyData ScriptableObject
     /// Falls back to serialized values if no data is assigned
     /// </summary>
+    private void ConfigureAvoidanceBasedOnSpeed()
+    {
+        if (agent == null) return;
+        
+        float speedFactor = moveSpeed / 12f;
+        agent.avoidancePriority = Mathf.RoundToInt(Mathf.Lerp(70, 30, speedFactor - 0.6f));
+        agent.radius = Mathf.Lerp(0.8f, 0.6f, Mathf.Clamp01(speedFactor - 0.6f));
+    }
+
     private void LoadStatsFromData()
     {
         if (enemyData != null && enemyData.IsValid())
@@ -133,6 +191,46 @@ public class Enemy : MonoBehaviour
         return basePosition;
     }
 
+    // Returns a NavMesh-valid position near desiredPosition, after applying local separation from nearby agents
+    private Vector3 GetSeparatedNavMeshPosition(Vector3 desiredPosition)
+    {
+        // Compute separation offset from nearby enemies
+        Vector3 separation = Vector3.zero;
+        Collider[] hits = Physics.OverlapSphere(transform.position, separationRadius, enemyLayer);
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (hits[i].transform == this.transform) continue;
+            Vector3 toMe = transform.position - hits[i].transform.position;
+            float dist = toMe.magnitude;
+            if (dist > 0.001f)
+            {
+                separation += toMe.normalized / dist; // stronger when closer
+            }
+        }
+        if (separation != Vector3.zero)
+        {
+            separation = separation.normalized * separationWeight;
+            separation.y = 0;
+        }
+
+        Vector3 candidate = desiredPosition + separation;
+
+        // Sample candidate to NavMesh so it's valid
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(candidate, out hit, 10.0f, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+
+        // Fallback: try sampling the original desiredPosition
+        if (NavMesh.SamplePosition(desiredPosition, out hit, 10.0f, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+
+        return transform.position;
+    }
+
     /// <summary>
     /// Gets the current health of this enemy
     /// </summary>
@@ -195,7 +293,8 @@ public class Enemy : MonoBehaviour
                 if (waypoints.Length > 1)
                 {
                     Vector3 randomizedNextWaypoint = GetRandomizedWaypointPosition(waypoints[1].position);
-                    agent.SetDestination(randomizedNextWaypoint);
+                    Vector3 separatedDest = GetSeparatedNavMeshPosition(randomizedNextWaypoint);
+                    agent.SetDestination(separatedDest);
                     currentWaypointIndex = 1;
                 }
                 else
@@ -203,8 +302,6 @@ public class Enemy : MonoBehaviour
                     agent.SetDestination(startPosition);
                 }
             }
-            
-            UpdateRotationTowardPath();
         }
         
     }
@@ -317,7 +414,8 @@ public class Enemy : MonoBehaviour
              if (currentWaypointIndex < waypoints.Length)
             {
                 Vector3 randomizedWaypoint = GetRandomizedWaypointPosition(waypoints[currentWaypointIndex].position);
-                agent.SetDestination(randomizedWaypoint);
+                Vector3 separatedDest = GetSeparatedNavMeshPosition(randomizedWaypoint);
+                agent.SetDestination(separatedDest);
             }
             else
             {
@@ -326,8 +424,6 @@ public class Enemy : MonoBehaviour
             }
             return;
         }
-
-        UpdateRotationTowardPath();
     }
 
     private void UpdateRotationTowardPath()
