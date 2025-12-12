@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.AI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -11,6 +13,10 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private bool infiniteWaves = false;
     [SerializeField] private float delayBetweenWaves = 3f;
     [SerializeField] private float waveTimeThreshold = 30f;
+
+    // Phase 4 - Enemy type variants
+    [SerializeField] private List<EnemyData> enemyTypeVariants = new List<EnemyData>();
+    [SerializeField] private SpawnDifficulty difficultyPreset = SpawnDifficulty.Normal;
 
     private int waveCount = 0;
     private float waveStartTime = 0f;
@@ -76,7 +82,19 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        GameObject newEnemyObject = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
+        // Sample spawn point to nearest NavMesh position
+        NavMeshHit hit;
+        Vector3 spawnPosition = spawnPoint.position;
+        if (NavMesh.SamplePosition(spawnPoint.position, out hit, 10.0f, NavMesh.AllAreas))
+        {
+            spawnPosition = hit.position;
+        }
+        else
+        {
+            Debug.LogWarning("Spawn point not on NavMesh. Enemies may not navigate correctly.");
+        }
+        
+        GameObject newEnemyObject = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
         
         Enemy enemy = newEnemyObject.GetComponent<Enemy>();
         if (enemy == null)
@@ -96,6 +114,117 @@ public class EnemySpawner : MonoBehaviour
 
         Transform[] waypoints = randomRoute.GetWaypoints();
         enemy.Initialize(waypoints, this);
+        
+        // Phase 4: Apply random enemy type variant
+        RandomizeEnemyType(enemy);
+    }
+
+    /// <summary>
+    /// Randomly selects an enemy type variant and applies it to the enemy
+    /// </summary>
+    private void RandomizeEnemyType(Enemy enemy)
+    {
+        EnemyData selectedType = GetRandomEnemyType();
+        if (selectedType != null)
+        {
+            enemy.SetEnemyData(selectedType);
+        }
+    }
+
+    /// <summary>
+    /// Gets a random enemy type based on difficulty preset
+    /// </summary>
+    private EnemyData GetRandomEnemyType()
+    {
+        if (enemyTypeVariants.Count == 0)
+        {
+            return null;
+        }
+
+        float rand = Random.value;
+        float cumulativeChance = 0f;
+
+        // Get difficulty distribution
+        (EnemyType[] types, float[] chances) = GetDifficultyDistribution();
+
+        for (int i = 0; i < types.Length; i++)
+        {
+            cumulativeChance += chances[i];
+            if (rand <= cumulativeChance)
+            {
+                return FindEnemyDataByType(types[i]);
+            }
+        }
+
+        // Fallback to first available
+        return enemyTypeVariants[0];
+    }
+
+    /// <summary>
+    /// Gets the type distribution and probabilities based on difficulty
+    /// </summary>
+    private (EnemyType[], float[]) GetDifficultyDistribution()
+    {
+        switch (difficultyPreset)
+        {
+            case SpawnDifficulty.Easy:
+                return (
+                    new[] { EnemyType.FastSpider, EnemyType.TankSpider },
+                    new[] { 0.7f, 0.3f }
+                );
+
+            case SpawnDifficulty.Normal:
+                return (
+                    new[] { EnemyType.FastSpider, EnemyType.TankSpider, EnemyType.VenomSpider },
+                    new[] { 0.5f, 0.3f, 0.2f }
+                );
+
+            case SpawnDifficulty.Hard:
+                return (
+                    new[] { EnemyType.FastSpider, EnemyType.TankSpider, EnemyType.VenomSpider, EnemyType.GoliathSpider },
+                    new[] { 0.3f, 0.3f, 0.25f, 0.15f }
+                );
+
+            default:
+                return (
+                    new[] { EnemyType.FastSpider },
+                    new[] { 1f }
+                );
+        }
+    }
+
+    /// <summary>
+    /// Finds EnemyData by type
+    /// </summary>
+    private EnemyData FindEnemyDataByType(EnemyType type)
+    {
+        foreach (EnemyData data in enemyTypeVariants)
+        {
+            if (data != null && data.Type == type && data.IsValid())
+            {
+                return data;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Sets the difficulty preset for spawning
+    /// </summary>
+    public void SetDifficultyPreset(SpawnDifficulty difficulty)
+    {
+        difficultyPreset = difficulty;
+    }
+
+    /// <summary>
+    /// Adds an enemy type variant to available types
+    /// </summary>
+    public void AddEnemyTypeVariant(EnemyData data)
+    {
+        if (data != null && !enemyTypeVariants.Contains(data))
+        {
+            enemyTypeVariants.Add(data);
+        }
     }
 
     private EnemyRoute GetRandomRoute()

@@ -731,6 +731,8 @@ GameObject:
   - component: {fileID: 2573798023985658827}
   - component: {fileID: 4134831851999766932}
   - component: {fileID: 981580797620613314}
+  - component: {fileID: 2592878188421828438}
+  - component: {fileID: 7492376896275397741}
   m_Layer: 0
   m_Name: Spider
   m_TagString: Untagged
@@ -793,6 +795,12 @@ MonoBehaviour:
   stoppingDistance: 0.1
   lookaheadDistance: 3
   rotationOffset: {x: 0, y: -90, z: 0}
+  waypointSpreadRadius: 2
+  detectionRadius: 5
+  attackRange: 2
+  attackCooldown: 1.5
+  attackDamage: 10
+  enemyData: {fileID: 0}
 --- !u!54 &981580797620613314
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -820,6 +828,49 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 1
+--- !u!65 &2592878188421828438
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946628644984969152}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.48, y: 2.25, z: 8.12}
+  m_Center: {x: -0.69, y: 1.2, z: -0.26}
+--- !u!195 &7492376896275397741
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946628644984969152}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0.25
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &8590256008144508787
 GameObject:
   m_ObjectHideFlags: 0
