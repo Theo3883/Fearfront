@@ -99,6 +99,13 @@ crashlytics-build.properties
 # Rider package restore folder
 /.idea/.fleet/
 
-
 **.dwlt
 plans/
+
+# Local / OS files
+.utmp/
+.DS_Store
+Thumbs.db
+
+# Visual Studio solution extras
+*.slnx
