@@ -40,6 +40,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float separationRadius = 1.5f;
     [SerializeField] private float separationWeight = 1.5f;
     [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private bool debugEnable = true;
     
     private Vector3 modelInitialLocalEuler;
 
@@ -64,7 +65,11 @@ public class Enemy : MonoBehaviour
         }
         
         playerHealth = PlayerHealth.Instance;
-        
+        // Cache player transform if PlayerHealth exists
+        if (playerHealth != null)
+        {
+            playerTransform = playerHealth.transform;
+        }
         LoadStatsFromData();
         ConfigureAvoidanceBasedOnSpeed();
 
@@ -375,13 +380,26 @@ public class Enemy : MonoBehaviour
         
         if (playerTransform == null || playerHealth == null || !playerHealth.IsAlive())
         {
+            // If playerHealth exists but transform not found, try to use its transform
+            if (playerHealth != null && playerTransform == null)
+            {
+                playerTransform = playerHealth.transform;
+            }
+            if (playerTransform == null)
+            {
+                return;
+            }
             return;
         }
         
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-        
+        if (debugEnable)
+        {
+            Debug.Log($"[Enemy] {name} playerTransform={(playerTransform!=null)} distance={distanceToPlayer:F2} detectionRadius={detectionRadius:F2}");
+        }
         if (distanceToPlayer <= detectionRadius)
         {
+            if (debugEnable) Debug.Log($"[Enemy] {name} TransitionToAttacking triggered (distance {distanceToPlayer:F2})");
             TransitionToAttacking();
         }
     }
@@ -491,18 +509,22 @@ public class Enemy : MonoBehaviour
         }
         
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-        
+        if (debugEnable)
+        {
+            Debug.Log($"[Enemy] {name} AttackingCheck distance={distanceToPlayer:F2} detection={detectionRadius:F2} attackRange={attackRange:F2} cooldown={attackCooldownTimer:F2}");
+        }
         // Check if player is still in detection range
         if (distanceToPlayer > detectionRadius)
         {
-            // Player left detection range - return to moving
+            if (debugEnable) Debug.Log($"[Enemy] {name} Player left detection range");
             TransitionToMoving();
             return;
         }
-        
+
         // Check if player is in attack range
         if (distanceToPlayer <= attackRange)
         {
+            if (debugEnable) Debug.Log($"[Enemy] {name} Player in attack range - rotating/attacking");
             // Rotate towards player
             RotateTowardsPlayer();
             
@@ -512,6 +534,23 @@ public class Enemy : MonoBehaviour
                 ExecuteAttack();
                 attackCooldownTimer = attackCooldown;
             }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (!debugEnable) return;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position, separationRadius);
+        if (playerTransform != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position, playerTransform.position);
+            Gizmos.DrawSphere(playerTransform.position, 0.15f);
         }
     }
 

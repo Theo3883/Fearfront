@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Fearfront.Scripts::EnemyData
   enemyName: FastSpider
   enemyType: 0
-  moveSpeed: 4.5
+  moveSpeed: 7
   health: 20
   maxHealth: 20
   attackDamage: 8

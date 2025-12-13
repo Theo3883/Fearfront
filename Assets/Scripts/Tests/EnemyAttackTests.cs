@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEngine.AI;
 using NUnit.Framework;
@@ -100,3 +101,4 @@ public class EnemyAttackTests
         Assert.AreEqual(EnemyState.Moving, enemy.GetCurrentState());
     }
 }
+#endif
