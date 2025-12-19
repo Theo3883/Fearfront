@@ -18,5 +18,16 @@ public class UIWood : MonoBehaviour
     {
         woodText.text = inv.Get(ResourceType.Tree).ToString();
         stoneText.text = inv.Get(ResourceType.Stone).ToString();   
+        if (woodText == null) return;
+
+        if (inv == null)
+        {
+            inv = FindFirstObjectByType<PlayerInventory>();
+        }
+
+        if (inv != null)
+        {
+            woodText.text = inv.Get(ResourceType.Tree).ToString();
+        }
     }
 }

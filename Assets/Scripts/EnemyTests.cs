@@ -25,7 +25,12 @@ public class EnemyTests
         rb = enemyGameObject.AddComponent<Rigidbody>();
         rb.isKinematic = true;
         
-        // Add Enemy script
+        // Add required components for Enemy integration
+        enemyGameObject.AddComponent<NavMeshPlayerDetector>();
+        enemyGameObject.AddComponent<EnemyMovement>();
+        enemyGameObject.AddComponent<EnemyStateMachine>();
+        
+        // Add Enemy script (must be after dependencies are added)
         enemy = enemyGameObject.AddComponent<Enemy>();
         
         // Create a mock spawner

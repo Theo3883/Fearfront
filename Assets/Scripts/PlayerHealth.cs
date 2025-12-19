@@ -160,7 +160,6 @@ public class PlayerHealth : MonoBehaviour
         {
             if (enemy != null)
             {
-                enemy.TransitionToIdle();
                 Destroy(enemy.gameObject);
             }
         }

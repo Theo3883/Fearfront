@@ -80,7 +80,10 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private void SpawnEnemy()
+    /// <summary>
+    /// Spawn an enemy - public version for testing and external calls
+    /// </summary>
+    public void SpawnEnemy()
     {
         // Sample spawn point to nearest NavMesh position
         NavMeshHit hit;
@@ -113,10 +116,64 @@ public class EnemySpawner : MonoBehaviour
         }
 
         Transform[] waypoints = randomRoute.GetWaypoints();
+        
+        // CRITICAL: Set enemy data BEFORE Initialize() to avoid null warnings
+        EnemyData selectedEnemyData = GetRandomEnemyType();
+        if (selectedEnemyData != null)
+        {
+            enemy.SetEnemyData(selectedEnemyData);
+        }
+        
+        // Now initialize with data already set
         enemy.Initialize(waypoints, this);
         
-        // Phase 4: Apply random enemy type variant
-        RandomizeEnemyType(enemy);
+        // Initialize refactored components (now with EnemyData already assigned)
+        if (selectedEnemyData != null)
+        {
+            InitializeEnemyComponents(newEnemyObject, waypoints, selectedEnemyData);
+        }
+    }
+
+    /// <summary>
+    /// Initialize the three refactored components on a spawned enemy
+    /// Allows partial initialization - if playerHealth is null, logs warning but continues initialization of movement and detector
+    /// Only fails if components themselves cannot be added to the enemy
+    /// NOTE: EnemyMovement is already initialized by Enemy.Initialize(), so we skip it here
+    /// </summary>
+    private void InitializeEnemyComponents(GameObject enemyObject, Transform[] waypoints, EnemyData enemyData)
+    {
+        // Find or get player reference
+        PlayerHealth playerHealth = FindPlayerHealth();
+        if (playerHealth == null)
+        {
+            Debug.LogWarning("Could not find player or PlayerHealth component. Enemy movement and detection will work, but state machine may not engage properly without player reference.");
+        }
+
+        // Get/add NavMeshPlayerDetector and initialize it
+        NavMeshPlayerDetector detector = enemyObject.GetComponent<NavMeshPlayerDetector>();
+        if (detector == null)
+        {
+            detector = enemyObject.AddComponent<NavMeshPlayerDetector>();
+        }
+        
+        // Only set player reference if player was found
+        if (playerHealth != null)
+        {
+            detector.SetPlayerReference(playerHealth.transform);
+        }
+
+        // EnemyMovement is already initialized by Enemy.Initialize(), so we don't re-initialize it here
+        // This avoids double-initialization of waypoints
+
+        // Get/add EnemyStateMachine and initialize it
+        EnemyStateMachine stateMachine = enemyObject.GetComponent<EnemyStateMachine>();
+        if (stateMachine == null)
+        {
+            stateMachine = enemyObject.AddComponent<EnemyStateMachine>();
+        }
+        
+        // Initialize state machine with player health (may be null, state machine should handle this)
+        stateMachine.Initialize(detector, enemyData.DetectionRadius, playerHealth);
     }
 
     /// <summary>
@@ -138,6 +195,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyTypeVariants.Count == 0)
         {
+            Debug.LogWarning("EnemySpawner has no Enemy Type Variants assigned! Spawning with default values.");
             return null;
         }
 
@@ -205,6 +263,7 @@ public class EnemySpawner : MonoBehaviour
                 return data;
             }
         }
+        Debug.LogWarning($"No EnemyData found for type {type} in variants list.");
         return null;
     }
 
@@ -236,6 +295,32 @@ public class EnemySpawner : MonoBehaviour
         return availableRoutes[randomIndex];
     }
 
+    /// <summary>
+    /// Find the PlayerHealth component in the scene
+    /// Tries multiple methods: tag lookup, FindObjectOfType, singleton access
+    /// </summary>
+    private PlayerHealth FindPlayerHealth()
+    {
+        // First try PlayerHealth singleton
+        if (PlayerHealth.Instance != null)
+            return PlayerHealth.Instance;
+
+        // Try to find by tag
+        GameObject playerObject = null;
+        try { playerObject = GameObject.FindWithTag("Player"); }
+        catch { playerObject = null; }
+        
+        if (playerObject != null)
+        {
+            PlayerHealth ph = playerObject.GetComponent<PlayerHealth>();
+            if (ph != null)
+                return ph;
+        }
+
+        // Try FindFirstObjectByType as last resort
+        return FindFirstObjectByType<PlayerHealth>();
+    }
+
     public void OnEnemyReachedEnd(Enemy enemy)
     {
     }
@@ -245,4 +330,20 @@ public class EnemySpawner : MonoBehaviour
     public void SetInfiniteWaves(bool infinite) { infiniteWaves = infinite; }
     public void SetWaveTimeThreshold(float threshold) { waveTimeThreshold = Mathf.Max(0.1f, threshold); }
     public int GetWaveCount() { return waveCount; }
+    
+    /// <summary>
+    /// Public setter for enemy prefab (for testing)
+    /// </summary>
+    public void SetEnemyPrefab(GameObject prefab)
+    {
+        enemyPrefab = prefab;
+    }
+
+    /// <summary>
+    /// Public setter for spawn point (for testing)
+    /// </summary>
+    public void SetSpawnPoint(Transform spawnPointTransform)
+    {
+        spawnPoint = spawnPointTransform;
+    }
 }
