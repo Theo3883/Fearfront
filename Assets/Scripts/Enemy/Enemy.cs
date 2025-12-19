@@ -8,23 +8,19 @@ using System;
 /// </summary>
 public class Enemy : MonoBehaviour
 {
-    // ===== KEPT: Health System =====
     [SerializeField] private EnemyData enemyData;
-    private float healthMax = 20f;
-    private float currentHealth = 20f;
+    [SerializeField] private float healthMax = 20f;
+    [SerializeField] private float currentHealth = 20f;
     
-    // ===== KEPT: References to Components =====
-    private NavMeshPlayerDetector playerDetector;
-    private EnemyMovement enemyMovement;
-    private EnemyStateMachine stateMachine;
+    [SerializeField] private NavMeshPlayerDetector playerDetector;
+    [SerializeField] private EnemyMovement enemyMovement;
+    [SerializeField] private EnemyStateMachine stateMachine;
     private Rigidbody rb;
     private NavMeshAgent agent;
     
-    // ===== KEPT: Death and Dismantle =====
     private SpiderDismantle spiderDismantle;
     private bool isDead = false;
     
-    // ===== KEPT: References for initialization =====
     private EnemySpawner spawner;
     private Transform[] waypoints;
     
@@ -117,20 +113,16 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        // Guard: if dead, do nothing
         if (isDead) return;
         
-        // Safety checks: ensure all required components are present
         if (stateMachine == null || playerDetector == null || enemyMovement == null)
         {
-            Debug.LogWarning($"Enemy '{gameObject.name}' missing required components");
+        Debug.LogWarning($"Enemy '{gameObject.name}' missing required components");
             return;
         }
         
-        // Update movement each frame
         enemyMovement.UpdateMovement();
         
-        // Update state machine (handles transitions and state logic)
         PlayerHealth playerHealth = PlayerHealth.Instance;
         if (playerHealth != null)
         {
@@ -176,17 +168,14 @@ public class Enemy : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        // Disable all components to stop all behavior
         DisableAllComponents();
 
-        // Trigger the Dismantle Effect
         if (spiderDismantle != null)
         {
             spiderDismantle.ActivateDismantle();
         }
         else
         {
-            // Fallback if dismantle script not added
             Destroy(gameObject);
         }
     }
@@ -196,19 +185,15 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void DisableAllComponents()
     {
-        // Disable movement
         if (enemyMovement != null)
             enemyMovement.enabled = false;
         
-        // Disable state machine
         if (stateMachine != null)
             stateMachine.enabled = false;
         
-        // Disable player detection
         if (playerDetector != null)
             playerDetector.enabled = false;
         
-        // Stop physics
         if (rb != null)
         {
             rb.linearVelocity = Vector3.zero;
@@ -216,7 +201,6 @@ public class Enemy : MonoBehaviour
             rb.isKinematic = true;
         }
         
-        // Stop NavMeshAgent
         if (agent != null && agent.enabled && agent.isOnNavMesh)
         {
             agent.velocity = Vector3.zero;

@@ -7,9 +7,9 @@ using System;
 /// </summary>
 public class EnemyStateMachine : MonoBehaviour
 {
-    private NavMeshPlayerDetector playerDetector;
-    private float detectionRange;
-    private PlayerHealth playerHealth;
+    [SerializeField] private NavMeshPlayerDetector playerDetector;
+    [SerializeField] private float detectionRange;
+    [SerializeField] private PlayerHealth playerHealth;
     
     private EnemyState currentState = EnemyState.Moving;
 

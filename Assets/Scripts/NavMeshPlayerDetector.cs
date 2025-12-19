@@ -10,7 +10,7 @@ public class NavMeshPlayerDetector : MonoBehaviour
 {
     [SerializeField] private float detectionTolerance = 1.5f;
     
-    private Transform playerTransform;
+    [SerializeField] private Transform playerTransform;
     private bool lastDetectedStatus = false;
     private bool statusInitialized = false;
     

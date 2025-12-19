@@ -99,7 +99,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6616607691417091697}
   - component: {fileID: 3233777280976681854}
-  - component: {fileID: 6031973890274624261}
   m_Layer: 7
   m_Name: HitBox
   m_TagString: Untagged
@@ -137,39 +136,12 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 3.59
   m_Center: {x: 0, y: 1.31, z: 0}
---- !u!54 &6031973890274624261
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 734736538654842551}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 0
 --- !u!1 &1057409180336782544
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,6 +702,9 @@ GameObject:
   - component: {fileID: 9035378088359522729}
   - component: {fileID: 2573798023985658827}
   - component: {fileID: 4134831851999766932}
+  - component: {fileID: -3699814989102493408}
+  - component: {fileID: 7974588008391549182}
+  - component: {fileID: -3017634517225213077}
   - component: {fileID: 981580797620613314}
   - component: {fileID: 7492376896275397741}
   - component: {fileID: 743525482133860967}
@@ -791,26 +766,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f8e0eb5c68f38449be31d4fa116e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::Enemy
-  moveSpeed: 7
-  rotationSpeed: 10
-  stoppingDistance: 0.5
-  lookaheadDistance: 5
-  rotationOffset: {x: 0, y: -90, z: 0}
-  waypointSpreadRadius: 3
-  detectionRadius: 30
-  attackRange: 10
-  maxPathDistance: 8
-  attackCooldown: 1.5
-  attackDamage: 10
   enemyData: {fileID: 0}
-  modelRoot: {fileID: 0}
-  animationSpeedBaseline: 6
-  separationRadius: 20
-  separationWeight: 30
+  healthMax: 20
+  currentHealth: 20
+  playerDetector: {fileID: -3017634517225213077}
+  enemyMovement: {fileID: -3699814989102493408}
+  stateMachine: {fileID: 7974588008391549182}
+--- !u!114 &-3699814989102493408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946628644984969152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a75260879e6b0cd4fa057c49a008f979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::EnemyMovement
+  waypoints: []
+  enemyData: {fileID: 0}
+  moveSpeed: 12
+  stoppingDistance: 2.5
+  waypointSpreadRadius: 5
+  separationRadius: 1.5
+  separationWeight: 1.5
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
-  debugEnable: 1
+--- !u!114 &7974588008391549182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946628644984969152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4e7d08fca9ff3c4b98765c8575da036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::EnemyStateMachine
+  playerDetector: {fileID: -3017634517225213077}
+  detectionRange: 0
+  playerHealth: {fileID: 0}
+--- !u!114 &-3017634517225213077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946628644984969152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12345678901234567890123456789abc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::NavMeshPlayerDetector
+  detectionTolerance: 1.5
+  playerTransform: {fileID: 0}
 --- !u!54 &981580797620613314
 Rigidbody:
   m_ObjectHideFlags: 0

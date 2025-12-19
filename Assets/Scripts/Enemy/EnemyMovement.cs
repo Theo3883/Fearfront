@@ -9,8 +9,8 @@ using System;
 public class EnemyMovement : MonoBehaviour
 {
     private NavMeshAgent agent;
-    private Transform[] waypoints;
-    private EnemyData enemyData;
+    [SerializeField] private Transform[] waypoints;
+    [SerializeField] private EnemyData enemyData;
     private int currentWaypointIndex = 0;
     private bool isMovementPaused = false;
 
@@ -19,12 +19,12 @@ public class EnemyMovement : MonoBehaviour
     private const int MAX_RECOVERY_ATTEMPTS = 5;
 
     // Configuration values
-    private float moveSpeed = 12f;
-    private float stoppingDistance = 2.5f;
-    private float waypointSpreadRadius = 5f;
-    private float separationRadius = 1.5f;
-    private float separationWeight = 1.5f;
-    private LayerMask enemyLayer;
+    [SerializeField] private float moveSpeed = 12f;
+    [SerializeField] private float stoppingDistance = 2.5f;
+    [SerializeField] private float waypointSpreadRadius = 5f;
+    [SerializeField] private float separationRadius = 1.5f;
+    [SerializeField] private float separationWeight = 1.5f;
+    [SerializeField] private LayerMask enemyLayer;
 
     // Events
     public event Action<int> OnWaypointReached;
