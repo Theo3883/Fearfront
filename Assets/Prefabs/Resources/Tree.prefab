@@ -201,7 +201,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a82a1e6725345dbb0d31260d3979b5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::ResourceNode
-  sawdustFX: {fileID: 7961462444542353335, guid: 7bbe309e10c1b2245b3152cdb642d697, type: 3}
+  sawdustFX: {fileID: 7961462444542353335, guid: 7fdaa873c16ee1340aa4b893bed2e25d, type: 3}
   type: 0
   startAmount: 50
   amountPerCollect: 10
