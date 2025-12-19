@@ -325,3 +325,68 @@ public class EnemyMovement : MonoBehaviour
         separationWeight = mass;
         // Note: mass and force parameters stored for future use
     }
+
+    /// <summary>
+    /// Find the nearest waypoint ahead of the current position.
+    /// Searches forward from currentWaypointIndex to avoid backtracking.
+    /// </summary>
+    /// <param name="position">Current position to find nearest waypoint from</param>
+    /// <returns>Index of the nearest waypoint ahead</returns>
+    public int FindNearestWaypoint(Vector3 position)
+    {
+        if (waypoints == null || waypoints.Length == 0)
+            return 0;
+
+        int nearestIndex = currentWaypointIndex;
+        float nearestDistance = GetDistanceToWaypoint(position, currentWaypointIndex);
+
+        // Search forward from current waypoint index
+        for (int i = currentWaypointIndex + 1; i < waypoints.Length; i++)
+        {
+            float distance = GetDistanceToWaypoint(position, i);
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestIndex = i;
+            }
+        }
+
+        return nearestIndex;
+    }
+
+    /// <summary>
+    /// Resume movement from the nearest waypoint ahead of the current position.
+    /// Updates currentWaypointIndex and sets the agent destination.
+    /// </summary>
+    /// <param name="currentPosition">Current position of the enemy</param>
+    public void ResumeFromNearestWaypoint(Vector3 currentPosition)
+    {
+        if (waypoints == null || waypoints.Length == 0)
+            return;
+
+        int nearestWaypointIndex = FindNearestWaypoint(currentPosition);
+        currentWaypointIndex = nearestWaypointIndex;
+
+        // Resume movement toward the nearest waypoint
+        if (agent != null && agent.isOnNavMesh && nearestWaypointIndex < waypoints.Length)
+        {
+            Vector3 randomizedWaypoint = GetRandomizedWaypointPosition(waypoints[nearestWaypointIndex].position);
+            Vector3 separatedDest = GetSeparatedNavMeshPosition(randomizedWaypoint);
+            agent.SetDestination(separatedDest);
+        }
+    }
+
+    /// <summary>
+    /// Calculate the distance from a position to a specific waypoint.
+    /// </summary>
+    /// <param name="position">Reference position</param>
+    /// <param name="waypointIndex">Index of the waypoint</param>
+    /// <returns>Distance from position to waypoint</returns>
+    private float GetDistanceToWaypoint(Vector3 position, int waypointIndex)
+    {
+        if (waypoints == null || waypointIndex < 0 || waypointIndex >= waypoints.Length)
+            return float.MaxValue;
+
+        return Vector3.Distance(position, waypoints[waypointIndex].position);
+    }
+}

@@ -171,4 +171,77 @@ public class EnemyMovementTests
         Assert.AreNotEqual(0, enemyLayer, 
             "Enemy layer should be initialized to a valid layer mask");
     }
+
+    /// <summary>
+    /// Test 6: Test return to nearest waypoint functionality
+    /// Verify that FindNearestWaypoint returns the closest waypoint ahead of current position
+    /// </summary>
+    [Test]
+    public void TestReturnToNearestWaypoint()
+    {
+        // Arrange
+        EnemyData testData = ScriptableObject.CreateInstance<EnemyData>();
+        enemyMovement.Initialize(testWaypoints, testData);
+        
+        // Set current position between waypoints 0 and 1
+        // Waypoints are at (0,0,0), (5,0,0), (10,0,0)
+        enemyGameObject.transform.position = new Vector3(2.5f, 0, 0);
+        
+        // Act - find nearest waypoint ahead from current position
+        int nearestWaypointIndex = enemyMovement.FindNearestWaypoint(enemyGameObject.transform.position);
+        
+        // Assert - should find waypoint 1 (at 5,0,0) as nearest ahead
+        Assert.AreEqual(1, nearestWaypointIndex,
+            "Should find waypoint 1 as nearest ahead when positioned between waypoints 0 and 1");
+    }
+
+    /// <summary>
+    /// Test 7: Test path progression after resuming from nearest waypoint
+    /// Verify that ResumeFromNearestWaypoint sets currentWaypointIndex correctly
+    /// and continues through remaining waypoints
+    /// </summary>
+    [Test]
+    public void TestPathProgressionAfterCombat()
+    {
+        // Arrange
+        EnemyData testData = ScriptableObject.CreateInstance<EnemyData>();
+        enemyMovement.Initialize(testWaypoints, testData);
+        
+        // Simulate being between waypoints 1 and 2 after combat
+        enemyGameObject.transform.position = new Vector3(7.5f, 0, 0);
+        
+        // Act - resume from nearest waypoint
+        enemyMovement.ResumeFromNearestWaypoint(enemyGameObject.transform.position);
+        
+        // Assert - should be set to waypoint 2 (the nearest ahead)
+        Assert.AreEqual(2, enemyMovement.CurrentWaypointIndex,
+            "After resuming from combat, should be targeting waypoint 2");
+    }
+
+    /// <summary>
+    /// Test 8: Test no backtracking - enemy doesn't return to previously passed waypoints
+    /// Verify that FindNearestWaypoint searches forward only from currentWaypointIndex
+    /// </summary>
+    [Test]
+    public void TestNoBacktracking()
+    {
+        // Arrange
+        EnemyData testData = ScriptableObject.CreateInstance<EnemyData>();
+        enemyMovement.Initialize(testWaypoints, testData);
+        
+        // Simulate enemy position between waypoint 1 and 2
+        // After Initialize, currentWaypointIndex is 1
+        enemyGameObject.transform.position = new Vector3(7.5f, 0, 0);
+        
+        // Act - find nearest waypoint should search forward from current index
+        int nearestWaypointIndex = enemyMovement.FindNearestWaypoint(enemyGameObject.transform.position);
+        
+        // Assert - should find waypoint 2, not waypoint 0 or 1 (no backtracking)
+        Assert.GreaterOrEqual(nearestWaypointIndex, 1,
+            "Should not backtrack to waypoint 0 when already passed it");
+        
+        // The nearest forward waypoint should be 2
+        Assert.AreEqual(2, nearestWaypointIndex,
+            "Should find waypoint 2 as nearest waypoint ahead, not backtrack to 0 or 1");
+    }
 }

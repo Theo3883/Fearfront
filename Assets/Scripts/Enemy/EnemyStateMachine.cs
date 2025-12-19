@@ -17,6 +17,7 @@ public class EnemyStateMachine : MonoBehaviour
     public event Action<EnemyState> OnStateChanged;
     public event Action OnEngagingPlayer;
     public event Action OnDisengagingPlayer;
+    public event Action<Vector3> OnResumePathMovement;
 
     /// <summary>
     /// Current state of the enemy
@@ -100,6 +101,14 @@ public class EnemyStateMachine : MonoBehaviour
     }
 
     /// <summary>
+    /// Forces a state change (used for backward compatibility and testing)
+    /// </summary>
+    public void ForceStateChange(EnemyState newState)
+    {
+        TransitionToState(newState);
+    }
+
+    /// <summary>
     /// Transitions to a new state and fires appropriate events
     /// </summary>
     private void TransitionToState(EnemyState newState)
@@ -108,6 +117,12 @@ public class EnemyStateMachine : MonoBehaviour
         if (currentState == EnemyState.Attacking)
         {
             OnDisengagingPlayer?.Invoke();
+            
+            // When transitioning from Attacking back to Moving, signal to resume path movement
+            if (newState == EnemyState.Moving)
+            {
+                OnResumePathMovement?.Invoke(transform.position);
+            }
         }
 
         // Update state
