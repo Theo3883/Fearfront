@@ -18,8 +18,8 @@ MonoBehaviour:
   health: 20
   maxHealth: 20
   attackDamage: 8
-  attackRange: 2
+  attackRange: 10
   attackCooldown: 1.5
-  detectionRadius: 5
+  detectionRadius: 30
   typeColor: {r: 1, g: 0.5, b: 0, a: 1}
   visualScale: 0.7

@@ -789,14 +789,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f8e0eb5c68f38449be31d4fa116e18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::Enemy
-  moveSpeed: 6
+  moveSpeed: 7
   rotationSpeed: 10
   stoppingDistance: 0.5
-  lookaheadDistance: 3
+  lookaheadDistance: 5
   rotationOffset: {x: 0, y: -90, z: 0}
-  waypointSpreadRadius: 2
-  detectionRadius: 5
-  attackRange: 2
+  waypointSpreadRadius: 3
+  detectionRadius: 30
+  attackRange: 10
   attackCooldown: 1.5
   attackDamage: 10
   enemyData: {fileID: 0}
@@ -807,6 +807,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
+  debugEnable: 1
 --- !u!54 &981580797620613314
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -830,7 +831,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 1

@@ -12,14 +12,19 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Vector3 rotationOffset = new Vector3(0, 90, 0);
     [SerializeField] private float waypointSpreadRadius = 5f;
     
-    [SerializeField] private float detectionRadius = 5f;
-    [SerializeField] private float attackRange = 2f;
+    [SerializeField] private float detectionRadius = 25f;
+    [SerializeField] private float attackRange = 3.5f;
+    [SerializeField] private float maxPathDistance = 8f;  // If farther than this from waypoint, return to path
     [SerializeField] private float attackCooldown = 1.5f;
     [SerializeField] private float attackDamage = 10f;
     
     [SerializeField] private EnemyData enemyData;
     private float healthMax = 20f;
     private float currentHealth = 20f;
+    
+    // Hysteresis to prevent state oscillation around detection boundary
+    private float detectionHysteresis = 3f;
+    private bool playerWasInDetectionRange = false;
     
     public event Action<EnemyState> OnStateChanged;
     private EnemyState currentState = EnemyState.Moving;
@@ -31,6 +36,12 @@ public class Enemy : MonoBehaviour
     private Rigidbody rb;
     private NavMeshAgent agent;
     private bool isMoving = true;
+    
+    // NavMesh recovery tracking
+    private int navMeshRecoveryAttempts = 0;
+    private const int MAX_RECOVERY_ATTEMPTS = 5;
+    private float pathCalculationTimer = 0f;
+    private const float PATH_CALCULATION_TIMEOUT = 1f;
     
     private Transform playerTransform;
     private PlayerHealth playerHealth;
@@ -65,10 +76,16 @@ public class Enemy : MonoBehaviour
         }
         
         playerHealth = PlayerHealth.Instance;
-        // Cache player transform if PlayerHealth exists
-        if (playerHealth != null)
+        // Find player transform - prioritize Camera.main (actual player head position)
+        if (Camera.main != null)
+        {
+            playerTransform = Camera.main.transform;
+            if (debugEnable) Debug.Log($"[Enemy] {name} Found player via Camera.main");
+        }
+        else if (playerHealth != null)
         {
             playerTransform = playerHealth.transform;
+            if (debugEnable) Debug.Log($"[Enemy] {name} Found player via PlayerHealth");
         }
         LoadStatsFromData();
         ConfigureAvoidanceBasedOnSpeed();
@@ -158,12 +175,16 @@ public class Enemy : MonoBehaviour
         float scale = enemyData.VisualScale;
         transform.localScale = Vector3.one * scale;
 
-        Renderer renderer = GetComponent<Renderer>();
-        if (renderer != null)
+        // Search for renderer on root and all children
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in renderers)
         {
-            Material mat = new Material(renderer.material);
-            mat.color = enemyData.TypeColor;
-            renderer.material = mat;
+            if (renderer != null)
+            {
+                Material mat = new Material(renderer.material);
+                mat.color = enemyData.TypeColor;
+                renderer.material = mat;
+            }
         }
     }
 
@@ -277,6 +298,7 @@ public class Enemy : MonoBehaviour
         waypoints = path;
         spawner = enemySpawner;
         currentWaypointIndex = 0;
+        navMeshRecoveryAttempts = 0; // Reset recovery tracking
         
         if (waypoints.Length > 0)
         {
@@ -292,23 +314,44 @@ public class Enemy : MonoBehaviour
             }
             
             transform.position = startPosition;
-            
-            if (agent != null && agent.isOnNavMesh)
+
+            // Ensure the NavMeshAgent is placed on the NavMesh. If the sampled
+            // startPosition wasn't on the NavMesh, try to find a nearby valid
+            // position and warp the agent there. Only give up (and allow
+            // ReachedEnd to handle destruction) if no NavMesh position is found.
+            if (agent != null)
             {
-                if (waypoints.Length > 1)
+                NavMeshHit agentHit;
+                if (!agent.isOnNavMesh)
                 {
-                    Vector3 randomizedNextWaypoint = GetRandomizedWaypointPosition(waypoints[1].position);
-                    Vector3 separatedDest = GetSeparatedNavMeshPosition(randomizedNextWaypoint);
-                    agent.SetDestination(separatedDest);
-                    currentWaypointIndex = 1;
+                    if (NavMesh.SamplePosition(transform.position, out agentHit, 10.0f, NavMesh.AllAreas))
+                    {
+                        agent.Warp(agentHit.position);
+                    }
+                }
+
+                if (agent.isOnNavMesh)
+                {
+                    if (waypoints.Length > 1)
+                    {
+                        Vector3 randomizedNextWaypoint = GetRandomizedWaypointPosition(waypoints[1].position);
+                        Vector3 separatedDest = GetSeparatedNavMeshPosition(randomizedNextWaypoint);
+                        agent.SetDestination(separatedDest);
+                        currentWaypointIndex = 1;
+                        if (debugEnable) Debug.Log($"[Enemy] {name} Initialized at {startPosition}, heading to waypoint 1");
+                    }
+                    else
+                    {
+                        agent.SetDestination(startPosition);
+                        if (debugEnable) Debug.Log($"[Enemy] {name} Initialized at {startPosition} (only 1 waypoint)");
+                    }
                 }
                 else
                 {
-                    agent.SetDestination(startPosition);
+                    Debug.LogWarning($"Enemy '{name}' spawned but could not be placed on NavMesh near {transform.position}. Will attempt again during Update.");
                 }
             }
         }
-        
     }
 
     private void Update()
@@ -365,7 +408,11 @@ public class Enemy : MonoBehaviour
         
         DetectPlayerInRange();
 
-        MoveAlongPath();
+        // Only move along path if still in Moving state after detection check
+        if (currentState == EnemyState.Moving)
+        {
+            MoveAlongPath();
+        }
     }
 
     /// <summary>
@@ -380,7 +427,8 @@ public class Enemy : MonoBehaviour
         
         if (playerTransform == null || playerHealth == null || !playerHealth.IsAlive())
         {
-            // If playerHealth exists but transform not found, try to use its transform
+            // Player not available, clear detection state
+            playerWasInDetectionRange = false;
             if (playerHealth != null && playerTransform == null)
             {
                 playerTransform = playerHealth.transform;
@@ -393,14 +441,26 @@ public class Enemy : MonoBehaviour
         }
         
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-        if (debugEnable)
+        
+        // Hysteresis logic: only transition if player crosses threshold + buffer
+        float triggerDistance = playerWasInDetectionRange ? (detectionRadius + detectionHysteresis) : detectionRadius;
+        
+        if (distanceToPlayer <= triggerDistance)
         {
-            Debug.Log($"[Enemy] {name} playerTransform={(playerTransform!=null)} distance={distanceToPlayer:F2} detectionRadius={detectionRadius:F2}");
-        }
-        if (distanceToPlayer <= detectionRadius)
-        {
-            if (debugEnable) Debug.Log($"[Enemy] {name} TransitionToAttacking triggered (distance {distanceToPlayer:F2})");
+            if (!playerWasInDetectionRange)
+            {
+                if (debugEnable) Debug.Log($"[Enemy] {name} Player detected at {distanceToPlayer:F1}m (threshold {detectionRadius}m), transitioning to attack mode");
+                playerWasInDetectionRange = true;
+            }
             TransitionToAttacking();
+        }
+        else
+        {
+            if (playerWasInDetectionRange && debugEnable)
+            {
+                Debug.Log($"[Enemy] {name} Player out of detection range ({distanceToPlayer:F1}m > {triggerDistance:F1}m)");
+            }
+            playerWasInDetectionRange = false;
         }
     }
 
@@ -418,29 +478,80 @@ public class Enemy : MonoBehaviour
 
     private void MoveAlongPath()
     {
-        if (currentWaypointIndex >= waypoints.Length || agent == null || !agent.isOnNavMesh)
+        // Validate waypoints
+        if (waypoints == null || waypoints.Length == 0)
         {
+            if (debugEnable) Debug.LogWarning($"Enemy '{name}' has invalid waypoints, despawning");
+            ReachedEnd();
+            return;
+        }
+        
+        // If waypoints finished, mark as reached end
+        if (currentWaypointIndex >= waypoints.Length)
+        {
+            if (debugEnable) Debug.Log($"Enemy '{name}' reached end of path (waypoint {currentWaypointIndex}/{waypoints.Length})");
             ReachedEnd();
             return;
         }
 
-        agent.speed = moveSpeed;
-        if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
+        // If agent is missing, consider this instance invalid and end it
+        if (agent == null)
         {
-            currentWaypointIndex++;
-            
-             if (currentWaypointIndex < waypoints.Length)
-            {
-                Vector3 randomizedWaypoint = GetRandomizedWaypointPosition(waypoints[currentWaypointIndex].position);
-                Vector3 separatedDest = GetSeparatedNavMeshPosition(randomizedWaypoint);
-                agent.SetDestination(separatedDest);
-            }
-            else
-            {
-                // Reached end of path
-                ReachedEnd();
-            }
+            if (debugEnable) Debug.LogWarning($"Enemy '{name}' has no NavMeshAgent, despawning");
+            ReachedEnd();
             return;
+        }
+
+        // Guard: do not try to access remainingDistance if agent is disabled
+        if (!agent.enabled || !agent.isOnNavMesh)
+        {
+            // Try to get back on NavMesh
+            if (!agent.enabled)
+            {
+                agent.enabled = true;
+            }
+
+            if (!agent.isOnNavMesh)
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(transform.position, out hit, 10.0f, NavMesh.AllAreas))
+                {
+                    agent.Warp(hit.position);
+                }
+                else
+                {
+                    if (debugEnable) Debug.LogWarning($"Enemy '{name}' not on NavMesh at {transform.position} and no nearby NavMesh found.");
+                    return;
+                }
+            }
+            return; // Skip this frame, will resume next frame when agent is ready
+        }
+
+        agent.speed = moveSpeed;
+
+        // Only treat a waypoint as reached when we have a valid path and the path is complete.
+        // This prevents cases where remainingDistance is 0 (no path) and the enemy immediately
+        // increments waypoints and despawns.
+        if (!agent.pathPending && agent.hasPath && agent.path != null && agent.path.status == NavMeshPathStatus.PathComplete)
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                currentWaypointIndex++;
+
+                if (currentWaypointIndex < waypoints.Length)
+                {
+                    Vector3 randomizedWaypoint = GetRandomizedWaypointPosition(waypoints[currentWaypointIndex].position);
+                    Vector3 separatedDest = GetSeparatedNavMeshPosition(randomizedWaypoint);
+                    agent.SetDestination(separatedDest);
+                    if (debugEnable) Debug.Log($"Enemy '{name}' reached waypoint {currentWaypointIndex - 1}, moving to waypoint {currentWaypointIndex}");
+                }
+                else
+                {
+                    if (debugEnable) Debug.Log($"Enemy '{name}' reached final waypoint {currentWaypointIndex - 1}, despawning");
+                    ReachedEnd();
+                }
+                return;
+            }
         }
     }
 
@@ -489,53 +600,89 @@ public class Enemy : MonoBehaviour
 
     /// <summary>
     /// Detects player within range and attacks if in attack range
+    /// When player detected, move toward them but return to path if too far
     /// </summary>
     private void DetectAndAttackPlayer()
     {
-        // Try to find player if not cached
+        // Find player if not cached
         if (playerTransform == null)
         {
             playerTransform = FindPlayer();
         }
         
+        // No player or player dead - resume path
         if (playerTransform == null || playerHealth == null || !playerHealth.IsAlive())
         {
-            // Player not found or dead - return to moving
-            if (currentState == EnemyState.Attacking)
-            {
-                TransitionToMoving();
-            }
+            TransitionToMoving();
             return;
         }
         
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-        if (debugEnable)
+        
+        // Check if player left detection range (with hysteresis)
+        float exitDistance = detectionRadius + detectionHysteresis;
+        if (distanceToPlayer > exitDistance)
         {
-            Debug.Log($"[Enemy] {name} AttackingCheck distance={distanceToPlayer:F2} detection={detectionRadius:F2} attackRange={attackRange:F2} cooldown={attackCooldownTimer:F2}");
-        }
-        // Check if player is still in detection range
-        if (distanceToPlayer > detectionRadius)
-        {
-            if (debugEnable) Debug.Log($"[Enemy] {name} Player left detection range");
+            if (debugEnable) Debug.Log($"[Enemy] {name} Player lost (distance {distanceToPlayer:F1}m > {exitDistance:F1}m), resuming path");
+            playerWasInDetectionRange = false;
             TransitionToMoving();
             return;
         }
-
-        // Check if player is in attack range
+        
+        // Player is in detection range
+        playerWasInDetectionRange = true;
+        
+        // Check if too far from current waypoint - if so, return to path
+        float distanceToWaypoint = Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position);
+        if (distanceToWaypoint > maxPathDistance)
+        {
+            if (debugEnable) Debug.Log($"[Enemy] {name} Too far from path (distance {distanceToWaypoint:F1}m > {maxPathDistance}m), returning to waypoint");
+            TransitionToMoving();
+            return;
+        }
+        
+        // In attack range - attack the player
         if (distanceToPlayer <= attackRange)
         {
-            if (debugEnable) Debug.Log($"[Enemy] {name} Player in attack range - rotating/attacking");
-            // Rotate towards player
+            if (debugEnable) Debug.Log($"[Enemy] {name} In attack range ({distanceToPlayer:F1}m), attacking");
+            
+            // Stop NavMeshAgent movement
+            if (agent != null && agent.enabled)
+            {
+                agent.velocity = Vector3.zero;
+            }
+            
+            // Rotate and attack
             RotateTowardsPlayer();
             
-            // Attack if cooldown is ready
             if (attackCooldownTimer <= 0f)
             {
                 ExecuteAttack();
                 attackCooldownTimer = attackCooldown;
+                if (debugEnable) Debug.Log($"[Enemy] {name} Hit player for {attackDamage} damage");
+            }
+        }
+        else
+        {
+            // In detection range but not attack range - move toward player
+            if (debugEnable) Debug.Log($"[Enemy] {name} Chasing player (distance {distanceToPlayer:F1}m)");
+            
+            // Enable NavMeshAgent for movement
+            if (agent != null && !agent.enabled)
+            {
+                agent.enabled = true;
+            }
+            
+            // Move toward player using NavMeshAgent
+            if (agent != null && agent.enabled)
+            {
+                // Set destination to player position
+                agent.SetDestination(playerTransform.position);
+                agent.speed = moveSpeed;
             }
         }
     }
+
 
     private void OnDrawGizmosSelected()
     {
@@ -559,21 +706,36 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private Transform FindPlayer()
     {
+        // Prefer PlayerHealth instance if available
+        if (playerHealth != null)
+            return playerHealth.transform;
+
         // First try to find by tag
-        GameObject playerObject = GameObject.FindWithTag("Player");
+        GameObject playerObject = null;
+        try { playerObject = GameObject.FindWithTag("Player"); } catch { playerObject = null; }
         if (playerObject != null)
         {
             return playerObject.transform;
         }
-        
-        // Fallback: search for XROrigin by name
-        Transform xrOrigin = GameObject.Find("XROrigin")?.transform;
-        if (xrOrigin != null)
+
+        // Try to find a PlayerHealth MonoBehaviour in scene
+        var ph = FindObjectOfType<PlayerHealth>();
+        if (ph != null)
+            return ph.transform;
+
+        // Try common XR origin names used by starter assets
+        string[] xrNames = new string[] { "XROrigin", "XR Origin", "XR Origin (XR Rig)", "XR Rig", "XROrigin" };
+        foreach (var n in xrNames)
         {
-            return xrOrigin;
+            var go = GameObject.Find(n);
+            if (go != null) return go.transform;
         }
-        
-        // Final fallback: use OverlapSphere to detect any collider at player position
+
+        // As a last resort use the main camera (often parented to the rig)
+        if (Camera.main != null)
+            return Camera.main.transform;
+
+        // Final fallback: search nearby colliders for a tagged player
         Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRadius);
         foreach (Collider col in colliders)
         {
@@ -582,7 +744,7 @@ public class Enemy : MonoBehaviour
                 return col.transform;
             }
         }
-        
+
         return null;
     }
 
@@ -627,16 +789,10 @@ public class Enemy : MonoBehaviour
             return;
 
         SetState(EnemyState.Attacking);
+        if (debugEnable) Debug.Log($"[Enemy] {name} Transitioned to Attacking state at {transform.position}");
         
-        // Disable NavMeshAgent when attacking
-        if (agent != null && agent.isOnNavMesh)
-        {
-            agent.velocity = Vector3.zero;
-            agent.enabled = false;
-        }
-        
-        // Reset attack cooldown
-        attackCooldownTimer = attackCooldown;
+        // Note: agent state is managed in DetectAndAttackPlayer based on distance to player
+        // We don't pre-emptively disable it here, allowing chase logic to work
     }
 
     /// <summary>
@@ -673,11 +829,37 @@ public class Enemy : MonoBehaviour
             return;
 
         SetState(EnemyState.Moving);
+        playerWasInDetectionRange = false; // Reset hysteresis on state change
+        
+        if (debugEnable) Debug.Log($"[Enemy] {name} Transitioned to Moving state at {transform.position}, resuming path at waypoint {currentWaypointIndex}/{waypoints?.Length ?? 0}");
         
         // Enable NavMeshAgent when moving
-        if (agent != null && !agent.enabled && agent.isOnNavMesh)
+        if (agent != null)
         {
-            agent.enabled = true;
+            if (!agent.isOnNavMesh)
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(transform.position, out hit, 10.0f, NavMesh.AllAreas))
+                {
+                    agent.Warp(hit.position);
+                    if (debugEnable) Debug.Log($"[Enemy] {name} Warped to NavMesh at {hit.position} for path resume");
+                }
+            }
+            
+            if (agent.isOnNavMesh && !agent.enabled)
+            {
+                agent.enabled = true;
+                if (debugEnable) Debug.Log($"[Enemy] {name} Enabled agent for path following");
+            }
+            
+            // Resume path to current waypoint
+            if (agent.enabled && agent.isOnNavMesh && waypoints != null && currentWaypointIndex < waypoints.Length)
+            {
+                Vector3 randomizedWaypoint = GetRandomizedWaypointPosition(waypoints[currentWaypointIndex].position);
+                Vector3 separatedDest = GetSeparatedNavMeshPosition(randomizedWaypoint);
+                agent.SetDestination(separatedDest);
+                if (debugEnable) Debug.Log($"[Enemy] {name} Set destination to waypoint {currentWaypointIndex}");
+            }
         }
     }
 
