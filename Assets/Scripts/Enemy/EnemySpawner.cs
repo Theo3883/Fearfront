@@ -116,13 +116,18 @@ public class EnemySpawner : MonoBehaviour
         }
 
         Transform[] waypoints = randomRoute.GetWaypoints();
+        
+        // CRITICAL: Set enemy data BEFORE Initialize() to avoid null warnings
+        EnemyData selectedEnemyData = GetRandomEnemyType();
+        if (selectedEnemyData != null)
+        {
+            enemy.SetEnemyData(selectedEnemyData);
+        }
+        
+        // Now initialize with data already set
         enemy.Initialize(waypoints, this);
         
-        // Phase 4: Apply random enemy type variant
-        RandomizeEnemyType(enemy);
-
-        // Phase 5: Initialize refactored components
-        EnemyData selectedEnemyData = GetRandomEnemyType();
+        // Initialize refactored components (now with EnemyData already assigned)
         if (selectedEnemyData != null)
         {
             InitializeEnemyComponents(newEnemyObject, waypoints, selectedEnemyData);
@@ -133,6 +138,7 @@ public class EnemySpawner : MonoBehaviour
     /// Initialize the three refactored components on a spawned enemy
     /// Allows partial initialization - if playerHealth is null, logs warning but continues initialization of movement and detector
     /// Only fails if components themselves cannot be added to the enemy
+    /// NOTE: EnemyMovement is already initialized by Enemy.Initialize(), so we skip it here
     /// </summary>
     private void InitializeEnemyComponents(GameObject enemyObject, Transform[] waypoints, EnemyData enemyData)
     {
@@ -156,13 +162,8 @@ public class EnemySpawner : MonoBehaviour
             detector.SetPlayerReference(playerHealth.transform);
         }
 
-        // Get/add EnemyMovement and initialize it
-        EnemyMovement movement = enemyObject.GetComponent<EnemyMovement>();
-        if (movement == null)
-        {
-            movement = enemyObject.AddComponent<EnemyMovement>();
-        }
-        movement.Initialize(waypoints, enemyData);
+        // EnemyMovement is already initialized by Enemy.Initialize(), so we don't re-initialize it here
+        // This avoids double-initialization of waypoints
 
         // Get/add EnemyStateMachine and initialize it
         EnemyStateMachine stateMachine = enemyObject.GetComponent<EnemyStateMachine>();
@@ -194,6 +195,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (enemyTypeVariants.Count == 0)
         {
+            Debug.LogWarning("EnemySpawner has no Enemy Type Variants assigned! Spawning with default values.");
             return null;
         }
 
@@ -261,6 +263,7 @@ public class EnemySpawner : MonoBehaviour
                 return data;
             }
         }
+        Debug.LogWarning($"No EnemyData found for type {type} in variants list.");
         return null;
     }
 
@@ -314,8 +317,8 @@ public class EnemySpawner : MonoBehaviour
                 return ph;
         }
 
-        // Try FindObjectOfType as last resort
-        return FindObjectOfType<PlayerHealth>();
+        // Try FindFirstObjectByType as last resort
+        return FindFirstObjectByType<PlayerHealth>();
     }
 
     public void OnEnemyReachedEnd(Enemy enemy)

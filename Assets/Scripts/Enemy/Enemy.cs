@@ -9,8 +9,8 @@ using System;
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyData enemyData;
-    [SerializeField] private float healthMax = 20f;
-    [SerializeField] private float currentHealth = 20f;
+    private float healthMax = 0f;
+    private float currentHealth = 0f;
     
     [SerializeField] private NavMeshPlayerDetector playerDetector;
     [SerializeField] private EnemyMovement enemyMovement;
@@ -22,7 +22,6 @@ public class Enemy : MonoBehaviour
     private bool isDead = false;
     
     private EnemySpawner spawner;
-    private Transform[] waypoints;
     
     // ===== Events =====
     public event Action<EnemyState> OnStateChanged;
@@ -56,46 +55,88 @@ public class Enemy : MonoBehaviour
     /// <summary>
     /// Sets EnemyData for this enemy instance
     /// Loads health and other stats from data
+    /// FAILS HARD if data is null
     /// </summary>
     public void SetEnemyData(EnemyData data)
     {
+        // FAIL HARD if data is null
+        if (data == null)
+        {
+            Debug.LogError("Enemy.SetEnemyData: EnemyData cannot be null!");
+            return;
+        }
+
         enemyData = data;
-        if (enemyData != null && enemyData.IsValid())
+        if (enemyData.IsValid())
         {
             healthMax = enemyData.MaxHealth;
             currentHealth = enemyData.Health;
         }
         else
         {
-            healthMax = 20f;
-            currentHealth = 20f;
+            Debug.LogError($"Enemy.SetEnemyData: EnemyData '{data.name}' is not valid!");
+        }
+        
+        ApplyVisualDifferentiation();
+    }
+
+    /// <summary>
+    /// Applies visual differentiation (scale and color) from EnemyData to the enemy GameObject
+    /// </summary>
+    private void ApplyVisualDifferentiation()
+    {
+        if (enemyData == null) return;
+        
+        // Get visual scale from EnemyData and clamp to reasonable range [0.5, 2.0]
+        float scale = Mathf.Clamp(enemyData.VisualScale, 0.5f, 2.0f);
+        transform.localScale = Vector3.one * scale;
+        
+        // Apply color from EnemyData to all child renderers
+        Color typeColor = enemyData.TypeColor;
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer renderer in renderers)
+        {
+            if (renderer != null)
+            {
+                Material mat = new Material(renderer.material);
+                mat.color = typeColor;
+                renderer.material = mat;
+            }
         }
     }
 
     /// <summary>
     /// Initialize the enemy with waypoints and spawner reference
     /// Sets up component dependencies and initial state
+    /// Waypoints are NOT stored in Enemy; they are passed directly to EnemyMovement
     /// </summary>
     public void Initialize(Transform[] path, EnemySpawner enemySpawner)
     {
-        waypoints = path;
         spawner = enemySpawner;
         isDead = false;
         
-        // Set player reference for detection
+        // Auto-find player health if not set
         PlayerHealth playerHealth = PlayerHealth.Instance;
+        if (playerHealth == null)
+        {
+            GameObject playerObject = GameObject.FindWithTag("Player");
+            if (playerObject != null)
+            {
+                playerHealth = playerObject.GetComponent<PlayerHealth>();
+            }
+        }
+        
+        // Set player reference for detection (components auto-find if null, but we can still pass it)
         if (playerHealth != null && playerDetector != null)
         {
             Transform playerTransform = playerHealth.transform;
-            if (Camera.main != null)
-                playerTransform = Camera.main.transform;
             playerDetector.SetPlayerReference(playerTransform);
         }
         
-        // Initialize movement with waypoints
-        if (enemyMovement != null && waypoints != null && waypoints.Length > 0)
+        // Initialize movement with waypoints (Enemy does NOT store waypoints)
+        if (enemyMovement != null && path != null && path.Length > 0)
         {
-            enemyMovement.Initialize(waypoints, enemyData);
+            enemyMovement.Initialize(path, enemyData);
         }
         
         // Initialize state machine with detection range from enemy data or default

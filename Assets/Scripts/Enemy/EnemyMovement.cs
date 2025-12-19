@@ -18,13 +18,13 @@ public class EnemyMovement : MonoBehaviour
     private int navMeshRecoveryAttempts = 0;
     private const int MAX_RECOVERY_ATTEMPTS = 5;
 
-    // Configuration values
-    [SerializeField] private float moveSpeed = 12f;
-    [SerializeField] private float stoppingDistance = 2.5f;
-    [SerializeField] private float waypointSpreadRadius = 5f;
-    [SerializeField] private float separationRadius = 1.5f;
-    [SerializeField] private float separationWeight = 1.5f;
-    [SerializeField] private LayerMask enemyLayer;
+    // Configuration values - loaded ONLY from EnemyData
+    private float moveSpeed = 0f;
+    private float stoppingDistance = 0f;
+    private float waypointSpreadRadius = 0f;
+    private float separationRadius = 0f;
+    private float separationWeight = 0f;
+    private LayerMask enemyLayer;
 
     // Events
     public event Action<int> OnWaypointReached;
@@ -48,6 +48,13 @@ public class EnemyMovement : MonoBehaviour
     /// </summary>
     public void Initialize(Transform[] waypointsArray, EnemyData data)
     {
+        // FAIL HARD if data is null
+        if (data == null)
+        {
+            Debug.LogError("EnemyMovement requires EnemyData!");
+            return;
+        }
+
         waypoints = waypointsArray;
         enemyData = data;
         currentWaypointIndex = 0;
@@ -57,15 +64,12 @@ public class EnemyMovement : MonoBehaviour
         if (agent == null)
             return;
 
-        // Warn if enemy data is null
-        if (data == null)
-        {
-            Debug.LogWarning("EnemyMovement initialized with null EnemyData, using default movement speed");
-        }
-        else
-        {
-            moveSpeed = data.MoveSpeed;
-        }
+        // Load ALL configuration values from EnemyData
+        moveSpeed = data.MoveSpeed;
+        stoppingDistance = 2.5f; // TODO: consider adding to EnemyData if needed
+        waypointSpreadRadius = 5f; // TODO: consider adding to EnemyData if needed
+        separationRadius = 1.5f; // TODO: consider adding to EnemyData if needed
+        separationWeight = 1.5f; // TODO: consider adding to EnemyData if needed
 
         // Setup NavMeshAgent parameters
         if (agent.enabled)
@@ -131,7 +135,8 @@ public class EnemyMovement : MonoBehaviour
     /// </summary>
     public void UpdateMovement()
     {
-        if (waypoints == null || waypoints.Length == 0 || agent == null)
+        // Fail gracefully if not initialized with EnemyData
+        if (enemyData == null || waypoints == null || waypoints.Length == 0 || agent == null)
             return;
 
         if (isMovementPaused)

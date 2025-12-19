@@ -22894,9 +22894,9 @@ MonoBehaviour:
   waveTimeThreshold: 15
   enemyTypeVariants:
   - {fileID: 11400000, guid: 98473e3c226c268439aaf7e527701967, type: 2}
-  - {fileID: 11400000, guid: 48effa71fcebcd34d9b5822ddea8944e, type: 2}
-  - {fileID: 11400000, guid: d8859d1083df87e4db0682ecad6edcb6, type: 2}
   - {fileID: 11400000, guid: 3d3cfa07a0275b94198f66a982dc0098, type: 2}
+  - {fileID: 11400000, guid: d8859d1083df87e4db0682ecad6edcb6, type: 2}
+  - {fileID: 11400000, guid: 48effa71fcebcd34d9b5822ddea8944e, type: 2}
   difficultyPreset: 1
 --- !u!4 &1417352933
 Transform:

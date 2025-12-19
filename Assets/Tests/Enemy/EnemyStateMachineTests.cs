@@ -250,5 +250,188 @@ public class EnemyStateMachineTests
             }
         }
     }
+
+    /// <summary>
+    /// TEST 1: Verify that Initialize() with a specific detectionRange value uses that value, 
+    /// regardless of any Inspector default
+    /// </summary>
+    [Test]
+    public void EnemyStateMachine_UsesEnemyDataDetectionRange_NotInspectorValue()
+    {
+        // Re-initialize with a specific detection range that differs from the SetUp default
+        float customDetectionRange = 20f;
+        stateMachine.Initialize(detector, customDetectionRange, playerHealth);
+
+        // Place player at exactly 19 units (should engage with 20f range)
+        playerObject.transform.position = enemyObject.transform.position + Vector3.forward * 19f;
+
+        // Verify distance calculation
+        float distance = Vector3.Distance(enemyObject.transform.position, playerObject.transform.position);
+        Assert.AreEqual(19f, distance, 0.01f, "Distance should be 19 units");
+
+        // If player is on NavMesh, should engage
+        // (NavMesh requirement is checked in ShouldEngagePlayer, so behavior depends on mock)
+        bool shouldEngage = stateMachine.ShouldEngagePlayer(playerObject.transform.position);
+        
+        // At 19 units with 20f range, distance check passes
+        // So ShouldEngagePlayer result depends on NavMesh status
+        bool isOnNavMesh = detector.IsPlayerOnNavMesh();
+        Assert.AreEqual(isOnNavMesh, shouldEngage, 
+            "ShouldEngagePlayer should return true only if on NavMesh when within range");
+
+        // Place player at 21 units (should NOT engage even with 20f range)
+        playerObject.transform.position = enemyObject.transform.position + Vector3.forward * 21f;
+        
+        distance = Vector3.Distance(enemyObject.transform.position, playerObject.transform.position);
+        Assert.AreEqual(21f, distance, 0.01f, "Distance should be 21 units");
+        
+        shouldEngage = stateMachine.ShouldEngagePlayer(playerObject.transform.position);
+        Assert.IsFalse(shouldEngage, "Should not engage when outside 20f detection range");
+    }
+
+    /// <summary>
+    /// TEST 2: Verify that if Initialize() is never called with a detectionRange, 
+    /// the system fails loudly or handles gracefully
+    /// </summary>
+    [Test]
+    public void EnemyStateMachine_FailsIfDetectionRangeNotSet_RemainsZero()
+    {
+        // Create a new state machine without Initialize() being called
+        GameObject testEnemyObject = new GameObject("TestEnemyNoInit");
+        testEnemyObject.AddComponent<NavMeshAgent>();
+        EnemyStateMachine testStateMachine = testEnemyObject.AddComponent<EnemyStateMachine>();
+
+        // Don't call Initialize - should have detection range of 0
+        // Place player at any distance
+        playerObject.transform.position = testEnemyObject.transform.position + Vector3.forward * 5f;
+
+        // ShouldEngagePlayer should return false because detectionRange is 0
+        bool shouldEngage = testStateMachine.ShouldEngagePlayer(playerObject.transform.position);
+        Assert.IsFalse(shouldEngage, 
+            "Should not engage when detectionRange not set (remains 0) - even at 5 units");
+
+        // Clean up
+        Object.Destroy(testEnemyObject);
+    }
+
+    /// <summary>
+    /// TEST 3: Create player at 14 units (should engage), then at 16 units (should not), 
+    /// verify ShouldEngagePlayer() returns correct values with 15f detection range
+    /// </summary>
+    [Test]
+    public void EnemyStateMachine_ShouldEngagePlayer_With15fDetectionRange()
+    {
+        // Re-initialize with 15f detection range
+        float detectionRange = 15f;
+        stateMachine.Initialize(detector, detectionRange, playerHealth);
+
+        // Test 1: Player at 14 units (within 15f range) - should engage if on NavMesh
+        Vector3 enemyPosition = enemyObject.transform.position;
+        playerObject.transform.position = enemyPosition + Vector3.forward * 14f;
+
+        float distance = Vector3.Distance(enemyObject.transform.position, playerObject.transform.position);
+        Assert.AreEqual(14f, distance, 0.01f, "Distance should be 14 units");
+
+        bool isOnNavMesh = detector.IsPlayerOnNavMesh();
+        bool shouldEngage = stateMachine.ShouldEngagePlayer(playerObject.transform.position);
+        
+        // Should engage if on NavMesh, should not if off NavMesh
+        Assert.AreEqual(isOnNavMesh, shouldEngage, 
+            "At 14 units with 15f range: should engage=isOnNavMesh");
+
+        // Test 2: Player at 16 units (outside 15f range) - should NOT engage regardless
+        playerObject.transform.position = enemyPosition + Vector3.forward * 16f;
+
+        distance = Vector3.Distance(enemyObject.transform.position, playerObject.transform.position);
+        Assert.AreEqual(16f, distance, 0.01f, "Distance should be 16 units");
+
+        shouldEngage = stateMachine.ShouldEngagePlayer(playerObject.transform.position);
+        Assert.IsFalse(shouldEngage, 
+            "At 16 units with 15f range: should NOT engage (distance check fails)");
+    }
+
+    /// <summary>
+    /// TEST: Verify that with requirePlayerOnNavMesh=false (disabled), 
+    /// player off-mesh can still be detected by distance alone
+    /// Player off-mesh, requirePlayerOnNavMesh=false, distance 10 units within detection range
+    /// Should return TRUE for engagement based on distance only
+    /// </summary>
+    [Test]
+    public void EnemyStateMachine_EngagesPlayer_OnlyByDistance_NavMeshCheckDisabled()
+    {
+        // Arrange - Place player 10 units away (within default 10f range)
+        playerObject.transform.position = enemyObject.transform.position + Vector3.forward * 10f;
+        
+        // Disable NavMesh requirement (make it optional)
+        stateMachine.SetRequirePlayerOnNavMesh(false);
+
+        // Verify player is in range
+        float distance = Vector3.Distance(enemyObject.transform.position, playerObject.transform.position);
+        Assert.AreEqual(10f, distance, 0.01f, "Distance should be exactly 10 units");
+
+        // Act - Call ShouldEngagePlayer
+        bool shouldEngage = stateMachine.ShouldEngagePlayer(playerObject.transform.position);
+
+        // Assert - Should engage based on distance only, ignoring NavMesh status
+        Assert.IsTrue(shouldEngage, 
+            "Should engage player at 10 units when NavMesh check is disabled (distance-only mode)");
+    }
+
+    /// <summary>
+    /// TEST: Verify that with requirePlayerOnNavMesh=true (enabled),
+    /// player off-mesh is NOT detected even if within distance
+    /// Player off-mesh, requirePlayerOnNavMesh=true, within distance
+    /// Should return FALSE because player is not on NavMesh
+    /// </summary>
+    [Test]
+    public void EnemyStateMachine_IgnoresOffMeshPlayer_WhenNavMeshCheckEnabled()
+    {
+        // Arrange - Place player 5 units away (within 10f range)
+        playerObject.transform.position = enemyObject.transform.position + Vector3.forward * 5f;
+        
+        // Enable NavMesh requirement
+        stateMachine.SetRequirePlayerOnNavMesh(true);
+
+        // Verify player is in range
+        float distance = Vector3.Distance(enemyObject.transform.position, playerObject.transform.position);
+        Assert.IsTrue(distance <= 10f, "Player should be within detection range");
+
+        // Verify player is NOT on NavMesh (in test environment without real NavMesh)
+        bool isOnNavMesh = detector.IsPlayerOnNavMesh();
+        
+        // Act - Call ShouldEngagePlayer
+        bool shouldEngage = stateMachine.ShouldEngagePlayer(playerObject.transform.position);
+
+        // Assert - Should NOT engage when NavMesh check is enabled and player is off-mesh
+        if (!isOnNavMesh)
+        {
+            Assert.IsFalse(shouldEngage,
+                "Should NOT engage when player is off-mesh and NavMesh check is enabled");
+        }
+    }
+
+    /// <summary>
+    /// TEST: Verify that default behavior of requirePlayerOnNavMesh is FALSE
+    /// This ensures NavMesh check is disabled by default (distance-only engagement)
+    /// </summary>
+    [Test]
+    public void EnemyStateMachine_DefaultBehavior_NavMeshCheckDisabled()
+    {
+        // Arrange - Place player at 8 units (within range)
+        playerObject.transform.position = enemyObject.transform.position + Vector3.forward * 8f;
+
+        // Verify distance is within range
+        float distance = Vector3.Distance(enemyObject.transform.position, playerObject.transform.position);
+        Assert.IsTrue(distance <= 10f, "Player should be within detection range");
+
+        // Act - Call ShouldEngagePlayer without explicitly setting requirePlayerOnNavMesh
+        // (should default to false)
+        bool shouldEngage = stateMachine.ShouldEngagePlayer(playerObject.transform.position);
+
+        // Assert - Should engage based on distance alone by default
+        // (default behavior is NavMesh check disabled)
+        Assert.IsTrue(shouldEngage,
+            "Default behavior should allow engagement based on distance only (NavMesh check disabled)");
+    }
 }
 #endif

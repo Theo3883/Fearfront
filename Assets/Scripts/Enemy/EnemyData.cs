@@ -18,7 +18,7 @@ public class EnemyData : ScriptableObject
     [SerializeField] private float attackDamage = 8f;
     [SerializeField] private float attackRange = 2f;
     [SerializeField] private float attackCooldown = 1.5f;
-    [SerializeField] private float detectionRadius = 5f;
+    [SerializeField] private float detectionRadius = 15f;
     
     [Header("Visual")]
     [SerializeField] private Color typeColor = Color.white;

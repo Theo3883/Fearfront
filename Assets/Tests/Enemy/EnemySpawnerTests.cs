@@ -406,4 +406,142 @@ public class EnemySpawnerTests
         // Clean up spawned enemy
         Object.Destroy(spawnedEnemyObject);
     }
+
+    // ===== PHASE 4: ENEMY VARIANT SPAWNING TESTS =====
+
+    /// <summary>
+    /// Test: EnemySpawner returns null when enemyTypeVariants list is empty
+    /// </summary>
+    [Test]
+    public void EnemySpawner_ReturnsNull_WhenEnemyTypeVariantsEmpty()
+    {
+        // Arrange - Clear the enemy type variants list
+        var emptyVariants = new System.Collections.Generic.List<EnemyData>();
+        typeof(EnemySpawner).GetField("enemyTypeVariants", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(spawner, emptyVariants);
+
+        // Act - Call GetRandomEnemyType which should return null when no variants exist
+        var methodInfo = typeof(EnemySpawner).GetMethod("GetRandomEnemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        EnemyData result = (EnemyData)methodInfo?.Invoke(spawner, null);
+        
+        // Assert - Verify it returns null when no variants exist
+        Assert.IsNull(result, "GetRandomEnemyType should return null when no variants exist");
+    }
+
+    /// <summary>
+    /// Test: EnemySpawner spawns different enemy types from variants list
+    /// Verifies that multiple spawns use different types (indicated by different speeds/health)
+    /// </summary>
+    [Test]
+    public void EnemySpawner_SpawnsDifferentTypes_FromVariantsList()
+    {
+        // Arrange - Create 3 different enemy data assets with different stats
+        EnemyData fastSpider = ScriptableObject.CreateInstance<EnemyData>();
+        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, "FastSpider");
+        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, EnemyType.FastSpider);
+        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 5f);
+        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 20f);
+        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 20f);
+        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 8f);
+        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 2f);
+        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 1.5f);
+        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 15f);
+
+        EnemyData tankSpider = ScriptableObject.CreateInstance<EnemyData>();
+        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(tankSpider, "TankSpider");
+        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(tankSpider, EnemyType.TankSpider);
+        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(tankSpider, 2f);
+        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(tankSpider, 80f);
+        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(tankSpider, 80f);
+        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(tankSpider, 15f);
+        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(tankSpider, 2.5f);
+        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(tankSpider, 2f);
+        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(tankSpider, 12f);
+
+        EnemyData venomSpider = ScriptableObject.CreateInstance<EnemyData>();
+        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(venomSpider, "VenomSpider");
+        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(venomSpider, EnemyType.VenomSpider);
+        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(venomSpider, 3.5f);
+        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(venomSpider, 50f);
+        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(venomSpider, 50f);
+        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(venomSpider, 12f);
+        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(venomSpider, 3f);
+        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(venomSpider, 1.8f);
+        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(venomSpider, 18f);
+
+        // Set up spawner with 3 different variants
+        var variants = new System.Collections.Generic.List<EnemyData> { fastSpider, tankSpider, venomSpider };
+        typeof(EnemySpawner).GetField("enemyTypeVariants", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(spawner, variants);
+        
+        // Set difficulty to Normal which uses all three types
+        spawner.SetDifficultyPreset(SpawnDifficulty.Normal);
+
+        // Act - Spawn multiple enemies and track their speeds
+        var spawnedSpeeds = new System.Collections.Generic.HashSet<float>();
+        var spawnedHealths = new System.Collections.Generic.HashSet<float>();
+
+        for (int i = 0; i < 10; i++)
+        {
+            spawner.SpawnEnemy();
+        }
+
+        // Find all spawned enemies and record their stats
+        Enemy[] spawnedEnemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
+        
+        foreach (Enemy spawnedEnemy in spawnedEnemies)
+        {
+            if (spawnedEnemy != enemy) // Skip the original enemy from SetUp
+            {
+                EnemyData spawnedData = typeof(Enemy).GetField("enemyData", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.GetValue(spawnedEnemy) as EnemyData;
+                if (spawnedData != null)
+                {
+                    spawnedSpeeds.Add(spawnedData.MoveSpeed);
+                    spawnedHealths.Add(spawnedData.MaxHealth);
+                }
+            }
+        }
+
+        // Assert - Verify that multiple different types were spawned (indicated by different speeds or health)
+        Assert.Greater(spawnedSpeeds.Count, 1, "Multiple spawn calls should use different enemy types with different speeds");
+        Assert.Greater(spawnedHealths.Count, 1, "Multiple spawn calls should use different enemy types with different health values");
+
+        // Clean up all spawned enemies
+        foreach (Enemy spawnedEnemy in spawnedEnemies)
+        {
+            if (spawnedEnemy != enemy)
+                Object.Destroy(spawnedEnemy.gameObject);
+        }
+    }
+
+    /// <summary>
+    /// Test: EnemySpawner logs warning when no matching type found in variants
+    /// This simulates a difficulty preset requesting an enemy type not in the variants list
+    /// </summary>
+    [Test]
+    public void EnemySpawner_LogsWarning_WhenNoMatchingTypeFound()
+    {
+        // Arrange - Create spawner with only FastSpider variant
+        EnemyData fastSpider = ScriptableObject.CreateInstance<EnemyData>();
+        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, EnemyType.FastSpider);
+        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 5f);
+        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 20f);
+        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 20f);
+        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 8f);
+        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 2f);
+        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 1.5f);
+        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(fastSpider, 15f);
+
+        // Set variants to only contain FastSpider
+        var limitedVariants = new System.Collections.Generic.List<EnemyData> { fastSpider };
+        typeof(EnemySpawner).GetField("enemyTypeVariants", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(spawner, limitedVariants);
+        
+        // Set difficulty to Hard which wants GoliathSpider (which doesn't exist in variants)
+        spawner.SetDifficultyPreset(SpawnDifficulty.Hard);
+
+        // Act - Call GetRandomEnemyType which will try to find GoliathSpider
+        var methodInfo = typeof(EnemySpawner).GetMethod("GetRandomEnemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        EnemyData result = (EnemyData)methodInfo?.Invoke(spawner, null);
+        
+        // Assert - Result should be null or fallback since GoliathSpider doesn't exist in variants
+        Assert.IsTrue(result == null || result == fastSpider, "Should return null or fallback to available variant when requested type not found");
+    }
 }

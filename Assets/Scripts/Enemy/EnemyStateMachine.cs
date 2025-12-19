@@ -8,10 +8,11 @@ using System;
 public class EnemyStateMachine : MonoBehaviour
 {
     [SerializeField] private NavMeshPlayerDetector playerDetector;
-    [SerializeField] private float detectionRange;
+    private float detectionRange = 0f;
     [SerializeField] private PlayerHealth playerHealth;
     
     private EnemyState currentState = EnemyState.Moving;
+    private bool requirePlayerOnNavMesh = false; // Default: NavMesh check disabled, distance-only
 
     // Events
     public event Action<EnemyState> OnStateChanged;
@@ -23,6 +24,51 @@ public class EnemyStateMachine : MonoBehaviour
     /// Current state of the enemy
     /// </summary>
     public EnemyState CurrentState => currentState;
+
+    private void Start()
+    {
+        // Auto-find player health if not assigned
+        if (playerHealth == null)
+        {
+            AutoFindPlayerHealth();
+        }
+        
+        // Auto-find player detector if not assigned
+        if (playerDetector == null)
+        {
+            playerDetector = GetComponent<NavMeshPlayerDetector>();
+        }
+    }
+
+    /// <summary>
+    /// Auto-finds the PlayerHealth component by singleton or tag
+    /// </summary>
+    private void AutoFindPlayerHealth()
+    {
+        // Try PlayerHealth singleton first
+        if (PlayerHealth.Instance != null)
+        {
+            playerHealth = PlayerHealth.Instance;
+            return;
+        }
+
+        // Try finding by tag
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        if (playerObject != null)
+        {
+            playerHealth = playerObject.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+                return;
+        }
+
+        // Fallback to FindFirstObjectByType
+        playerHealth = FindFirstObjectByType<PlayerHealth>();
+        
+        if (playerHealth == null)
+        {
+            Debug.LogWarning($"EnemyStateMachine on '{gameObject.name}' could not auto-find PlayerHealth. Assign manually or ensure player has 'Player' tag.");
+        }
+    }
 
     /// <summary>
     /// Initialize the state machine with dependencies
@@ -38,10 +84,19 @@ public class EnemyStateMachine : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks if player should be engaged based on both distance and NavMesh status
+    /// Sets whether the player must be on NavMesh for engagement
+    /// </summary>
+    /// <param name="require">If true, player must be on NavMesh; if false, distance-only check</param>
+    public void SetRequirePlayerOnNavMesh(bool require)
+    {
+        requirePlayerOnNavMesh = require;
+    }
+
+    /// <summary>
+    /// Checks if player should be engaged based on distance and optionally NavMesh status
     /// </summary>
     /// <param name="playerPosition">Current position of the player</param>
-    /// <returns>True if player is in range AND on NavMesh</returns>
+    /// <returns>True if player is in range; also requires NavMesh if requirePlayerOnNavMesh is true</returns>
     public bool ShouldEngagePlayer(Vector3 playerPosition)
     {
         if (playerDetector == null || playerHealth == null)
@@ -59,10 +114,14 @@ public class EnemyStateMachine : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
         bool isInRange = distanceToPlayer <= detectionRange;
 
-        // Check if player is on NavMesh
-        bool isOnNavMesh = playerDetector.IsPlayerOnNavMesh();
+        // If NavMesh check is disabled, only check distance
+        if (!requirePlayerOnNavMesh)
+        {
+            return isInRange;
+        }
 
-        // Both conditions must be true
+        // If NavMesh check is enabled, check both conditions
+        bool isOnNavMesh = playerDetector.IsPlayerOnNavMesh();
         return isInRange && isOnNavMesh;
     }
 

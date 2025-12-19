@@ -186,25 +186,33 @@ If your project has an `EnemyRoute` component, assign it to EnemyMovement:
 ### 6.2 Configure EnemySpawner in Inspector
 
 - **Enemy Prefab**: Drag the `Enemy_Prefab` from Assets/Prefabs.
-- **Spawn Points** (Transform[]):
-  - Set **Size** to the number of spawn locations (e.g., 3).
-  - Create child empty Transforms under EnemySpawner for each spawn point, or drag existing ones.
-  - Position each spawn point where enemies should appear.
-- **Waves** (WaveData[]):
-  - Set **Size** to the number of waves (e.g., 3 waves).
-  - For each wave, expand and set:
-    - **Enemy Count**: 2 (enemies per wave).
-    - **Delay**: 5.0 (seconds between enemies in this wave).
-    - **Wave Delay**: 10.0 (seconds before next wave starts).
-- **Enemy Data**: Drag `DefaultEnemyData.asset`.
-- **Waypoints**: Drag your waypoint Transforms or the EnemyRoute GameObject (the system will pass these to spawned enemies).
+- **Available Routes** (EnemyRoute[]):
+  - Set **Size** to the number of routes (e.g., 1-3).
+  - Drag your EnemyRoute GameObjects (created in Step 4).
+- **Enemies To Spawn**: 10 (per wave).
+- **Spawn Interval**: 2.0 (seconds between spawns).
+- **Spawn Point**: Drag an empty Transform or create one as a child.
+- **Infinite Waves**: Check if you want endless spawning.
+- **Delay Between Waves**: 3.0 (seconds).
+- **Wave Time Threshold**: 30.0 (max time for a wave).
+- **Enemy Type Variants** (List<EnemyData>):
+  - Set **Size** to the number of enemy types (e.g., 2-4).
+  - Drag different `EnemyData` ScriptableObjects (Fast, Tank, Venom, etc.).
+  - **IMPORTANT**: The spawner will randomly select from this list based on difficulty.
+- **Difficulty Preset**: Normal (or Easy/Hard to control spawn distribution).
 
-### 6.3 Example wave configuration:
+### 6.3 Example configuration:
 ```
-Wave 0: 2 enemies, 1s delay, 8s until wave 1
-Wave 1: 3 enemies, 1.5s delay, 10s until wave 2
-Wave 2: 4 enemies, 1s delay, done
+- Enemies To Spawn: 5
+- Spawn Interval: 1.5s
+- Enemy Type Variants: [FastSpiderData, TankSpiderData, VenomSpiderData]
+- Difficulty Preset: Normal
 ```
+
+The spawner will automatically:
+- Pick a random EnemyData from the variants list based on difficulty weights
+- Assign it to each spawned enemy BEFORE initialization (no more null warnings!)
+- Components will auto-find the Player by tag "Player" if not manually assigned
 
 ---
 
@@ -272,5 +280,44 @@ Adjust these values in Play Mode (use Inspector to pause and modify):
 3. **Agent separation**: Prevents stacking with other enemies via `GetSeparatedNavMeshPosition()`.
 4. **Modular design**: Each component can be tested and tweaked independently.
 5. **Event-driven**: Components communicate via C# Actions (no tight coupling).
+6. **Auto-coupling**: Components automatically find the Player by tag "Player" if not manually assigned.
+7. **Enemy variants**: Spawner randomly selects from `Enemy Type Variants` list based on difficulty preset.
+
+---
+
+## Auto-Coupling Features (New!)
+
+The refactored system now includes **automatic component wiring**:
+
+### Auto-Find Player
+All components that need a player reference will **automatically** find it if not manually assigned:
+- **NavMeshPlayerDetector**: Tries `PlayerHealth.Instance`, then `GameObject.FindWithTag("Player")`.
+- **EnemyStateMachine**: Same auto-find logic for `PlayerHealth` component.
+- **Enemy**: Auto-finds player during `Initialize()` if not set.
+
+**What you need to do:**
+- Make sure your Player GameObject has the tag **"Player"** (Project Settings → Tags and Layers).
+- Alternatively, ensure `PlayerHealth.Instance` singleton is set up.
+
+### Auto-Assign Enemy Data
+The spawner now correctly assigns `EnemyData` **before** component initialization:
+1. Spawner picks a random `EnemyData` from the `Enemy Type Variants` list.
+2. Calls `enemy.SetEnemyData()` to assign it.
+3. **Then** calls `enemy.Initialize()` which passes the data to all components.
+
+**Result**: No more "EnemyMovement initialized with null EnemyData" warnings!
+
+### Enemy Variants System
+Create multiple `EnemyData` assets for different enemy types:
+- **FastSpider.asset**: High speed (5.0), low health (30).
+- **TankSpider.asset**: Low speed (2.0), high health (100).
+- **VenomSpider.asset**: Medium speed (3.5), medium health (50), high damage.
+
+Add all variants to the `EnemySpawner.Enemy Type Variants` list, and the spawner will randomly select based on the difficulty preset:
+- **Easy**: 70% Fast, 30% Tank.
+- **Normal**: 50% Fast, 30% Tank, 20% Venom.
+- **Hard**: 30% Fast, 30% Tank, 25% Venom, 15% Goliath.
+
+---
 
 Enjoy your refactored enemy system!

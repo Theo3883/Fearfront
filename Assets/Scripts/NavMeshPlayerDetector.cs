@@ -8,7 +8,7 @@ using System;
 /// </summary>
 public class NavMeshPlayerDetector : MonoBehaviour
 {
-    [SerializeField] private float detectionTolerance = 1.5f;
+    [SerializeField] private float detectionTolerance = 10f;
     
     [SerializeField] private Transform playerTransform;
     private bool lastDetectedStatus = false;
@@ -18,6 +18,38 @@ public class NavMeshPlayerDetector : MonoBehaviour
     /// Event fired when player's NavMesh status changes
     /// </summary>
     public event Action<bool> OnPlayerNavMeshStatusChanged;
+
+    private void Start()
+    {
+        // Auto-find player if not assigned
+        if (playerTransform == null)
+        {
+            AutoFindPlayer();
+        }
+    }
+
+    /// <summary>
+    /// Auto-finds the player by tag "Player" or PlayerHealth singleton
+    /// </summary>
+    private void AutoFindPlayer()
+    {
+        // Try PlayerHealth singleton first
+        if (PlayerHealth.Instance != null)
+        {
+            playerTransform = PlayerHealth.Instance.transform;
+            return;
+        }
+
+        // Try finding by tag
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        if (playerObject != null)
+        {
+            playerTransform = playerObject.transform;
+            return;
+        }
+
+        Debug.LogWarning($"NavMeshPlayerDetector on '{gameObject.name}' could not auto-find player. Assign manually or ensure player has 'Player' tag.");
+    }
 
     /// <summary>
     /// Sets the player reference for detection
