@@ -18482,11 +18482,12 @@ GameObject:
   - component: {fileID: 1064197747}
   - component: {fileID: 1064197746}
   - component: {fileID: 1064197745}
-  - component: {fileID: 1064197748}
+  - component: {fileID: 1064197753}
+  - component: {fileID: 1064197752}
+  - component: {fileID: 1064197751}
   - component: {fileID: 1064197750}
   - component: {fileID: 1064197749}
-  - component: {fileID: 1064197751}
-  - component: {fileID: 1064197752}
+  - component: {fileID: 1064197748}
   m_Layer: 0
   m_Name: XR Origin (VR)
   m_TagString: Player
@@ -18550,10 +18551,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1064197744}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 847a9efbf5e6486181e1e2bf0af610be, type: 3}
+  m_Script: {fileID: 11500000, guid: 38876c7535095d143b754a34b8016464, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::PlayerInventory
+  m_EditorClassIdentifier: Fearfront.Scripts::PlayerMovementSpeed
+  moveSpeed: 5
 --- !u!114 &1064197749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064197744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 870208c5071aaa94c9cd2f75aa4bdf03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::PlayerHealth
+  maxHealth: 100
+--- !u!114 &1064197750
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18568,19 +18583,6 @@ MonoBehaviour:
   enableVisualFeedback: 1
   flashDuration: 0.2
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
---- !u!114 &1064197750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1064197744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 870208c5071aaa94c9cd2f75aa4bdf03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::PlayerHealth
-  maxHealth: 100
 --- !u!54 &1064197751
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -18604,12 +18606,28 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &1064197752
-CapsuleCollider:
+--- !u!114 &1064197752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064197744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a26c941eb8a46f7b6d00416227ab8c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Locomotion.XRBodyTransformer
+  m_XROrigin: {fileID: 1064197746}
+  m_BodyPositionEvaluatorObject: {fileID: 0}
+  m_ConstrainedBodyManipulatorObject: {fileID: 0}
+  m_UseCharacterControllerIfExists: 1
+--- !u!143 &1064197753
+CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -18623,14 +18641,16 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
+  m_Height: 2.49
   m_Radius: 0.5
-  m_Height: 2.07
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.66, z: 0}
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.25, z: 0}
 --- !u!1 &1078763071
 GameObject:
   m_ObjectHideFlags: 0
@@ -22424,7 +22444,7 @@ Transform:
   m_GameObject: {fileID: 1360118386}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.17, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

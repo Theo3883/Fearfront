@@ -23,6 +23,11 @@ public class Enemy : MonoBehaviour
     
     private EnemySpawner spawner;
     
+    // Attack-related fields
+    private Transform playerTransform;
+    private PlayerHealth playerHealthRef;
+    private float attackCooldownTimer = 0f;
+    
     // ===== Events =====
     public event Action<EnemyState> OnStateChanged;
 
@@ -115,22 +120,43 @@ public class Enemy : MonoBehaviour
         spawner = enemySpawner;
         isDead = false;
         
-        // Auto-find player health if not set
+        // The most reliable way to find the player is via the PlayerHealth singleton.
+        // Ensure PlayerHealth is attached to the object that actually moves (e.g., XR Origin).
         PlayerHealth playerHealth = PlayerHealth.Instance;
-        if (playerHealth == null)
+        Transform playerTransformLocal = null;
+        
+        if (playerHealth != null)
         {
-            GameObject playerObject = GameObject.FindWithTag("Player");
-            if (playerObject != null)
+            playerTransformLocal = playerHealth.transform;
+        }
+        else
+        {
+            // Fallback 1: Look for XR Origin (common in VR)
+            GameObject xrOrigin = GameObject.Find("XR Origin") ?? GameObject.Find("XROrigin");
+            if (xrOrigin != null)
             {
-                playerHealth = playerObject.GetComponent<PlayerHealth>();
+                playerTransformLocal = xrOrigin.transform;
+            }
+            // Fallback 2: Tagged Player
+            else
+            {
+                GameObject playerObj = null;
+                try { playerObj = GameObject.FindWithTag("Player"); } catch { playerObj = null; }
+                if (playerObj != null)
+                    playerTransformLocal = playerObj.transform;
+                // Fallback 3: Main Camera
+                else if (Camera.main != null)
+                    playerTransformLocal = Camera.main.transform;
             }
         }
-        
-        // Set player reference for detection (components auto-find if null, but we can still pass it)
-        if (playerHealth != null && playerDetector != null)
+
+        // Store player references for use in attack logic
+        this.playerTransform = playerTransformLocal;
+        this.playerHealthRef = playerHealth;
+
+        if (playerTransformLocal != null && playerDetector != null)
         {
-            Transform playerTransform = playerHealth.transform;
-            playerDetector.SetPlayerReference(playerTransform);
+            playerDetector.SetPlayerReference(playerTransformLocal);
         }
         
         // Initialize movement with waypoints (Enemy does NOT store waypoints)
@@ -149,6 +175,7 @@ public class Enemy : MonoBehaviour
         if (stateMachine != null && playerDetector != null)
         {
             stateMachine.Initialize(playerDetector, detectionRadius, playerHealth);
+            Debug.Log($"[{gameObject.name}] Initialized StateMachine with detection range: {detectionRadius}m, playerDetector={playerDetector != null}, playerHealth={playerHealth != null}");
         }
     }
 
@@ -165,9 +192,54 @@ public class Enemy : MonoBehaviour
         enemyMovement.UpdateMovement();
         
         PlayerHealth playerHealth = PlayerHealth.Instance;
-        if (playerHealth != null)
+        Vector3 playerPosition = Vector3.zero;
+        bool havePlayerPosition = false;
+        
+        // Priority 1: Main Camera (where the player actually is looking from)
+        if (Camera.main != null)
         {
-            stateMachine.UpdateState(playerHealth.transform.position);
+            playerPosition = Camera.main.transform.position;
+            havePlayerPosition = true;
+        }
+        // Priority 2: PlayerHealth singleton transform
+        else if (playerHealth != null)
+        {
+            playerPosition = playerHealth.transform.position;
+            havePlayerPosition = true;
+        }
+        // Priority 3: XR Origin (VR body root)
+        else 
+        {
+            GameObject xrOrigin = GameObject.Find("XR Origin") ?? GameObject.Find("XROrigin");
+            if (xrOrigin != null)
+            {
+                playerPosition = xrOrigin.transform.position;
+                havePlayerPosition = true;
+            }
+            // Priority 4: Tagged Player
+            else
+            {
+                GameObject playerObj = null;
+                try { playerObj = GameObject.FindWithTag("Player"); } catch { playerObj = null; }
+                
+                if (playerObj != null)
+                {
+                    playerPosition = playerObj.transform.position;
+                    havePlayerPosition = true;
+                }
+            }
+        }
+
+        if (havePlayerPosition)
+        {
+            Debug.Log($"[{gameObject.name}] Updating state with player at {playerPosition}");
+            stateMachine.UpdateState(playerPosition);
+            
+            // Handle attack logic if in Attacking state
+            if (stateMachine.CurrentState == EnemyState.Attacking)
+            {
+                HandleAttackingState(playerPosition);
+            }
         }
     }
 
@@ -267,6 +339,74 @@ public class Enemy : MonoBehaviour
         
         if (rb != null)
             rb.isKinematic = false;
+    }
+
+    /// <summary>
+    /// Handles attack logic when enemy is in Attacking state
+    /// </summary>
+    private void HandleAttackingState(Vector3 playerPosition)
+    {
+        if (enemyData == null || playerTransform == null || playerHealthRef == null)
+        {
+            Debug.LogWarning($"[{gameObject.name}] Cannot attack: missing data, player transform, or player health");
+            return;
+        }
+
+        // Update cooldown timer
+        if (attackCooldownTimer > 0f)
+        {
+            attackCooldownTimer -= Time.deltaTime;
+        }
+
+        float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
+        float attackRange = enemyData.AttackRange;
+
+        Debug.Log($"[{gameObject.name}] Attacking state: distance={distanceToPlayer:F1}m, attack range={attackRange}m");
+
+        // Check if player is in attack range
+        if (distanceToPlayer <= attackRange)
+        {
+            Debug.Log($"[{gameObject.name}] Player in attack range! Attacking!");
+            
+            // Pause movement to focus on attacking
+            if (enemyMovement != null)
+            {
+                enemyMovement.PauseMovement();
+            }
+            
+            // Rotate to face player
+            Vector3 directionToPlayer = (playerPosition - transform.position).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
+            
+            // Execute attack if cooldown is ready
+            if (attackCooldownTimer <= 0f)
+            {
+                if (playerHealthRef.IsAlive())
+                {
+                    playerHealthRef.Damage(enemyData.AttackDamage);
+                    Debug.Log($"[{gameObject.name}] Hit player for {enemyData.AttackDamage} damage!");
+                    attackCooldownTimer = enemyData.AttackCooldown;
+                }
+            }
+        }
+        else
+        {
+            // Too far to attack, move toward player
+            Debug.Log($"[{gameObject.name}] Chasing player (distance {distanceToPlayer:F1}m > {attackRange}m)");
+            
+            // Resume movement toward player
+            if (enemyMovement != null)
+            {
+                enemyMovement.ResumeMovement();
+            }
+            
+            // Move to player using NavMeshAgent
+            if (agent != null && agent.enabled)
+            {
+                agent.SetDestination(playerPosition);
+            }
+        }
     }
 
     // ===== BACKWARD COMPATIBILITY: State transition methods =====

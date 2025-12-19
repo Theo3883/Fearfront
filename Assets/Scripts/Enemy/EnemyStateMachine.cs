@@ -101,18 +101,22 @@ public class EnemyStateMachine : MonoBehaviour
     {
         if (playerDetector == null || playerHealth == null)
         {
+            Debug.LogWarning($"[{gameObject.name}] ShouldEngagePlayer: playerDetector={playerDetector}, playerHealth={playerHealth}");
             return false;
         }
 
         // Check if player is dead
         if (playerHealth.GetCurrentHealth() <= 0)
         {
+            Debug.Log($"[{gameObject.name}] Player is dead (health={playerHealth.GetCurrentHealth()})");
             return false;
         }
 
         // Calculate distance from enemy to player
         float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
         bool isInRange = distanceToPlayer <= detectionRange;
+
+        Debug.Log($"[{gameObject.name}] Distance to player: {distanceToPlayer:F1}m, Detection range: {detectionRange}m, In range: {isInRange}");
 
         // If NavMesh check is disabled, only check distance
         if (!requirePlayerOnNavMesh)
@@ -122,6 +126,7 @@ public class EnemyStateMachine : MonoBehaviour
 
         // If NavMesh check is enabled, check both conditions
         bool isOnNavMesh = playerDetector.IsPlayerOnNavMesh();
+        Debug.Log($"[{gameObject.name}] NavMesh check enabled: isInRange={isInRange}, isOnNavMesh={isOnNavMesh}");
         return isInRange && isOnNavMesh;
     }
 
