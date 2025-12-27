@@ -3321,7 +3321,7 @@ GameObject:
   - component: {fileID: 314161727}
   - component: {fileID: 314161726}
   m_Layer: 5
-  m_Name: stone test
+  m_Name: stone text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5536,13 +5536,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 538339583}
-  m_LocalRotation: {x: -0.012164087, y: 0.03169384, z: 0.35087246, w: 0.9358077}
-  m_LocalPosition: {x: 0, y: 0, z: -0.0000020117}
-  m_LocalScale: {x: 0.7345335, y: 0.61500746, z: 0.41112807}
+  m_LocalRotation: {x: -0.022382926, y: 0.025523895, z: 0.005251097, w: 0.99940985}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0000029995}
+  m_LocalScale: {x: 0.7345335, y: 0.706336, z: 0.41112807}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1078763075}
-  m_LocalEulerAnglesHint: {x: -2.58, y: 2.914, z: 41.041}
+  m_LocalEulerAnglesHint: {x: -2.58, y: 2.914, z: 0.536}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 365.1, y: 218.2}
@@ -5568,7 +5568,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 99a6be6c61b1b4c45b7988255e7a136d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2fdca6b7877ee564f93f059acb3387f1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9855,6 +9855,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 732802153225313535, guid: 45983d80c5d150b458e7d738c0f96602, type: 3}
   m_PrefabInstance: {fileID: 646644389}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &679568550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 679568552}
+  - component: {fileID: 679568551}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &679568551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679568550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 847a9efbf5e6486181e1e2bf0af610be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::PlayerInventory
+--- !u!4 &679568552
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679568550}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 976.35, y: 463.32498, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &727502230
 GameObject:
   m_ObjectHideFlags: 0
@@ -32514,3 +32558,4 @@ SceneRoots:
   - {fileID: 912849680}
   - {fileID: 1078763075}
   - {fileID: 1156389841}
+  - {fileID: 679568552}

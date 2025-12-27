@@ -16,6 +16,8 @@ public class UIWood : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(inv == null ? "inv ESTE NULL" : "inv OK");
+
         woodText.text = inv.Get(ResourceType.Tree).ToString();
         stoneText.text = inv.Get(ResourceType.Stone).ToString();   
         if (woodText == null) return;
