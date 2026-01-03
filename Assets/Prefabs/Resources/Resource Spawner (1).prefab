@@ -115,7 +115,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1004526615618144177}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0576138edf742a69bc5e0197eb6ec9a, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a34365341333b54c82b257b6b57530d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::FixedPointSpawner
   slots:
@@ -139,27 +139,11 @@ MonoBehaviour:
     prefab: {fileID: 4698032681855214204, guid: 72567f32ddd09bb4d9a767526f5d9ffa, type: 3}
     active: 0
     usedThisRound: 0
-  - point: {fileID: 393349631286461143}
-    prefab: {fileID: 2998984623721582143, guid: f8e09f1ffeb9f994aa9833b89e20cf20, type: 3}
-    active: 0
-    usedThisRound: 0
   - point: {fileID: 5074439904042901056}
     prefab: {fileID: 4698032681855214204, guid: 72567f32ddd09bb4d9a767526f5d9ffa, type: 3}
     active: 0
     usedThisRound: 0
-  - point: {fileID: 4126359700675391820}
-    prefab: {fileID: 2998984623721582143, guid: f8e09f1ffeb9f994aa9833b89e20cf20, type: 3}
-    active: 0
-    usedThisRound: 0
-  - point: {fileID: 699682661613728199}
-    prefab: {fileID: 2998984623721582143, guid: f8e09f1ffeb9f994aa9833b89e20cf20, type: 3}
-    active: 0
-    usedThisRound: 0
-  - point: {fileID: 5331050805378060487}
-    prefab: {fileID: 2998984623721582143, guid: f8e09f1ffeb9f994aa9833b89e20cf20, type: 3}
-    active: 0
-    usedThisRound: 0
-  - point: {fileID: 5074439904042901056}
+  - point: {fileID: 6695738208728485341}
     prefab: {fileID: 4698032681855214204, guid: 72567f32ddd09bb4d9a767526f5d9ffa, type: 3}
     active: 0
     usedThisRound: 0
@@ -167,7 +151,23 @@ MonoBehaviour:
     prefab: {fileID: 4698032681855214204, guid: 72567f32ddd09bb4d9a767526f5d9ffa, type: 3}
     active: 0
     usedThisRound: 0
-  targetActive: 4
+  - point: {fileID: 393349631286461143}
+    prefab: {fileID: 3835793745129688823, guid: 4075dd5f8e45364428f302d6472fba4a, type: 3}
+    active: 0
+    usedThisRound: 0
+  - point: {fileID: 4126359700675391820}
+    prefab: {fileID: 3835793745129688823, guid: 4075dd5f8e45364428f302d6472fba4a, type: 3}
+    active: 0
+    usedThisRound: 0
+  - point: {fileID: 699682661613728199}
+    prefab: {fileID: 3835793745129688823, guid: 4075dd5f8e45364428f302d6472fba4a, type: 3}
+    active: 0
+    usedThisRound: 0
+  - point: {fileID: 699682661613728199}
+    prefab: {fileID: 3835793745129688823, guid: 4075dd5f8e45364428f302d6472fba4a, type: 3}
+    active: 0
+    usedThisRound: 0
+  targetActive: 6
   useEachSlotOnce: 1
   spawnReplaceDelay: 0.25
   roundRefillDelay: 10

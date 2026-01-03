@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class FixedPointSpawner : MonoBehaviour
+public class ResourceSpawner : MonoBehaviour
 {
     [System.Serializable]
     public class Slot
