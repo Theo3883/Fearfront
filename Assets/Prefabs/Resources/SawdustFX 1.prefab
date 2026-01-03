@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7961462444542353335}
   - component: {fileID: 5823374690338594435}
   m_Layer: 0
-  m_Name: SawdustFX
+  m_Name: SawdustFX 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -5,6 +5,7 @@ using Fearfront.Common;
 public class UIWood : MonoBehaviour
 {
     [SerializeField] private TMP_Text woodText;
+    [SerializeField] private TMP_Text stoneText;   // ← nou
 
     private PlayerInventory inv;
 
@@ -15,6 +16,10 @@ public class UIWood : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(inv == null ? "inv ESTE NULL" : "inv OK");
+
+        woodText.text = inv.Get(ResourceType.Tree).ToString();
+        stoneText.text = inv.Get(ResourceType.Stone).ToString();   
         if (woodText == null) return;
 
         if (inv == null)
