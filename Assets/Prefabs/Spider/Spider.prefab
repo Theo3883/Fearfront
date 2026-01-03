@@ -658,7 +658,7 @@ GameObject:
   - component: {fileID: -3185168252774851812}
   m_Layer: 7
   m_Name: Spider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -714,8 +714,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::Enemy
   enemyData: {fileID: 0}
-  healthMax: 20
-  currentHealth: 20
   playerDetector: {fileID: -3017634517225213077}
   enemyMovement: {fileID: -3699814989102493408}
   stateMachine: {fileID: 7974588008391549182}
@@ -733,14 +731,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Fearfront.Scripts::EnemyMovement
   waypoints: []
   enemyData: {fileID: 0}
-  moveSpeed: 12
-  stoppingDistance: 2.5
-  waypointSpreadRadius: 5
-  separationRadius: 1.5
-  separationWeight: 1.5
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!114 &7974588008391549182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -754,7 +744,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::EnemyStateMachine
   playerDetector: {fileID: -3017634517225213077}
-  detectionRange: 0
   playerHealth: {fileID: 0}
 --- !u!114 &-3017634517225213077
 MonoBehaviour:
