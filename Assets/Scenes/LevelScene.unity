@@ -4665,9 +4665,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals.XRInteractorLineVisual
   m_LineWidth: 0.005
   m_OverrideInteractorLineLength: 1
-  m_LineLength: 15
+  m_LineLength: 8
   m_AutoAdjustLineLength: 1
-  m_MinLineLength: 0.5
+  m_MinLineLength: 0
   m_UseDistanceToHitAsMaxLineLength: 1
   m_LineRetractionDelay: 0.5
   m_LineLengthChangeSpeed: 12
@@ -4728,8 +4728,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 3
   m_InvalidColorGradient:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 0.78431374}
+    key0: {r: 1, g: 1, b: 1, a: 0.5882353}
+    key1: {r: 1, g: 1, b: 1, a: 0}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -4744,8 +4744,8 @@ MonoBehaviour:
     ctime5: 0
     ctime6: 0
     ctime7: 0
-    atime0: 0
-    atime1: 45732
+    atime0: 45670
+    atime1: 65535
     atime2: 65535
     atime3: 0
     atime4: 0
@@ -4755,7 +4755,7 @@ MonoBehaviour:
     m_Mode: 0
     m_ColorSpace: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 3
+    m_NumAlphaKeys: 2
   m_BlockedColorGradient:
     serializedVersion: 2
     key0: {r: 0.8113208, g: 0.45459625, b: 0.26023495, a: 1}
@@ -5045,7 +5045,7 @@ MonoBehaviour:
   m_AllowHoverHapticsWhileSelecting: 1
   m_LineType: 0
   m_BlendVisualLinePoints: 1
-  m_MaxRaycastDistance: 30
+  m_MaxRaycastDistance: 8
   m_RayOriginTransform: {fileID: 0}
   m_ReferenceFrame: {fileID: 0}
   m_Velocity: 16
@@ -5872,6 +5872,10 @@ PrefabInstance:
     - target: {fileID: 8065188552600285332, guid: 927232924abbe7749aba0b85a30aa1db, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8065188552600285332, guid: 927232924abbe7749aba0b85a30aa1db, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19317,7 +19321,7 @@ CharacterController:
   m_Height: 2.49
   m_Radius: 0.5
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.5
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.25, z: 0}
@@ -25774,9 +25778,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals.XRInteractorLineVisual
   m_LineWidth: 0.005
   m_OverrideInteractorLineLength: 1
-  m_LineLength: 15
+  m_LineLength: 8
   m_AutoAdjustLineLength: 1
-  m_MinLineLength: 0.5
+  m_MinLineLength: 0
   m_UseDistanceToHitAsMaxLineLength: 1
   m_LineRetractionDelay: 0.5
   m_LineLengthChangeSpeed: 12
@@ -25837,8 +25841,8 @@ MonoBehaviour:
     m_NumAlphaKeys: 3
   m_InvalidColorGradient:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 0.78431374}
+    key0: {r: 1, g: 1, b: 1, a: 0.5882353}
+    key1: {r: 1, g: 1, b: 1, a: 0}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -25853,8 +25857,8 @@ MonoBehaviour:
     ctime5: 0
     ctime6: 0
     ctime7: 0
-    atime0: 0
-    atime1: 45732
+    atime0: 45670
+    atime1: 65535
     atime2: 65535
     atime3: 0
     atime4: 0
@@ -25864,7 +25868,7 @@ MonoBehaviour:
     m_Mode: 0
     m_ColorSpace: 0
     m_NumColorKeys: 2
-    m_NumAlphaKeys: 3
+    m_NumAlphaKeys: 2
   m_BlockedColorGradient:
     serializedVersion: 2
     key0: {r: 0.8113208, g: 0.45459625, b: 0.26023495, a: 1}
@@ -26154,7 +26158,7 @@ MonoBehaviour:
   m_AllowHoverHapticsWhileSelecting: 1
   m_LineType: 0
   m_BlendVisualLinePoints: 1
-  m_MaxRaycastDistance: 30
+  m_MaxRaycastDistance: 8
   m_RayOriginTransform: {fileID: 0}
   m_ReferenceFrame: {fileID: 0}
   m_Velocity: 16
