@@ -385,6 +385,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6900676903622151380, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
+      propertyPath: m_CameraTransform
+      value: 
+      objectReference: {fileID: 873971954}
+    - target: {fileID: 6900676903622151380, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_TranslateXSpeed
       value: 0.2
       objectReference: {fileID: 0}
@@ -398,7 +402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8135023674665499069, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_LocalScale.x
@@ -414,15 +418,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.06587
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.10154
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10167,7 +10171,7 @@ GameObject:
   - component: {fileID: 679568552}
   - component: {fileID: 679568551}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player Additional Handler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16999,6 +17003,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1919895109}
   - {fileID: 1417352933}
   - {fileID: 377429237}
   - {fileID: 897166498}
@@ -19165,6 +19170,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1064197747}
+  - component: {fileID: 1064197757}
   - component: {fileID: 1064197746}
   - component: {fileID: 1064197745}
   - component: {fileID: 1064197756}
@@ -19430,6 +19436,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fa7b4195685c3846be746c74f0ab2f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Locomotion.LocomotionMediator
+--- !u!114 &1064197757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064197744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4035147ce5546394d8eb122db0384568, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::AutoVRHeight
+  simulatedHeight: 1.7
+  realVRHeight: 0
+  forceSimulatorMode: 0
 --- !u!1 &1078763071
 GameObject:
   m_ObjectHideFlags: 0
@@ -29150,12 +29171,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1919895107}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -58.45662, y: 1.48532, z: 171.4995}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -25.32389, y: -2.1779199, z: 204.82118}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 912849680}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1961618075
 GameObject:
@@ -31883,9 +31904,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 2106621019}
   - {fileID: 367148935}
-  - {fileID: 1064197747}
   - {fileID: 51311208}
-  - {fileID: 1919895109}
+  - {fileID: 1064197747}
   - {fileID: 46688586}
   - {fileID: 912849680}
   - {fileID: 1078763075}
