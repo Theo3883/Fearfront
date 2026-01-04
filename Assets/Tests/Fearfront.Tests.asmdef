@@ -1,10 +1,10 @@
 {
-    "name": "Fearfront.Scripts.Tests",
+    "name": "Fearfront.Tests",
     "rootNamespace": "",
     "references": [
-        "Fearfront.Scripts",
         "UnityEngine.TestRunner",
-        "UnityEngine.UI"
+        "UnityEditor.TestRunner",
+        "Fearfront.Scripts"
     ],
     "includePlatforms": [
         "Editor"
@@ -15,7 +15,7 @@
     "precompiledReferences": [
         "nunit.framework.dll"
     ],
-    "autoReferenced": true,
+    "autoReferenced": false,
     "defineConstraints": [
         "UNITY_INCLUDE_TESTS"
     ],
