@@ -163,6 +163,9 @@ public class Enemy : MonoBehaviour
         if (enemyMovement != null && path != null && path.Length > 0)
         {
             enemyMovement.Initialize(path, enemyData);
+            
+            // Subscribe to final waypoint reached event for proper despawning
+            enemyMovement.OnFinalWaypointReached += HandleFinalWaypointReached;
         }
         
         // Initialize state machine with detection range from enemy data or default
@@ -175,7 +178,54 @@ public class Enemy : MonoBehaviour
         if (stateMachine != null && playerDetector != null)
         {
             stateMachine.Initialize(playerDetector, detectionRadius, playerHealth);
-            Debug.Log($"[{gameObject.name}] Initialized StateMachine with detection range: {detectionRadius}m, playerDetector={playerDetector != null}, playerHealth={playerHealth != null}");
+            
+            // Subscribe to state machine events for proper movement control
+            stateMachine.OnResumePathMovement += HandleResumePathMovement;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Clean up event subscriptions to prevent memory leaks
+        if (enemyMovement != null)
+        {
+            enemyMovement.OnFinalWaypointReached -= HandleFinalWaypointReached;
+        }
+        
+        if (stateMachine != null)
+        {
+            stateMachine.OnResumePathMovement -= HandleResumePathMovement;
+        }
+    }
+
+    /// <summary>
+    /// Handles when enemy reaches the final waypoint
+    /// Notifies spawner to despawn this enemy
+    /// </summary>
+    private void HandleFinalWaypointReached()
+    {
+        if (spawner != null)
+        {
+            spawner.OnEnemyReachedEnd(this);
+        }
+        else
+        {
+            // If no spawner reference, destroy self directly
+            Debug.LogWarning($"Enemy '{gameObject.name}' reached end but has no spawner reference. Destroying self.");
+            Destroy(gameObject);
+        }
+    }
+
+    /// <summary>
+    /// Handles resuming waypoint movement after disengaging from player
+    /// </summary>
+    private void HandleResumePathMovement(Vector3 currentPosition)
+    {
+        if (enemyMovement != null)
+        {
+            // Resume movement and find nearest waypoint ahead
+            enemyMovement.ResumeMovement();
+            enemyMovement.ResumeFromNearestWaypoint(currentPosition);
         }
     }
 
@@ -195,20 +245,14 @@ public class Enemy : MonoBehaviour
         Vector3 playerPosition = Vector3.zero;
         bool havePlayerPosition = false;
         
-        // Priority 1: Main Camera (where the player actually is looking from)
-        if (Camera.main != null)
-        {
-            playerPosition = Camera.main.transform.position;
-            havePlayerPosition = true;
-        }
-        // Priority 2: PlayerHealth singleton transform
-        else if (playerHealth != null)
+        // Priority 1: PlayerHealth singleton transform (most reliable in VR)
+        if (playerHealth != null)
         {
             playerPosition = playerHealth.transform.position;
             havePlayerPosition = true;
         }
-        // Priority 3: XR Origin (VR body root)
-        else 
+        // Priority 2: XR Origin (VR body root)
+        else
         {
             GameObject xrOrigin = GameObject.Find("XR Origin") ?? GameObject.Find("XROrigin");
             if (xrOrigin != null)
@@ -216,7 +260,13 @@ public class Enemy : MonoBehaviour
                 playerPosition = xrOrigin.transform.position;
                 havePlayerPosition = true;
             }
-            // Priority 4: Tagged Player
+            // Priority 3: Main Camera (fallback for non-VR)
+            else if (Camera.main != null)
+            {
+                playerPosition = Camera.main.transform.position;
+                havePlayerPosition = true;
+            }
+            // Priority 4: Tagged Player (final fallback)
             else
             {
                 GameObject playerObj = null;
@@ -232,7 +282,6 @@ public class Enemy : MonoBehaviour
 
         if (havePlayerPosition)
         {
-            Debug.Log($"[{gameObject.name}] Updating state with player at {playerPosition}");
             stateMachine.UpdateState(playerPosition);
             
             // Handle attack logic if in Attacking state
@@ -351,6 +400,12 @@ public class Enemy : MonoBehaviour
             Debug.LogWarning($"[{gameObject.name}] Cannot attack: missing data, player transform, or player health");
             return;
         }
+        
+        // Don't attack if player is immune
+        if (playerHealthRef.IsImmune)
+        {
+            return;
+        }
 
         // Update cooldown timer
         if (attackCooldownTimer > 0f)
@@ -361,13 +416,9 @@ public class Enemy : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
         float attackRange = enemyData.AttackRange;
 
-        Debug.Log($"[{gameObject.name}] Attacking state: distance={distanceToPlayer:F1}m, attack range={attackRange}m");
-
         // Check if player is in attack range
         if (distanceToPlayer <= attackRange)
         {
-            Debug.Log($"[{gameObject.name}] Player in attack range! Attacking!");
-            
             // Pause movement to focus on attacking
             if (enemyMovement != null)
             {
@@ -385,7 +436,6 @@ public class Enemy : MonoBehaviour
                 if (playerHealthRef.IsAlive())
                 {
                     playerHealthRef.Damage(enemyData.AttackDamage);
-                    Debug.Log($"[{gameObject.name}] Hit player for {enemyData.AttackDamage} damage!");
                     attackCooldownTimer = enemyData.AttackCooldown;
                 }
             }
@@ -393,8 +443,6 @@ public class Enemy : MonoBehaviour
         else
         {
             // Too far to attack, move toward player
-            Debug.Log($"[{gameObject.name}] Chasing player (distance {distanceToPlayer:F1}m > {attackRange}m)");
-            
             // Resume movement toward player
             if (enemyMovement != null)
             {

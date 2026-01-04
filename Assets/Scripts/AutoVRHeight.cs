@@ -74,5 +74,40 @@ public class AutoVRHeight : MonoBehaviour
             Debug.Log($"[AutoVRHeight] Directly set CameraFloorOffsetObject.localPosition.y = {height}");
         }
         Debug.Log($"[AutoVRHeight] Set Offset to {height} & Mode to {rig.RequestedTrackingOriginMode} ({reason})");
+        
+        // If we are setting real VR height (meaning headset is active), disable the simulator
+        if (height == 0f || reason.Contains("Quest") || reason.Contains("Link"))
+        {
+            DisableSimulator();
+        }
+    }
+
+    /// <summary>
+    /// Disables the XR Device Simulator if found in the scene to prevent camera overriding
+    /// </summary>
+    private void DisableSimulator()
+    {
+        // Find by name "XR Interaction Simulator" or type
+        GameObject simObj = GameObject.Find("XR Interaction Simulator");
+        if (simObj != null)
+        {
+            simObj.SetActive(false);
+            Debug.Log("[AutoVRHeight] Disabled 'XR Interaction Simulator' because real headset is active.");
+        }
+        else
+        {
+            // Try to find by component type via reflection to avoid dependency issues if assembly not referenced
+            // The type is usually UnityEngine.XR.Interaction.Toolkit.Inputs.Simulation.XRDeviceSimulator
+            MonoBehaviour[] allScripts = FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None);
+            foreach (var script in allScripts)
+            {
+                if (script.GetType().Name == "XRDeviceSimulator")
+                {
+                    script.gameObject.SetActive(false);
+                    Debug.Log($"[AutoVRHeight] Disabled simulator object '{script.gameObject.name}' via type check.");
+                    break;
+                }
+            }
+        }
     }
 }

@@ -323,6 +323,11 @@ public class EnemySpawner : MonoBehaviour
 
     public void OnEnemyReachedEnd(Enemy enemy)
     {
+        if (enemy != null)
+        {
+            Debug.Log($"Enemy '{enemy.gameObject.name}' reached end of path. Despawning.");
+            Destroy(enemy.gameObject, 0.1f); // Small delay to allow event processing to complete
+        }
     }
     
     public void SetEnemiesToSpawn(int count) { enemiesToSpawn = count; }

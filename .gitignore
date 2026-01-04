@@ -109,3 +109,4 @@ Thumbs.db
 
 # Visual Studio solution extras
 *.slnx
+*.agent
