@@ -131,10 +131,10 @@ public class EnemyMovementTests
         // The actual waypoint progression requires NavMesh simulation
         
         // Assert - structure is initialized correctly
-        Assert.IsNotNull(enemyMovement.OnWaypointReached, 
-            "OnWaypointReached event should exist");
-        Assert.IsNotNull(enemyMovement.OnFinalWaypointReached, 
-            "OnFinalWaypointReached event should exist");
+        // We cannot check event subscriptions directly, but we can verify
+        // that our local tracking variables haven't been triggered yet (since we haven't reached destination)
+        Assert.IsFalse(finalWaypointReached, "Should not have reached final waypoint just by updating once");
+        Assert.AreEqual(0, waypointReachedCount, "Should not have reached any waypoints yet");
     }
 
     /// <summary>
@@ -243,5 +243,31 @@ public class EnemyMovementTests
         // The nearest forward waypoint should be 2
         Assert.AreEqual(2, nearestWaypointIndex,
             "Should find waypoint 2 as nearest waypoint ahead, not backtrack to 0 or 1");
+    }
+
+    [Test]
+    public void EnemyMovement_UsesEnemyDataSpeed_NotInspectorValue()
+    {
+        // Arrange
+        var data = ScriptableObject.CreateInstance<EnemyData>();
+        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+            ?.SetValue(data, 5f);
+        
+        // Act
+        enemyMovement.Initialize(testWaypoints, data);
+        
+        // Assert: Verify moveSpeed is loaded from EnemyData (5f)
+        var moveSpeedField = typeof(EnemyMovement).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        float actualSpeed = (float)moveSpeedField?.GetValue(enemyMovement);
+        Assert.AreEqual(5f, actualSpeed, "moveSpeed should be loaded from EnemyData (5f)");
+        
+        Object.DestroyImmediate(data);
+    }
+
+    [Test]
+    public void EnemyMovement_UpdateMovement_FailsIfInitializedWithoutData()
+    {
+        // Act & Assert: Should not throw exception, should handle gracefully
+        Assert.DoesNotThrow(() => enemyMovement.UpdateMovement());
     }
 }
