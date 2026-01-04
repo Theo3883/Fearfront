@@ -10327,7 +10327,7 @@ RectTransform:
   m_GameObject: {fileID: 741694672}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 1, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1091009339}
@@ -19903,7 +19903,6 @@ GameObject:
   - component: {fileID: 1091009337}
   - component: {fileID: 1091009336}
   - component: {fileID: 1091009341}
-  - component: {fileID: 1091009342}
   m_Layer: 5
   m_Name: Death Overlay UI
   m_TagString: Untagged
@@ -20012,18 +20011,6 @@ MonoBehaviour:
   targetToFollow: {fileID: 0}
   positionSmoothSpeed: 100
   rotationSmoothSpeed: 100
---- !u!114 &1091009342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1091009335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98cac6c79824d6846a21b604453de7b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::UIAlwaysOnTop
 --- !u!1001 &1108722784
 PrefabInstance:
   m_ObjectHideFlags: 0
