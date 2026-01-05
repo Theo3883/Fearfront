@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4000012355355172}
+  - component: {fileID: 1686366053323788020}
+  - component: {fileID: 2383515184495754171}
   m_Layer: 0
   m_Name: Turret 1c
   m_TagString: Untagged
@@ -32,6 +34,49 @@ Transform:
   - {fileID: 4000013875459528}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1686366053323788020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010378282670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 938fa42f0732144fb9a1d96f6886d826, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TowerScript
+  projectile: {fileID: 2806564707028152541, guid: 940f3ebd82bb29147973ff68933eda13, type: 3}
+  gun: {fileID: 0}
+  turretPivot: {fileID: 0}
+  muzzleLocalOffset: {x: 0, y: 0, z: 0.5}
+  fireIntervalSeconds: 2
+  turnSpeed: 20
+  detectionRadius: 15
+  enemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!135 &2383515184495754171
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000010378282670}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 23.3
+  m_Center: {x: 15.8, y: 4.5, z: 1.48}
 --- !u!1 &1000010548752912
 GameObject:
   m_ObjectHideFlags: 0
