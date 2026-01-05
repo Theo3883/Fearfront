@@ -656,6 +656,7 @@ GameObject:
   - component: {fileID: 7492376896275397741}
   - component: {fileID: 743525482133860967}
   - component: {fileID: -3185168252774851812}
+  - component: {fileID: 5007967204009271324}
   m_Layer: 7
   m_Name: Spider
   m_TagString: Enemy
@@ -978,6 +979,24 @@ MonoBehaviour:
   explosionForce: 1
   dismantleDelay: 2
   sinkSpeed: 1
+--- !u!114 &5007967204009271324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946628644984969152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e2180581d194122b12bb7735f57703, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::EnemyAnimatorSpeedSync
+  agent: {fileID: 0}
+  referenceMoveSpeed: 5
+  animSpeedAtReference: 1
+  minAnimSpeed: 0.25
+  maxAnimSpeed: 2
+  smoothing: 12
 --- !u!1 &8590256008144508787
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,14 +15,21 @@ public class TowerScript : MonoBehaviour
     [SerializeField] private float projectileDamage = 5f; // set different values on Turret 1a/1b/1c/1d prefabs
 
     [Header("Aiming")]
-    [SerializeField] private float turnSpeed = 8f; // higher = snappier
+    [SerializeField] private float turnSpeed = 8f; // higher = snappier (smoothing factor)
+    [SerializeField] private float turretYawOffsetDegrees = 0f; // set to 90/-90 if the model faces sideways
+    [SerializeField] private bool rotateGunPitch = true;
+    [SerializeField] private float gunPitchSpeed = 10f; // higher = snappier
+    [SerializeField] private float gunPitchOffsetDegrees = 0f; // set if gun points slightly up/down by default
 
     [Header("Detection (fallback)")]
     [SerializeField] private float detectionRadius = 15f;
     [SerializeField] private LayerMask enemyLayerMask = 0; // if 0, we'll try auto-mask "Enemy"
+    [SerializeField] private bool retargetOnlyOnNewDetection = true; // avoids jitter: don't switch targets every frame
     private SphereCollider rangeTrigger;
 
     List<GameObject> enemies = new List<GameObject>();
+
+    private Quaternion gunInitialLocalRotation = Quaternion.identity;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +46,8 @@ public class TowerScript : MonoBehaviour
         {
             enemyLayerMask = LayerMask.GetMask("Enemy");
         }
+
+        if (gun != null) gunInitialLocalRotation = gun.localRotation;
         StartCoroutine(shootLogic());
     }
 
@@ -54,20 +63,13 @@ public class TowerScript : MonoBehaviour
             RefreshEnemiesInRange();
         }
 
-        desirableEnemy = PickClosestEnemy();
-
-        // Rotate tower to face the currently selected enemy
-        if (desirableEnemy != null)
+        // Keep tracking the same target; only acquire a new one if the current target is gone/out of range.
+        if (desirableEnemy == null || !enemies.Contains(desirableEnemy))
         {
-            Transform pivot = turretPivot != null ? turretPivot : transform;
-            Vector3 toEnemy = desirableEnemy.transform.position - pivot.position;
-            toEnemy.y = 0f; // yaw-only rotation
-            if (toEnemy.sqrMagnitude > 0.0001f)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(toEnemy.normalized, Vector3.up);
-                pivot.rotation = Quaternion.Slerp(pivot.rotation, targetRot, turnSpeed * Time.deltaTime);
-            }
+            desirableEnemy = PickClosestEnemy();
         }
+
+        AimAtEnemy(desirableEnemy);
     }
 
     IEnumerator shootLogic()
@@ -103,12 +105,26 @@ public class TowerScript : MonoBehaviour
         {
             enemies.Add(other.gameObject);
             Debug.Log("INAMIC NOU");
+
+            // Optional: only change target when a NEW enemy is detected.
+            if (retargetOnlyOnNewDetection)
+            {
+                desirableEnemy = other.gameObject;
+            }
+            else if (desirableEnemy == null)
+            {
+                desirableEnemy = other.gameObject;
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
         enemies.Remove(other.gameObject);
+        if (desirableEnemy == other.gameObject)
+        {
+            desirableEnemy = null;
+        }
     }
 
     private GameObject PickClosestEnemy()
@@ -153,6 +169,54 @@ public class TowerScript : MonoBehaviour
                 enemies.Add(go);
             }
         }
+    }
+
+    private void AimAtEnemy(GameObject enemy)
+    {
+        if (enemy == null) return;
+
+        Vector3 aimPoint = GetEnemyAimPoint(enemy);
+
+        // ---- Yaw (turretPivot) ----
+        Transform yawPivot = turretPivot != null ? turretPivot : transform;
+
+        Vector3 toEnemyWorld = aimPoint - yawPivot.position;
+        toEnemyWorld.y = 0f; // yaw-only
+        if (toEnemyWorld.sqrMagnitude < 0.0001f) return;
+
+        Quaternion desiredYawWorld =
+            Quaternion.LookRotation(toEnemyWorld.normalized, Vector3.up) *
+            Quaternion.Euler(0f, turretYawOffsetDegrees, 0f);
+
+        float yawT = 1f - Mathf.Exp(-Mathf.Max(0.01f, turnSpeed) * Time.deltaTime);
+        yawPivot.rotation = Quaternion.Slerp(yawPivot.rotation, desiredYawWorld, yawT);
+
+        // ---- Pitch (gun) ----
+        if (!rotateGunPitch || gun == null) return;
+
+        Vector3 toEnemyFromGunWorld = aimPoint - gun.position;
+        if (toEnemyFromGunWorld.sqrMagnitude < 0.0001f) return;
+
+        // Compute pitch in gun parent local space, then apply only X rotation (keeps yaw handled by turret pivot).
+        Transform gunParent = gun.parent;
+        Vector3 toEnemyFromGunLocal = gunParent != null
+            ? gunParent.InverseTransformDirection(toEnemyFromGunWorld.normalized)
+            : toEnemyFromGunWorld.normalized;
+
+        float horizontal = new Vector2(toEnemyFromGunLocal.x, toEnemyFromGunLocal.z).magnitude;
+        float pitchAngle = -Mathf.Atan2(toEnemyFromGunLocal.y, Mathf.Max(0.0001f, horizontal)) * Mathf.Rad2Deg;
+
+        Quaternion desiredGunLocal = gunInitialLocalRotation * Quaternion.Euler(pitchAngle + gunPitchOffsetDegrees, 0f, 0f);
+        float pitchT = 1f - Mathf.Exp(-Mathf.Max(0.01f, gunPitchSpeed) * Time.deltaTime);
+        gun.localRotation = Quaternion.Slerp(gun.localRotation, desiredGunLocal, pitchT);
+    }
+
+    private static Vector3 GetEnemyAimPoint(GameObject enemy)
+    {
+        if (enemy == null) return Vector3.zero;
+        Collider c = enemy.GetComponentInChildren<Collider>();
+        if (c != null) return c.bounds.center;
+        return enemy.transform.position;
     }
 
     private static Transform FindChildByName(Transform root, string childName)

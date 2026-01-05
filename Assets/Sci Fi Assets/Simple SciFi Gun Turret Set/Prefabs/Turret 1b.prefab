@@ -324,12 +324,17 @@ MonoBehaviour:
   turretPivot: {fileID: 4000013728231090}
   muzzleLocalOffset: {x: 0, y: 0, z: 0.5}
   fireIntervalSeconds: 2
-  projectileDamage: 10
+  projectileDamage: 1
   turnSpeed: 50
+  turretYawOffsetDegrees: -90
+  rotateGunPitch: 1
+  gunPitchSpeed: 10
+  gunPitchOffsetDegrees: 0
   detectionRadius: 15
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  retargetOnlyOnNewDetection: 1
 --- !u!135 &8148391839304704831
 SphereCollider:
   m_ObjectHideFlags: 0
