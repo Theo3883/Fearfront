@@ -12,6 +12,7 @@ public class TowerScript : MonoBehaviour
     [SerializeField] private Transform turretPivot; // optional: child named "Turret" in the sci-fi prefab
     [SerializeField] private Vector3 muzzleLocalOffset = new Vector3(0f, 0f, 0.5f); // pushes spawn forward from gun pivot
     [SerializeField] private float fireIntervalSeconds = 2f;
+    [SerializeField] private float projectileDamage = 5f; // set different values on Turret 1a/1b/1c/1d prefabs
 
     [Header("Aiming")]
     [SerializeField] private float turnSpeed = 8f; // higher = snappier
@@ -88,6 +89,7 @@ public class TowerScript : MonoBehaviour
                 ProjectileScript script = newProjectile.GetComponent<ProjectileScript>();
                 if (script!=null)
                 {
+                    script.SetDamage(projectileDamage);
                     script.target = desirableEnemy;
                 }
             }

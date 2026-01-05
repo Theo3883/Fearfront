@@ -51,7 +51,8 @@ MonoBehaviour:
   turretPivot: {fileID: 0}
   muzzleLocalOffset: {x: 0, y: 0, z: 0.5}
   fireIntervalSeconds: 2
-  turnSpeed: 20
+  projectileDamage: 25
+  turnSpeed: 50
   detectionRadius: 15
   enemyLayerMask:
     serializedVersion: 2
