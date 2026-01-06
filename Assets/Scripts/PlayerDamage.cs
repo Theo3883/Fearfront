@@ -48,7 +48,11 @@ public class PlayerDamage : MonoBehaviour
             if (playerRenderer != null)
             {
                 damageMaterial = playerRenderer.material;
-                originalColor = damageMaterial.color;
+                damageMaterial = playerRenderer.material;
+                if (damageMaterial.HasProperty("_BaseColor"))
+                    originalColor = damageMaterial.GetColor("_BaseColor");
+                else if (damageMaterial.HasProperty("_Color"))
+                    originalColor = damageMaterial.color;
             }
         }
     }
@@ -64,7 +68,11 @@ public class PlayerDamage : MonoBehaviour
             {
                 // Lerp back to original color
                 float progress = 1f - (flashTimer / flashDuration);
-                damageMaterial.color = Color.Lerp(damageFlashColor, originalColor, progress);
+                // URP Standard is "_BaseColor", Legacy is "_Color"
+                if (damageMaterial.HasProperty("_BaseColor"))
+                    damageMaterial.SetColor("_BaseColor", Color.Lerp(damageFlashColor, originalColor, progress));
+                else if (damageMaterial.HasProperty("_Color"))
+                    damageMaterial.color = Color.Lerp(damageFlashColor, originalColor, progress);
             }
         }
     }
@@ -119,7 +127,10 @@ public class PlayerDamage : MonoBehaviour
         if (playerRenderer != null && damageMaterial != null)
         {
             flashTimer = flashDuration;
-            damageMaterial.color = damageFlashColor;
+            if (damageMaterial.HasProperty("_BaseColor"))
+                damageMaterial.SetColor("_BaseColor", damageFlashColor);
+            else if (damageMaterial.HasProperty("_Color"))
+                damageMaterial.color = damageFlashColor;
         }
     }
 

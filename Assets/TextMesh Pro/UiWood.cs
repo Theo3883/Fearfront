@@ -5,6 +5,7 @@ using Fearfront.Common;
 public class UIWood : MonoBehaviour
 {
     [SerializeField] private TMP_Text woodText;
+    [SerializeField] private TMP_Text stoneText;
 
     private PlayerInventory inv;
 
@@ -15,12 +16,9 @@ public class UIWood : MonoBehaviour
 
     private void Update()
     {
+        woodText.text = inv.Get(ResourceType.Tree).ToString();
+        stoneText.text = inv.Get(ResourceType.Stone).ToString();   
         if (woodText == null) return;
-
-        if (inv == null)
-        {
-            inv = FindFirstObjectByType<PlayerInventory>();
-        }
 
         if (inv != null)
         {

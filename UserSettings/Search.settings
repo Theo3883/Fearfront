@@ -72,6 +72,8 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
+	"l"
+	"right t"
 	""
 	"left/th"
 	"XRI Default Input Actions"

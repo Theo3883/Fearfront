@@ -4,7 +4,10 @@
     "references": [
         "Unity.XR.Interaction.Toolkit",
         "Unity.XR.CoreUtils",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Unity.TextMeshPro",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.RenderPipelines.Core.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
