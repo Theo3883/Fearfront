@@ -15,6 +15,11 @@ public class TowerScript : MonoBehaviour
     [SerializeField] private float fireIntervalSeconds = 2f;
     [SerializeField] private float projectileDamage = 5f; // set different values on Turret 1a/1b/1c/1d prefabs
 
+    [Header("VFX")]
+    [Tooltip("Optional particle prefab spawned at the muzzle whenever the tower shoots.")]
+    [SerializeField] private GameObject muzzleVfxPrefab;
+    [SerializeField] private bool parentMuzzleVfxToGun = false;
+
     [Header("Aiming")]
     [SerializeField] private float turnSpeed = 8f; // higher = snappier (smoothing factor)
     [SerializeField] private float turretYawOffsetDegrees = 0f; // set to 90/-90 if the model faces sideways
@@ -103,6 +108,8 @@ public class TowerScript : MonoBehaviour
                         spawnPos = gun.TransformPoint(muzzleLocalOffset);
                     }
                 }
+
+                SpawnMuzzleVfx(spawnPos, spawnRot);
 
                 GameObject newProjectile = Instantiate(projectile, spawnPos, spawnRot);
                 ProjectileScript script = newProjectile.GetComponent<ProjectileScript>();
@@ -328,5 +335,42 @@ public class TowerScript : MonoBehaviour
 
         tipPos = bestPoint + dir * Mathf.Max(0f, clearance);
         return true;
+    }
+
+    private void SpawnMuzzleVfx(Vector3 position, Quaternion rotation)
+    {
+        if (muzzleVfxPrefab == null) return;
+
+        Transform parent = (parentMuzzleVfxToGun && gun != null) ? gun : null;
+        GameObject vfx = Instantiate(muzzleVfxPrefab, position, rotation, parent);
+
+        // Auto-destroy after particle finishes (best-effort).
+        float lifetime = GetMaxParticleLifetimeSeconds(vfx);
+        Destroy(vfx, Mathf.Max(0.25f, lifetime));
+    }
+
+    private static float GetMaxParticleLifetimeSeconds(GameObject vfxRoot)
+    {
+        if (vfxRoot == null) return 1f;
+
+        float max = 1f;
+        ParticleSystem[] systems = vfxRoot.GetComponentsInChildren<ParticleSystem>(true);
+        for (int i = 0; i < systems.Length; i++)
+        {
+            if (systems[i] == null) continue;
+            var main = systems[i].main;
+
+            // Duration + startLifetime (max) approximates the time particles are visible.
+            float duration = main.duration;
+            float lifetime = main.startLifetime.constantMax;
+            if (main.startLifetime.mode == ParticleSystemCurveMode.TwoConstants)
+                lifetime = main.startLifetime.constantMax;
+            else if (main.startLifetime.mode == ParticleSystemCurveMode.Constant)
+                lifetime = main.startLifetime.constant;
+
+            max = Mathf.Max(max, duration + lifetime);
+        }
+
+        return max;
     }
 }
