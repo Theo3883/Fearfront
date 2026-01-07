@@ -46,10 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 938fa42f0732144fb9a1d96f6886d826, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TowerScript
-  projectile: {fileID: 2806564707028152541, guid: 940f3ebd82bb29147973ff68933eda13, type: 3}
+  projectile: {fileID: 2673777369835666956, guid: 5ead9ebea2f2f2248ae31fd321cba977, type: 3}
   gun: {fileID: 0}
   turretPivot: {fileID: 0}
   muzzleLocalOffset: {x: 0, y: 0, z: 0.5}
+  muzzleWorldClearance: 0.05
   fireIntervalSeconds: 2
   projectileDamage: 1
   turnSpeed: 50

@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: becc7190f10974146a213eb357ca2a53, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: becc7190f10974146a213eb357ca2a53, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: becc7190f10974146a213eb357ca2a53, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: becc7190f10974146a213eb357ca2a53, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -59,5 +71,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: becc7190f10974146a213eb357ca2a53, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3121611362364970146}
   m_SourcePrefab: {fileID: 100100000, guid: becc7190f10974146a213eb357ca2a53, type: 3}
+--- !u!1 &2673777369835666956 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: becc7190f10974146a213eb357ca2a53, type: 3}
+  m_PrefabInstance: {fileID: 3015797168608199517}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3121611362364970146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2673777369835666956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a10ba97d556044c0dab3d6c429bce27d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::ProjectileScript
+  target: {fileID: 0}
+  speed: 30
+  damage: 5
+  snapToGunTipOnSpawn: 1
+  gunTipForwardClearance: 0.05
+  aimAtColliderCenter: 1
+  aimOffset: {x: 0, y: 0, z: 0}
+  modelRotationOffsetEuler: {x: 0, y: -90, z: -90}
+  useTriggerHits: 1
+  useSpherecastHits: 1
+  debugLogs: 0

@@ -8,9 +8,10 @@ public class TowerScript : MonoBehaviour
 
     [Header("Shooting")]
     [SerializeField] private GameObject projectile;
-    [SerializeField] private Transform gun; // assign in Inspector or auto-found by name "gun"
+    [SerializeField] private Transform gun; // assign in Inspector or auto-found (supports Gun/Gun 1/RotatingGuns/etc.)
     [SerializeField] private Transform turretPivot; // optional: child named "Turret" in the sci-fi prefab
-    [SerializeField] private Vector3 muzzleLocalOffset = new Vector3(0f, 0f, 0.5f); // pushes spawn forward from gun pivot
+    [SerializeField] private Vector3 muzzleLocalOffset = new Vector3(0f, 0f, 0.5f); // fallback when we can't compute tip
+    [SerializeField] private float muzzleWorldClearance = 0.05f; // push slightly beyond the tip so it doesn't spawn inside
     [SerializeField] private float fireIntervalSeconds = 2f;
     [SerializeField] private float projectileDamage = 5f; // set different values on Turret 1a/1b/1c/1d prefabs
 
@@ -35,7 +36,7 @@ public class TowerScript : MonoBehaviour
     {
         if (gun == null)
         {
-            gun = FindChildByName(transform, "gun");
+            gun = FindBestGunTransform(transform);
         }
         if (turretPivot == null)
         {
@@ -84,14 +85,31 @@ public class TowerScript : MonoBehaviour
                     continue;
                 }
 
-                Vector3 spawnPos = gun != null ? gun.TransformPoint(muzzleLocalOffset) : transform.position;
-                Quaternion spawnRot = gun != null ? gun.rotation : transform.rotation;
+                Vector3 spawnPos = transform.position;
+                Quaternion spawnRot = transform.rotation;
+
+                if (gun != null)
+                {
+                    spawnRot = gun.rotation;
+
+                    Vector3 aimPoint = GetEnemyAimPoint(desirableEnemy);
+                    Vector3 dir = aimPoint - gun.position;
+                    if (dir.sqrMagnitude < 0.0001f) dir = gun.forward;
+
+                    // Compute the tip along the actual shot direction (works across different gun axis setups).
+                    if (!TryComputeGunTipWorldPosition(gun, dir.normalized, muzzleWorldClearance, out spawnPos))
+                    {
+                        // Fallback: local offset from gun pivot
+                        spawnPos = gun.TransformPoint(muzzleLocalOffset);
+                    }
+                }
 
                 GameObject newProjectile = Instantiate(projectile, spawnPos, spawnRot);
                 ProjectileScript script = newProjectile.GetComponent<ProjectileScript>();
                 if (script!=null)
                 {
                     script.SetDamage(projectileDamage);
+                    script.SetLaunchGun(gun);
                     script.target = desirableEnemy;
                 }
             }
@@ -232,5 +250,83 @@ public class TowerScript : MonoBehaviour
             if (found != null) return found;
         }
         return null;
+    }
+
+    private static Transform FindBestGunTransform(Transform root)
+    {
+        if (root == null) return null;
+
+        Transform best = null;
+        int bestScore = int.MinValue;
+
+        // Prefer transforms that contain "gun" (Gun / Gun 1 / RotatingGuns / etc.) and have renderers under them.
+        var queue = new System.Collections.Generic.Queue<Transform>();
+        queue.Enqueue(root);
+
+        while (queue.Count > 0)
+        {
+            Transform cur = queue.Dequeue();
+            if (cur == null) continue;
+
+            string n = cur.name ?? string.Empty;
+            string lower = n.ToLowerInvariant();
+            bool nameMatches = lower == "gun" || lower.StartsWith("gun ") || lower.Contains("gun");
+
+            if (nameMatches)
+            {
+                int score = 0;
+                if (lower == "gun") score += 1000;
+                if (lower.StartsWith("gun ")) score += 800;
+                if (lower.Contains("rotatingguns")) score += 700;
+                if (cur.GetComponentInChildren<Renderer>() != null) score += 200;
+                score += cur.childCount; // slight preference for roots with children
+
+                if (score > bestScore)
+                {
+                    bestScore = score;
+                    best = cur;
+                }
+            }
+
+            for (int i = 0; i < cur.childCount; i++)
+                queue.Enqueue(cur.GetChild(i));
+        }
+
+        return best;
+    }
+
+    private static bool TryComputeGunTipWorldPosition(Transform gunRoot, Vector3 directionWorld, float clearance, out Vector3 tipPos)
+    {
+        tipPos = gunRoot != null ? gunRoot.position : Vector3.zero;
+        if (gunRoot == null) return false;
+
+        Renderer[] renderers = gunRoot.GetComponentsInChildren<Renderer>();
+        if (renderers == null || renderers.Length == 0) return false;
+
+        Vector3 dir = directionWorld.sqrMagnitude > 0.0001f ? directionWorld.normalized : gunRoot.forward;
+
+        float bestDot = float.NegativeInfinity;
+        Vector3 bestPoint = gunRoot.position;
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            if (renderers[i] == null) continue;
+            Bounds b = renderers[i].bounds;
+            Vector3 ext = b.extents;
+
+            // Use >= 0 instead of Mathf.Sign to avoid 0 results.
+            Vector3 sign = new Vector3(dir.x >= 0f ? 1f : -1f, dir.y >= 0f ? 1f : -1f, dir.z >= 0f ? 1f : -1f);
+            Vector3 support = b.center + Vector3.Scale(ext, sign);
+
+            float d = Vector3.Dot(support, dir);
+            if (d > bestDot)
+            {
+                bestDot = d;
+                bestPoint = support;
+            }
+        }
+
+        tipPos = bestPoint + dir * Mathf.Max(0f, clearance);
+        return true;
     }
 }

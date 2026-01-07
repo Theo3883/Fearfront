@@ -8,6 +8,11 @@ public class ProjectileScript : MonoBehaviour
     [SerializeField] private float speed = 10f;
     [SerializeField] private float damage = 5f;
 
+    [Header("Launch")]
+    [SerializeField] private bool snapToGunTipOnSpawn = true;
+    [SerializeField] private float gunTipForwardClearance = 0.05f; // push slightly beyond the tip so we don't start inside the mesh
+    private Transform launchGun;
+
     [Header("Aiming")]
     [SerializeField] private bool aimAtColliderCenter = true;
     [SerializeField] private Vector3 aimOffset = Vector3.zero;
@@ -24,6 +29,12 @@ public class ProjectileScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // If TowerScript provided a gun, optionally snap spawn to the tip of the gun mesh.
+        if (snapToGunTipOnSpawn && launchGun != null)
+        {
+            SnapToGunTip(launchGun);
+        }
+
         // If we rely on trigger hits, ensure our collider is a trigger.
         if (useTriggerHits)
         {
@@ -137,5 +148,56 @@ public class ProjectileScript : MonoBehaviour
     public void SetDamage(float dmg)
     {
         damage = Mathf.Max(0f, dmg);
+    }
+
+    // Set by TowerScript on spawn so we can compute the gun tip accurately.
+    public void SetLaunchGun(Transform gunTransform)
+    {
+        launchGun = gunTransform;
+    }
+
+    private void SnapToGunTip(Transform gunTransform)
+    {
+        if (gunTransform == null) return;
+
+        // Try to find renderers under the gun (the prefab gun is named "Gun" and has a MeshRenderer).
+        Renderer[] renderers = gunTransform.GetComponentsInChildren<Renderer>();
+        if (renderers == null || renderers.Length == 0)
+        {
+            // Fallback: at least match gun position/rotation.
+            transform.SetPositionAndRotation(gunTransform.position, gunTransform.rotation);
+            return;
+        }
+
+        // Use the actual shot direction if we already have a target; this makes it consistent across turret variants.
+        Vector3 dir = gunTransform.forward.normalized;
+        if (target != null)
+        {
+            Vector3 aimPoint = GetAimPoint(target) + aimOffset;
+            Vector3 to = aimPoint - gunTransform.position;
+            if (to.sqrMagnitude > 0.0001f) dir = to.normalized;
+        }
+        float bestDot = float.NegativeInfinity;
+        Vector3 bestPoint = gunTransform.position;
+
+        // For each renderer AABB in world space, pick the support point in 'dir' (farthest corner along dir).
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            if (renderers[i] == null) continue;
+            Bounds b = renderers[i].bounds;
+            Vector3 ext = b.extents;
+            // Use >= 0 instead of Mathf.Sign to avoid 0 results (which would bias toward the center).
+            Vector3 sign = new Vector3(dir.x >= 0f ? 1f : -1f, dir.y >= 0f ? 1f : -1f, dir.z >= 0f ? 1f : -1f);
+            Vector3 support = b.center + Vector3.Scale(ext, sign);
+
+            float d = Vector3.Dot(support, dir);
+            if (d > bestDot)
+            {
+                bestDot = d;
+                bestPoint = support;
+            }
+        }
+
+        transform.SetPositionAndRotation(bestPoint + dir * gunTipForwardClearance, gunTransform.rotation);
     }
 }
