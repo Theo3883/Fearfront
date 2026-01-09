@@ -116,7 +116,6 @@ public class TowerScript : MonoBehaviour
                 if (script!=null)
                 {
                     script.SetDamage(projectileDamage);
-                    script.SetLaunchGun(gun);
                     script.target = desirableEnemy;
                 }
             }

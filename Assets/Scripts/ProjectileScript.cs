@@ -9,7 +9,7 @@ public class ProjectileScript : MonoBehaviour
     [SerializeField] private float damage = 5f;
 
     [Header("Launch")]
-    [SerializeField] private bool snapToGunTipOnSpawn = true;
+    [SerializeField] private bool snapToGunTipOnSpawn = false; // TowerScript already spawns at muzzle tip; avoid double-snapping
     [SerializeField] private float gunTipForwardClearance = 0.05f; // push slightly beyond the tip so we don't start inside the mesh
     private Transform launchGun;
 
