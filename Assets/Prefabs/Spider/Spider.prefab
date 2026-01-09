@@ -656,9 +656,10 @@ GameObject:
   - component: {fileID: 7492376896275397741}
   - component: {fileID: 743525482133860967}
   - component: {fileID: -3185168252774851812}
+  - component: {fileID: 5007967204009271324}
   m_Layer: 7
   m_Name: Spider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -714,8 +715,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::Enemy
   enemyData: {fileID: 0}
-  healthMax: 20
-  currentHealth: 20
   playerDetector: {fileID: -3017634517225213077}
   enemyMovement: {fileID: -3699814989102493408}
   stateMachine: {fileID: 7974588008391549182}
@@ -733,14 +732,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Fearfront.Scripts::EnemyMovement
   waypoints: []
   enemyData: {fileID: 0}
-  moveSpeed: 12
-  stoppingDistance: 2.5
-  waypointSpreadRadius: 5
-  separationRadius: 1.5
-  separationWeight: 1.5
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 128
 --- !u!114 &7974588008391549182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -754,7 +745,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::EnemyStateMachine
   playerDetector: {fileID: -3017634517225213077}
-  detectionRange: 0
   playerHealth: {fileID: 0}
 --- !u!114 &-3017634517225213077
 MonoBehaviour:
@@ -989,6 +979,24 @@ MonoBehaviour:
   explosionForce: 1
   dismantleDelay: 2
   sinkSpeed: 1
+--- !u!114 &5007967204009271324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6946628644984969152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e2180581d194122b12bb7735f57703, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::EnemyAnimatorSpeedSync
+  agent: {fileID: 0}
+  referenceMoveSpeed: 5
+  animSpeedAtReference: 1
+  minAnimSpeed: 0.25
+  maxAnimSpeed: 2
+  smoothing: 12
 --- !u!1 &8590256008144508787
 GameObject:
   m_ObjectHideFlags: 0
