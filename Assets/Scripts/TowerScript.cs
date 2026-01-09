@@ -128,7 +128,6 @@ public class TowerScript : MonoBehaviour
         if (other.CompareTag("Enemy") && !enemies.Contains(other.gameObject))
         {
             enemies.Add(other.gameObject);
-            Debug.Log("INAMIC NOU");
 
             // Optional: only change target when a NEW enemy is detected.
             if (retargetOnlyOnNewDetection)
