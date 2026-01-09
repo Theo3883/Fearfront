@@ -225,8 +225,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TowerScript
   projectile: {fileID: 6240569849440664500, guid: 5d38f0da1bcb7e94da74b6e2a5377037, type: 3}
-  gun: {fileID: 0}
-  turretPivot: {fileID: 0}
+  gun: {fileID: 4000012378430878}
+  turretPivot: {fileID: 4000010388087656}
   muzzleLocalOffset: {x: 0, y: 0, z: 0.5}
   muzzleWorldClearance: 0.05
   fireIntervalSeconds: 2
@@ -262,8 +262,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 23.3
-  m_Center: {x: 15.8, y: 4.5, z: 1.48}
+  m_Radius: 30
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1000012439138410
 GameObject:
   m_ObjectHideFlags: 0
