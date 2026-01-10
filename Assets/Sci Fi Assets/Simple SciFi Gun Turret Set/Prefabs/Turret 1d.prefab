@@ -230,7 +230,7 @@ MonoBehaviour:
   muzzleLocalOffset: {x: 0, y: 0, z: 0.5}
   muzzleWorldClearance: 0.05
   fireIntervalSeconds: 2
-  projectileDamage: 1
+  projectileDamage: 40
   muzzleVfxPrefab: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
   parentMuzzleVfxToGun: 1
   turnSpeed: 50

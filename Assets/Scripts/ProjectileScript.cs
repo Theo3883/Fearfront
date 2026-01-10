@@ -6,7 +6,7 @@ public class ProjectileScript : MonoBehaviour
 {
     public GameObject target;
     [SerializeField] private float speed = 10f;
-    [SerializeField] private float damage = 5f;
+    private float damage;
 
     [Header("Launch")]
     [SerializeField] private bool snapToGunTipOnSpawn = false; // TowerScript already spawns at muzzle tip; avoid double-snapping

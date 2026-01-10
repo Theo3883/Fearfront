@@ -112,8 +112,10 @@ public class TowerScript : MonoBehaviour
                 SpawnMuzzleVfx(spawnPos, spawnRot);
 
                 GameObject newProjectile = Instantiate(projectile, spawnPos, spawnRot);
-                ProjectileScript script = newProjectile.GetComponent<ProjectileScript>();
-                if (script!=null)
+
+                // Some projectile prefabs may put the script on a child; be robust.
+                ProjectileScript script = newProjectile.GetComponentInChildren<ProjectileScript>();
+                if (script != null)
                 {
                     script.SetDamage(projectileDamage);
                     script.target = desirableEnemy;
