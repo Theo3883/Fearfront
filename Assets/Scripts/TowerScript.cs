@@ -19,6 +19,8 @@ public class TowerScript : MonoBehaviour
     [Tooltip("Optional particle prefab spawned at the muzzle whenever the tower shoots.")]
     [SerializeField] private GameObject muzzleVfxPrefab;
     [SerializeField] private bool parentMuzzleVfxToGun = false;
+    [SerializeField] private bool forceMuzzleVfxOneShot = true;
+    [SerializeField] private bool forceMuzzleVfxUrpMaterial = true;
 
     [Header("Aiming")]
     [SerializeField] private float turnSpeed = 8f; // higher = snappier (smoothing factor)
@@ -344,6 +346,16 @@ public class TowerScript : MonoBehaviour
         Transform parent = (parentMuzzleVfxToGun && gun != null) ? gun : null;
         GameObject vfx = Instantiate(muzzleVfxPrefab, position, rotation, parent);
 
+        if (forceMuzzleVfxOneShot)
+        {
+            ForceOneShot(vfx);
+        }
+
+        if (forceMuzzleVfxUrpMaterial)
+        {
+            ForceUrpParticleMaterials(vfx);
+        }
+
         // Auto-destroy after particle finishes (best-effort).
         float lifetime = GetMaxParticleLifetimeSeconds(vfx);
         Destroy(vfx, Mathf.Max(0.25f, lifetime));
@@ -372,5 +384,111 @@ public class TowerScript : MonoBehaviour
         }
 
         return max;
+    }
+
+    private static void ForceOneShot(GameObject vfxRoot)
+    {
+        if (vfxRoot == null) return;
+        ParticleSystem[] systems = vfxRoot.GetComponentsInChildren<ParticleSystem>(true);
+        for (int i = 0; i < systems.Length; i++)
+        {
+            var ps = systems[i];
+            if (ps == null) continue;
+            var main = ps.main;
+            main.loop = false;
+            main.playOnAwake = false;
+            ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            ps.Play(true);
+        }
+    }
+
+    // Cache converted materials so we don't allocate one per shot.
+    private static readonly Dictionary<int, Material> UrpMatCache = new Dictionary<int, Material>();
+
+    private static void ForceUrpParticleMaterials(GameObject vfxRoot)
+    {
+        if (vfxRoot == null) return;
+
+        ParticleSystemRenderer[] renderers = vfxRoot.GetComponentsInChildren<ParticleSystemRenderer>(true);
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            var r = renderers[i];
+            if (r == null) continue;
+
+            Material src = r.sharedMaterial;
+            if (src == null) continue;
+
+            Shader sh = src.shader;
+            bool supported = sh != null && sh.isSupported;
+            bool looksWrongPipeline = sh != null && (sh.name.IndexOf("HDRP", System.StringComparison.OrdinalIgnoreCase) >= 0);
+
+            // If shader is missing/unsupported/HDRP, swap to URP particle shader.
+            if (!supported || looksWrongPipeline)
+            {
+                int key = src.GetInstanceID();
+                if (!UrpMatCache.TryGetValue(key, out Material urpMat) || urpMat == null)
+                {
+                    urpMat = BuildUrpParticleMaterialFrom(src);
+                    if (urpMat != null)
+                        UrpMatCache[key] = urpMat;
+                }
+
+                if (urpMat != null)
+                {
+                    r.sharedMaterial = urpMat;
+                }
+            }
+        }
+    }
+
+    private static Material BuildUrpParticleMaterialFrom(Material src)
+    {
+        if (src == null) return null;
+
+        Shader urp = Shader.Find("Universal Render Pipeline/Particles/Unlit")
+                     ?? Shader.Find("Universal Render Pipeline/Particles/Simple Lit");
+        if (urp == null) return null;
+
+        var m = new Material(urp)
+        {
+            name = $"{src.name}_URP(Runtime)",
+            hideFlags = HideFlags.HideAndDontSave
+        };
+
+        // Texture
+        Texture tex = null;
+        if (src.HasProperty("_BaseMap")) tex = src.GetTexture("_BaseMap");
+        if (tex == null) tex = src.mainTexture;
+        if (tex != null)
+        {
+            if (m.HasProperty("_BaseMap")) m.SetTexture("_BaseMap", tex);
+            else m.mainTexture = tex;
+        }
+
+        // Color
+        Color col = Color.white;
+        if (src.HasProperty("_BaseColor")) col = src.GetColor("_BaseColor");
+        else if (src.HasProperty("_Color")) col = src.GetColor("_Color");
+        if (m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", col);
+        if (m.HasProperty("_Color")) m.SetColor("_Color", col);
+
+        // Try to preserve blending if the properties exist on the URP shader.
+        CopyFloatIfExists(src, m, "_SrcBlend");
+        CopyFloatIfExists(src, m, "_DstBlend");
+        CopyFloatIfExists(src, m, "_ZWrite");
+        CopyFloatIfExists(src, m, "_Surface");
+
+        // Emission (best-effort)
+        if (src.HasProperty("_EmissionColor") && m.HasProperty("_EmissionColor"))
+            m.SetColor("_EmissionColor", src.GetColor("_EmissionColor"));
+
+        return m;
+    }
+
+    private static void CopyFloatIfExists(Material from, Material to, string prop)
+    {
+        if (from == null || to == null) return;
+        if (!from.HasProperty(prop) || !to.HasProperty(prop)) return;
+        to.SetFloat(prop, from.GetFloat(prop));
     }
 }
