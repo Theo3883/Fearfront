@@ -11,7 +11,15 @@ public class SpiderDismantle : MonoBehaviour
     [Header("Dismantle Settings")]
     [SerializeField] private float explosionForce = 1f; // Slight push so they don't land perfectly flat
     [SerializeField] private float dismantleDelay = 2f; // How long they stay on ground before sinking
-    [SerializeField] private float sinkSpeed = 1.0f;    // How fast they sink into the ground
+    [SerializeField] private float sinkSpeed = 1.0f;    // How fast they sink into the ground (units/second)
+    [SerializeField] private float sinkDuration = 3.0f; // How long the sink motion lasts
+
+    public void ConfigureTimings(float newDismantleDelay, float newSinkSpeed, float newSinkDuration)
+    {
+        dismantleDelay = Mathf.Max(0f, newDismantleDelay);
+        sinkSpeed = Mathf.Max(0f, newSinkSpeed);
+        sinkDuration = Mathf.Max(0.01f, newSinkDuration);
+    }
 
     public void ActivateDismantle()
     {
@@ -80,7 +88,7 @@ public class SpiderDismantle : MonoBehaviour
         }
 
         // Sink loop
-        while (timer < 3f) // Sink for 3 seconds
+        while (timer < sinkDuration)
         {
             timer += Time.deltaTime;
             

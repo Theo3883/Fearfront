@@ -387,12 +387,27 @@ public class Enemy : MonoBehaviour
 
         if (spiderDismantle != null)
         {
+            if (enemyData != null && (IsGhostType(enemyData.Type) || IsChickenType(enemyData.Type)))
+            {
+                // Chicken/Ghost meshes tend to have pivots that make them appear to sink too fast.
+                // Slow the motion down while preserving overall sink distance.
+                spiderDismantle.ConfigureTimings(newDismantleDelay: 3f, newSinkSpeed: 0.5f, newSinkDuration: 6f);
+            }
+
             spiderDismantle.ActivateDismantle();
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    private static bool IsChickenType(EnemyType type)
+    {
+        return type == EnemyType.FastChicken
+               || type == EnemyType.TankChicken
+               || type == EnemyType.RabidChicken
+               || type == EnemyType.GiantChicken;
     }
 
     /// <summary>
