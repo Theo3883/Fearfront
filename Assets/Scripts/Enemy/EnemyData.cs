@@ -132,9 +132,9 @@ public class EnemyData : ScriptableObject
             return false;
         }
 
-        if (visualScale < 0.1f || visualScale > 2f)
+        if (visualScale < 0.1f || visualScale > 12f)
         {
-            Debug.LogWarning($"EnemyData '{enemyName}': visualScale should be between 0.1 and 2.0");
+            Debug.LogWarning($"EnemyData '{enemyName}': visualScale should be between 0.1 and 12.0");
             return false;
         }
 

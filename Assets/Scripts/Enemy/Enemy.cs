@@ -92,22 +92,75 @@ public class Enemy : MonoBehaviour
     {
         if (enemyData == null) return;
         
-        // Get visual scale from EnemyData and clamp to reasonable range [0.5, 2.0]
-        float scale = Mathf.Clamp(enemyData.VisualScale, 0.5f, 2.0f);
+        // Get visual scale from EnemyData and clamp to reasonable range [0.5, 12.0]
+        float scale = Mathf.Clamp(enemyData.VisualScale, 0.5f, 12.0f);
         transform.localScale = Vector3.one * scale;
         
         // Apply color from EnemyData to all child renderers
         Color typeColor = enemyData.TypeColor;
+        bool isGhost = IsGhostType(enemyData.Type);
+        Shader urpLit = null;
+        if (isGhost)
+        {
+            urpLit = Shader.Find("Universal Render Pipeline/Lit") ?? Shader.Find("Universal Render Pipeline/Simple Lit");
+        }
+
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
         foreach (Renderer renderer in renderers)
         {
             if (renderer != null)
             {
-                Material mat = new Material(renderer.material);
-                mat.color = typeColor;
-                renderer.material = mat;
+                Material[] shared = renderer.materials;
+                if (shared == null || shared.Length == 0)
+                    continue;
+
+                Material[] tinted = new Material[shared.Length];
+                for (int i = 0; i < shared.Length; i++)
+                {
+                    Material src = shared[i];
+                    if (src == null)
+                    {
+                        tinted[i] = null;
+                        continue;
+                    }
+
+                    Material mat = new Material(src);
+
+                    // Fix Unity "pink" error shader on Ghost prefabs by switching to a URP shader.
+                    // Note: if the prefab was authored for Built-in/HDRP, URP will render it pink until converted.
+                    if (isGhost && urpLit != null)
+                    {
+                        Shader shader = mat.shader;
+                        if (shader == null || shader.name == "Hidden/InternalErrorShader")
+                        {
+                            mat.shader = urpLit;
+                        }
+                    }
+
+                    // Support both Built-in and SRP shaders (URP/HDRP)
+                    if (mat.HasProperty("_Color"))
+                        mat.SetColor("_Color", typeColor);
+                    if (mat.HasProperty("_BaseColor"))
+                        mat.SetColor("_BaseColor", typeColor);
+
+                    // Some shaders use emission for visible tinting
+                    if (mat.HasProperty("_EmissionColor"))
+                    {
+                        mat.SetColor("_EmissionColor", typeColor * 0.35f);
+                        mat.EnableKeyword("_EMISSION");
+                    }
+
+                    tinted[i] = mat;
+                }
+
+                renderer.materials = tinted;
             }
         }
+    }
+
+    private bool IsGhostType(EnemyType type)
+    {
+        return type == EnemyType.WispGhost || type == EnemyType.PhantomGhost || type == EnemyType.PoltergeistGhost || type == EnemyType.ReaperGhost;
     }
 
     /// <summary>
@@ -334,12 +387,27 @@ public class Enemy : MonoBehaviour
 
         if (spiderDismantle != null)
         {
+            if (enemyData != null && (IsGhostType(enemyData.Type) || IsChickenType(enemyData.Type)))
+            {
+                // Chicken/Ghost meshes tend to have pivots that make them appear to sink too fast.
+                // Slow the motion down while preserving overall sink distance.
+                spiderDismantle.ConfigureTimings(newDismantleDelay: 3f, newSinkSpeed: 0.5f, newSinkDuration: 6f);
+            }
+
             spiderDismantle.ActivateDismantle();
         }
         else
         {
             Destroy(gameObject);
         }
+    }
+
+    private static bool IsChickenType(EnemyType type)
+    {
+        return type == EnemyType.FastChicken
+               || type == EnemyType.TankChicken
+               || type == EnemyType.RabidChicken
+               || type == EnemyType.GiantChicken;
     }
 
     /// <summary>
