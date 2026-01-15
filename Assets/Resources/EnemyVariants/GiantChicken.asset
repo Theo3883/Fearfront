@@ -22,4 +22,4 @@ MonoBehaviour:
   attackCooldown: 2.5
   detectionRadius: 22
   typeColor: {r: 1, g: 1, b: 1, a: 1}
-  visualScale: 1.6
+  visualScale: 8.7
