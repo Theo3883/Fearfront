@@ -91,7 +91,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Fearfront.Scripts::ProjectileScript
   target: {fileID: 0}
   speed: 30
-  damage: 5
+  damage: 200
+  snapToGunTipOnSpawn: 0
+  gunTipForwardClearance: 0.05
   aimAtColliderCenter: 1
   aimOffset: {x: 0, y: 0, z: 0}
   modelRotationOffsetEuler: {x: 0, y: 0, z: -90}

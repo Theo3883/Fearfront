@@ -95,7 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Fearfront.Scripts::ProjectileScript
   target: {fileID: 0}
   speed: 30
-  damage: 5
+  damage: 200
   snapToGunTipOnSpawn: 1
   gunTipForwardClearance: 0.05
   aimAtColliderCenter: 1

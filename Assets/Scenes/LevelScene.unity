@@ -197,6 +197,32 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 786714163653625257, guid: 3ac3ac9a73ed17942adb03e7fab6f876, type: 3}
   m_PrefabInstance: {fileID: 3084846}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &20691938 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2793193262906195871, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+  m_PrefabInstance: {fileID: 871414583}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &20691944
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20691938}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.5, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &35089271
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2850,6 +2876,133 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 786714163653625257, guid: 3ac3ac9a73ed17942adb03e7fab6f876, type: 3}
   m_PrefabInstance: {fileID: 253643804}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &267869157 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2446980187900651430, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &267869161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267869157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
+--- !u!114 &267869163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267869157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &267869164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267869157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &267869165
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267869157}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!108 &292434983 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 7742605295972000930, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
@@ -3826,6 +3979,260 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &375003029 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4141058864313150351, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &375003033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375003029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
+--- !u!114 &375003035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375003029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &375003036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375003029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &375003037
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375003029}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
+--- !u!1 &378359694 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2990991723663562626, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &378359698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378359694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
+--- !u!114 &378359700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378359694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &378359701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378359694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &378359702
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378359694}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1001 &410091777
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4322,7 +4729,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2376290239260318639, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2391823400374545823, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4426,7 +4833,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3156330105058338299, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3157740441181497965, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4646,7 +5053,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6025861299557575724, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6029634430525325116, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4868,7 +5275,157 @@ PrefabInstance:
     - {fileID: 3500481355333283581, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5795851941569418902, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 710374890}
+    - targetCorrespondingSourceObject: {fileID: 5795851941569418902, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 710374889}
+    - targetCorrespondingSourceObject: {fileID: 5795851941569418902, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 710374891}
+    - targetCorrespondingSourceObject: {fileID: 4089738107693141298, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1377815144}
+    - targetCorrespondingSourceObject: {fileID: 4089738107693141298, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1377815143}
+    - targetCorrespondingSourceObject: {fileID: 4089738107693141298, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1377815145}
+    - targetCorrespondingSourceObject: {fileID: 2446980187900651430, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 267869161}
+    - targetCorrespondingSourceObject: {fileID: 2446980187900651430, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 267869164}
+    - targetCorrespondingSourceObject: {fileID: 2446980187900651430, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 267869163}
+    - targetCorrespondingSourceObject: {fileID: 2446980187900651430, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 267869165}
+    - targetCorrespondingSourceObject: {fileID: 784324931700643486, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1634589162}
+    - targetCorrespondingSourceObject: {fileID: 784324931700643486, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1634589165}
+    - targetCorrespondingSourceObject: {fileID: 784324931700643486, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1634589164}
+    - targetCorrespondingSourceObject: {fileID: 784324931700643486, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1634589166}
+    - targetCorrespondingSourceObject: {fileID: 6651978689113050150, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 541910294}
+    - targetCorrespondingSourceObject: {fileID: 6651978689113050150, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 541910297}
+    - targetCorrespondingSourceObject: {fileID: 6651978689113050150, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 541910296}
+    - targetCorrespondingSourceObject: {fileID: 6651978689113050150, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 541910298}
+    - targetCorrespondingSourceObject: {fileID: 3227824939497872952, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 789332659}
+    - targetCorrespondingSourceObject: {fileID: 3227824939497872952, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 789332662}
+    - targetCorrespondingSourceObject: {fileID: 3227824939497872952, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 789332661}
+    - targetCorrespondingSourceObject: {fileID: 3227824939497872952, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 789332663}
+    - targetCorrespondingSourceObject: {fileID: 2005894096776991278, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 560364027}
+    - targetCorrespondingSourceObject: {fileID: 2005894096776991278, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 560364030}
+    - targetCorrespondingSourceObject: {fileID: 2005894096776991278, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 560364029}
+    - targetCorrespondingSourceObject: {fileID: 2005894096776991278, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 560364031}
+    - targetCorrespondingSourceObject: {fileID: 3792477327381161047, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1042958195}
+    - targetCorrespondingSourceObject: {fileID: 3792477327381161047, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1042958198}
+    - targetCorrespondingSourceObject: {fileID: 3792477327381161047, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1042958197}
+    - targetCorrespondingSourceObject: {fileID: 3792477327381161047, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1042958199}
+    - targetCorrespondingSourceObject: {fileID: 7024283813546632577, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 561435885}
+    - targetCorrespondingSourceObject: {fileID: 7024283813546632577, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 561435888}
+    - targetCorrespondingSourceObject: {fileID: 7024283813546632577, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 561435887}
+    - targetCorrespondingSourceObject: {fileID: 7024283813546632577, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 561435889}
+    - targetCorrespondingSourceObject: {fileID: 8727543983516378956, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 675086894}
+    - targetCorrespondingSourceObject: {fileID: 8727543983516378956, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 675086897}
+    - targetCorrespondingSourceObject: {fileID: 8727543983516378956, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 675086896}
+    - targetCorrespondingSourceObject: {fileID: 8727543983516378956, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 675086898}
+    - targetCorrespondingSourceObject: {fileID: 416600865910573712, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1060530499}
+    - targetCorrespondingSourceObject: {fileID: 416600865910573712, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1060530502}
+    - targetCorrespondingSourceObject: {fileID: 416600865910573712, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1060530501}
+    - targetCorrespondingSourceObject: {fileID: 416600865910573712, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1060530503}
+    - targetCorrespondingSourceObject: {fileID: 2990991723663562626, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 378359698}
+    - targetCorrespondingSourceObject: {fileID: 2990991723663562626, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 378359701}
+    - targetCorrespondingSourceObject: {fileID: 2990991723663562626, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 378359700}
+    - targetCorrespondingSourceObject: {fileID: 2990991723663562626, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 378359702}
+    - targetCorrespondingSourceObject: {fileID: 4141058864313150351, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 375003033}
+    - targetCorrespondingSourceObject: {fileID: 4141058864313150351, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 375003036}
+    - targetCorrespondingSourceObject: {fileID: 4141058864313150351, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 375003035}
+    - targetCorrespondingSourceObject: {fileID: 4141058864313150351, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 375003037}
   m_SourcePrefab: {fileID: 100100000, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
 --- !u!1 &474212609
 GameObject:
@@ -4895,7 +5452,7 @@ Transform:
   m_GameObject: {fileID: 474212609}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -52, y: 1.37, z: -44.3}
+  m_LocalPosition: {x: -52, y: 1.37, z: -38.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5058,12 +5615,139 @@ Transform:
   m_GameObject: {fileID: 499446246}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 17.8, y: -5.71, z: -125.3}
+  m_LocalPosition: {x: 17.8, y: 3.65, z: -125.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 932205440}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &541910290 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6651978689113050150, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &541910294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541910290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
+--- !u!114 &541910296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541910290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &541910297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541910290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &541910298
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541910290}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1001 &553339837
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5763,6 +6447,260 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1895309329}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &560364023 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2005894096776991278, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &560364027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560364023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
+--- !u!114 &560364029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560364023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &560364030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560364023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &560364031
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560364023}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
+--- !u!1 &561435881 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7024283813546632577, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &561435885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561435881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
+--- !u!114 &561435887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561435881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &561435888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561435881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &561435889
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561435881}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1001 &590443203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9333,6 +10271,133 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 732802153225313535, guid: 45983d80c5d150b458e7d738c0f96602, type: 3}
   m_PrefabInstance: {fileID: 646644389}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &675086890 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8727543983516378956, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &675086894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675086890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
+--- !u!114 &675086896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675086890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &675086897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675086890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &675086898
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675086890}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1 &679568550
 GameObject:
   m_ObjectHideFlags: 0
@@ -9377,6 +10442,121 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &710374883 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5795851941569418902, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &710374889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710374883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &710374890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710374883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &710374891
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710374883}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1 &727502230
 GameObject:
   m_ObjectHideFlags: 0
@@ -9402,11 +10582,55 @@ Transform:
   m_GameObject: {fileID: 727502230}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.8, y: 1.71, z: 91.7}
+  m_LocalPosition: {x: -32.56, y: 1.71, z: 91.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 932205440}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &741687552
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 741687554}
+  - component: {fileID: 741687553}
+  m_Layer: 0
+  m_Name: turretSetupHelper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &741687553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741687552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 432fec4aeaae3c54fa8f258757e2d992, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::SetupAllTurretsVR
+--- !u!4 &741687554
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741687552}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -14.00217, y: 0.18433, z: 5.10919}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &752526423
 GameObject:
@@ -9851,6 +11075,133 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3533340965675811936, guid: 6bf086d42c5c5d645b5ba0ea1df7f189, type: 3}
   m_PrefabInstance: {fileID: 785339501}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &789332655 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3227824939497872952, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &789332659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789332655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
+--- !u!114 &789332661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789332655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &789332662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789332655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &789332663
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789332655}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!43 &800922274
 Mesh:
   m_ObjectHideFlags: 0
@@ -15328,6 +16679,87 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1895309329}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &871414583
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.076337814
+      objectReference: {fileID: 0}
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -19.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.45677546
+      objectReference: {fileID: 0}
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.8895821
+      objectReference: {fileID: 0}
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 125.642
+      objectReference: {fileID: 0}
+    - target: {fileID: 235124637591405255, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 578857894601316477, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_Name
+      value: Home
+      objectReference: {fileID: 0}
+    - target: {fileID: 3281077756191434021, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 4957679861549974123, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      propertyPath: m_InteractionManager
+      value: 
+      objectReference: {fileID: 367148934}
+    m_RemovedComponents:
+    - {fileID: 4325316636050444447, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2793193262906195871, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 20691944}
+  m_SourcePrefab: {fileID: 100100000, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
 --- !u!4 &873971954 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 692119893244112823, guid: db2dc60e6d8293e4a8d55f489aacfebc, type: 3}
@@ -16010,7 +17442,7 @@ Transform:
   m_GameObject: {fileID: 926535568}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.3, y: 1.71, z: -52.9}
+  m_LocalPosition: {x: 11.28, y: 1.71, z: -52.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17587,6 +19019,133 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &1042958191 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3792477327381161047, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1042958195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042958191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
+--- !u!114 &1042958197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042958191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &1042958198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042958191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &1042958199
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042958191}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!43 &1054272981
 Mesh:
   m_ObjectHideFlags: 0
@@ -17765,6 +19324,133 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &1060530495 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 416600865910573712, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1060530499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060530495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
+--- !u!114 &1060530501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060530495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &1060530502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060530495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &1060530503
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060530495}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1001 &1080305842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21204,6 +22890,121 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 3822285115759789203, guid: db2dc60e6d8293e4a8d55f489aacfebc, type: 3}
   m_PrefabInstance: {fileID: 632098027428963234}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1377815137 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4089738107693141298, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1377815143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377815137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &1377815144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377815137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &1377815145
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377815137}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!43 &1384115816
 Mesh:
   m_ObjectHideFlags: 0
@@ -23220,6 +25021,133 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 732802153225313535, guid: 45983d80c5d150b458e7d738c0f96602, type: 3}
   m_PrefabInstance: {fileID: 1603703054}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1634589158 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 784324931700643486, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+  m_PrefabInstance: {fileID: 438412233}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1634589162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634589158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
+--- !u!114 &1634589164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634589158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b086983ac947d4a87165622ed8f32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeVR
+  woodCost: 50
+  stoneCost: 30
+  canUpgradeColor: {r: 0, g: 1, b: 0, a: 1}
+  cannotUpgradeColor: {r: 1, g: 0, b: 0, a: 1}
+  turretRenderer: {fileID: 0}
+--- !u!114 &1634589165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634589158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+--- !u!65 &1634589166
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634589158}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4, z: 3}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1001 &1634621760
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25766,7 +27694,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1937256673}
-  - component: {fileID: 1937256672}
   m_Layer: 0
   m_Name: Upgrade logic
   m_TagString: Untagged
@@ -25774,23 +27701,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1937256672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937256671}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ee07acdf7fe2454a9be2b9748634651, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeTester
-  upgradeIntervalSeconds: 2
-  startImmediately: 1
-  upgradeOnlyTo1b: 0
-  loopGroups: 1
-  includeInactive: 1
 --- !u!4 &1937256673
 Transform:
   m_ObjectHideFlags: 0
@@ -28547,7 +30457,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 393349631286461143, guid: ba8c9dbf529ff144db80b0a13405ecd8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -61.21
+      value: -67.57
       objectReference: {fileID: 0}
     - target: {fileID: 699682661613728199, guid: ba8c9dbf529ff144db80b0a13405ecd8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -28828,3 +30738,5 @@ SceneRoots:
   - {fileID: 6105963916518377611}
   - {fileID: 1937256673}
   - {fileID: 438412233}
+  - {fileID: 871414583}
+  - {fileID: 741687554}

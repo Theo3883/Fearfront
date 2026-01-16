@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::ProjectileScript
   target: {fileID: 0}
-  speed: 30
+  speed: 200
   damage: 5
   snapToGunTipOnSpawn: 1
   gunTipForwardClearance: 0.05
@@ -103,4 +103,4 @@ MonoBehaviour:
   modelRotationOffsetEuler: {x: 0, y: -90, z: -90}
   useTriggerHits: 1
   useSpherecastHits: 1
-  debugLogs: 0
+  debugLogs: 1

@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 469627108257824383}
-  - component: {fileID: 2384234353455112955}
   m_Layer: 0
   m_Name: Towers 11
   m_TagString: Untagged
@@ -36,28 +35,6 @@ Transform:
   - {fileID: 2276551103493867041}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2384234353455112955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 416600865910573712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1 &784324931700643486
 GameObject:
   m_ObjectHideFlags: 0
@@ -67,7 +44,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3090614614999740810}
-  - component: {fileID: 76844085201796307}
   m_Layer: 0
   m_Name: Towers 4
   m_TagString: Untagged
@@ -94,28 +70,6 @@ Transform:
   - {fileID: 2302709700056224051}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &76844085201796307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 784324931700643486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1 &2005894096776991278
 GameObject:
   m_ObjectHideFlags: 0
@@ -125,7 +79,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1189606177066160609}
-  - component: {fileID: 5705107513456203175}
   m_Layer: 0
   m_Name: Towers 7
   m_TagString: Untagged
@@ -152,28 +105,6 @@ Transform:
   - {fileID: 7074216836876489403}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5705107513456203175
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2005894096776991278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1 &2446980187900651430
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +114,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6013305065454095069}
-  - component: {fileID: 7660961738809782119}
   m_Layer: 0
   m_Name: Towers 3
   m_TagString: Untagged
@@ -210,28 +140,6 @@ Transform:
   - {fileID: 6034957012526655613}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7660961738809782119
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2446980187900651430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1 &2990991723663562626
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +149,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2610160446786486315}
-  - component: {fileID: 7338725024382999865}
   m_Layer: 0
   m_Name: Towers 12
   m_TagString: Untagged
@@ -268,28 +175,6 @@ Transform:
   - {fileID: 1190711673734990039}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7338725024382999865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2990991723663562626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1 &3227824939497872952
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,7 +184,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9020471555477480209}
-  - component: {fileID: 2465252533807372158}
   m_Layer: 0
   m_Name: Towers 6
   m_TagString: Untagged
@@ -326,28 +210,6 @@ Transform:
   - {fileID: 2468689730776030949}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2465252533807372158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3227824939497872952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1 &3792477327381161047
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,7 +219,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5311076411295493354}
-  - component: {fileID: 7967054636134599715}
   m_Layer: 0
   m_Name: Towers 8
   m_TagString: Untagged
@@ -384,28 +245,6 @@ Transform:
   - {fileID: 2197032958570262334}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7967054636134599715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3792477327381161047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1 &4089738107693141298
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,7 +254,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4899434091380246016}
-  - component: {fileID: 4361081710470803978}
   m_Layer: 0
   m_Name: Towers 2
   m_TagString: Untagged
@@ -442,28 +280,6 @@ Transform:
   - {fileID: 4295465244566555537}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4361081710470803978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4089738107693141298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1 &4141058864313150351
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,7 +289,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3388563943981980088}
-  - component: {fileID: 2681803315553892498}
   m_Layer: 0
   m_Name: Towers 13
   m_TagString: Untagged
@@ -500,28 +315,6 @@ Transform:
   - {fileID: 6011564281318650279}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2681803315553892498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4141058864313150351}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1 &4609354821447026638
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +368,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2952585233566583763}
-  - component: {fileID: 8615028300901279385}
   m_Layer: 0
   m_Name: Towers 1
   m_TagString: Untagged
@@ -602,28 +394,6 @@ Transform:
   - {fileID: 3152574702640159403}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8615028300901279385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5795851941569418902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1 &6651978689113050150
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,7 +403,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 938697839191495589}
-  - component: {fileID: 4646924938357848521}
   m_Layer: 0
   m_Name: Towers 5
   m_TagString: Untagged
@@ -660,28 +429,6 @@ Transform:
   - {fileID: 8086591129106393544}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4646924938357848521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6651978689113050150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1 &7024283813546632577
 GameObject:
   m_ObjectHideFlags: 0
@@ -691,7 +438,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4609410240306953997}
-  - component: {fileID: 2804735799272378408}
   m_Layer: 0
   m_Name: Towers 9
   m_TagString: Untagged
@@ -718,28 +464,6 @@ Transform:
   - {fileID: 9009739629913691835}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2804735799272378408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7024283813546632577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1 &8727543983516378956
 GameObject:
   m_ObjectHideFlags: 0
@@ -749,7 +473,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6813442630034473765}
-  - component: {fileID: 475565025797124423}
   m_Layer: 0
   m_Name: Towers 10
   m_TagString: Untagged
@@ -776,28 +499,6 @@ Transform:
   - {fileID: 5443748153667612337}
   m_Father: {fileID: 8109181481410407616}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &475565025797124423
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8727543983516378956}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
-  turretAName: Turret 1a
-  turretBName: Turret 1b
-  turretCName: Turret 1c
-  turretDName: Turret 1d
-  activeOnStart: 0
-  enforceEveryFrame: 0
-  turret1a: {fileID: 0}
-  turret1b: {fileID: 0}
-  turret1c: {fileID: 0}
-  turret1d: {fileID: 0}
 --- !u!1001 &198382745378124709
 PrefabInstance:
   m_ObjectHideFlags: 0
