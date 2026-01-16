@@ -89,6 +89,63 @@ public class ChestStorage : MonoBehaviour
         return take;
     }
 
+    /// <summary>
+    /// Withdraws EVERYTHING from the chest into the player's inventory.
+    /// Returns total items moved (sum across types).
+    /// </summary>
+    public int WithdrawAllTo(PlayerInventory inv)
+    {
+        if (inv == null) return 0;
+
+        int movedTotal = 0;
+        for (int i = 0; i < stored.Count; i++)
+        {
+            StoredStack s = stored[i];
+            if (s == null) continue;
+            if (s.amount <= 0) continue;
+
+            int take = s.amount;
+            s.amount = 0;
+            inv.Add(s.type, take);
+            movedTotal += take;
+        }
+
+        if (movedTotal > 0)
+            OnStoredChanged?.Invoke();
+
+        return movedTotal;
+    }
+
+    /// <summary>
+    /// Withdraws up to <paramref name="amountPerType"/> for each stored type into the player's inventory.
+    /// Returns total items moved (sum across types).
+    /// </summary>
+    public int WithdrawSomeTo(PlayerInventory inv, int amountPerType)
+    {
+        if (inv == null) return 0;
+        if (amountPerType <= 0) return 0;
+
+        int movedTotal = 0;
+        for (int i = 0; i < stored.Count; i++)
+        {
+            StoredStack s = stored[i];
+            if (s == null) continue;
+            if (s.amount <= 0) continue;
+
+            int take = Mathf.Min(amountPerType, s.amount);
+            if (take <= 0) continue;
+
+            s.amount -= take;
+            inv.Add(s.type, take);
+            movedTotal += take;
+        }
+
+        if (movedTotal > 0)
+            OnStoredChanged?.Invoke();
+
+        return movedTotal;
+    }
+
     public void AddStored(ResourceType type, int amount)
     {
         if (amount <= 0) return;
