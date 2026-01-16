@@ -17,11 +17,7 @@ public class ChestStorage : MonoBehaviour
     }
 
     [Header("Stored contents (serialized)")]
-    [SerializeField] private List<StoredStack> stored = new List<StoredStack>()
-    {
-        new StoredStack{ type = ResourceType.Tree, amount = 0 },
-        new StoredStack{ type = ResourceType.Stone, amount = 0 },
-    };
+    [SerializeField] private List<StoredStack> stored = new List<StoredStack>();
 
     [Header("Behavior")]
     [SerializeField] private bool depositAllOnActivated = true;
@@ -29,6 +25,17 @@ public class ChestStorage : MonoBehaviour
     public event Action OnStoredChanged;
 
     public int GetStored(ResourceType type) => GetOrCreate(type).amount;
+
+    public System.Collections.Generic.Dictionary<ResourceType,int> GetStoredSnapshot()
+    {
+        var dict = new System.Collections.Generic.Dictionary<ResourceType,int>();
+        for (int i = 0; i < stored.Count; i++)
+        {
+            if (stored[i] == null) continue;
+            dict[stored[i].type] = stored[i].amount;
+        }
+        return dict;
+    }
 
     /// <summary>
     /// Hook this up to your chest interaction (XR Interaction Toolkit event, button, etc.).

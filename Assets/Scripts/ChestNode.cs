@@ -11,11 +11,10 @@ using Fearfront.Common;
 public class ChestNode : MonoBehaviour
 {
     [SerializeField] private ChestStorage storage;
-    [SerializeField] private ResourceType type = ResourceType.Tree;
 
     [Header("Deposit")]
-    [SerializeField] private int amountPerActivate = 10;
-    [SerializeField] private int maxStoredForThisType = 200; // capacity for this type in this chest
+    [SerializeField] private int amountPerActivatePerType = 10;
+    [SerializeField] private int maxStoredPerType = 200; // capacity per resource type in this chest
 
     [Header("Optional feedback")]
     [SerializeField] private ParticleSystem depositFx;
@@ -45,15 +44,29 @@ public class ChestNode : MonoBehaviour
             return;
         }
 
-        int current = storage.GetStored(type);
-        int spaceLeft = Mathf.Max(0, maxStoredForThisType - current);
-        if (spaceLeft <= 0) return;
+        // Deposit from inventory into chest for ALL types currently present in the inventory.
+        var snapshot = inv.GetSnapshot();
+        bool movedAnything = false;
 
-        int toTake = Mathf.Min(amountPerActivate, spaceLeft);
-        int moved = inv.RemoveUpTo(type, toTake);
-        if (moved <= 0) return;
+        foreach (var kv in snapshot)
+        {
+            ResourceType type = kv.Key;
+            int have = kv.Value;
+            if (have <= 0) continue;
 
-        storage.AddStored(type, moved);
+            int currentStored = storage.GetStored(type);
+            int spaceLeft = Mathf.Max(0, maxStoredPerType - currentStored);
+            if (spaceLeft <= 0) continue;
+
+            int toTake = Mathf.Min(amountPerActivatePerType, Mathf.Min(spaceLeft, have));
+            int moved = inv.RemoveUpTo(type, toTake);
+            if (moved <= 0) continue;
+
+            storage.AddStored(type, moved);
+            movedAnything = true;
+        }
+
+        if (!movedAnything) return;
 
         if (depositFx != null)
         {

@@ -10,6 +10,7 @@ public class UIChestContents : MonoBehaviour
 {
     [SerializeField] private TMP_Text woodText;
     [SerializeField] private TMP_Text stoneText;
+    [SerializeField] private TMP_Text summaryText; // optional: shows all stored types
     [SerializeField] private ChestStorage chest;
 
     private void Awake()
@@ -38,6 +39,18 @@ public class UIChestContents : MonoBehaviour
         if (chest == null) return;
         if (woodText != null) woodText.text = chest.GetStored(ResourceType.Tree).ToString();
         if (stoneText != null) stoneText.text = chest.GetStored(ResourceType.Stone).ToString();
+
+        if (summaryText != null)
+        {
+            var snap = chest.GetStoredSnapshot();
+            // Build a small multi-line list
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            foreach (var kv in snap)
+            {
+                sb.Append(kv.Key).Append(": ").Append(kv.Value).Append('\n');
+            }
+            summaryText.text = sb.ToString().TrimEnd();
+        }
     }
 }
 

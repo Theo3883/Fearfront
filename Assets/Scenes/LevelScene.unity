@@ -2893,15 +2893,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
-  turretGroup: {fileID: 0}
-  playerInventory: {fileID: 0}
-  woodCostFor1b: 10
-  stoneCostFor1b: 5
-  woodCostFor1c: 25
-  stoneCostFor1c: 15
-  woodCostFor1d: 50
-  stoneCostFor1d: 30
-  showDebugMessages: 1
 --- !u!114 &267869163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4005,15 +3996,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
-  turretGroup: {fileID: 0}
-  playerInventory: {fileID: 0}
-  woodCostFor1b: 10
-  stoneCostFor1b: 5
-  woodCostFor1c: 25
-  stoneCostFor1c: 15
-  woodCostFor1d: 50
-  stoneCostFor1d: 30
-  showDebugMessages: 1
 --- !u!114 &375003035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4141,15 +4123,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
-  turretGroup: {fileID: 0}
-  playerInventory: {fileID: 0}
-  woodCostFor1b: 10
-  stoneCostFor1b: 5
-  woodCostFor1c: 25
-  stoneCostFor1c: 15
-  woodCostFor1d: 50
-  stoneCostFor1d: 30
-  showDebugMessages: 1
 --- !u!114 &378359700
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5665,15 +5638,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
-  turretGroup: {fileID: 0}
-  playerInventory: {fileID: 0}
-  woodCostFor1b: 10
-  stoneCostFor1b: 5
-  woodCostFor1c: 25
-  stoneCostFor1c: 15
-  woodCostFor1d: 50
-  stoneCostFor1d: 30
-  showDebugMessages: 1
 --- !u!114 &541910296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6500,15 +6464,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
-  turretGroup: {fileID: 0}
-  playerInventory: {fileID: 0}
-  woodCostFor1b: 10
-  stoneCostFor1b: 5
-  woodCostFor1c: 25
-  stoneCostFor1c: 15
-  woodCostFor1d: 50
-  stoneCostFor1d: 30
-  showDebugMessages: 1
 --- !u!114 &560364029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6636,15 +6591,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
-  turretGroup: {fileID: 0}
-  playerInventory: {fileID: 0}
-  woodCostFor1b: 10
-  stoneCostFor1b: 5
-  woodCostFor1c: 25
-  stoneCostFor1c: 15
-  woodCostFor1d: 50
-  stoneCostFor1d: 30
-  showDebugMessages: 1
 --- !u!114 &561435887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10342,15 +10288,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
-  turretGroup: {fileID: 0}
-  playerInventory: {fileID: 0}
-  woodCostFor1b: 10
-  stoneCostFor1b: 5
-  woodCostFor1c: 25
-  stoneCostFor1c: 15
-  woodCostFor1d: 50
-  stoneCostFor1d: 30
-  showDebugMessages: 1
 --- !u!114 &675086896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11155,15 +11092,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
-  turretGroup: {fileID: 0}
-  playerInventory: {fileID: 0}
-  woodCostFor1b: 10
-  stoneCostFor1b: 5
-  woodCostFor1c: 25
-  stoneCostFor1c: 15
-  woodCostFor1d: 50
-  stoneCostFor1d: 30
-  showDebugMessages: 1
 --- !u!114 &789332661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16823,7 +16751,8 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 367148934}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4325316636050444447, guid: 8d6f896c2891ab74eb0ceaff7b72ba47, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -19107,15 +19036,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
-  turretGroup: {fileID: 0}
-  playerInventory: {fileID: 0}
-  woodCostFor1b: 10
-  stoneCostFor1b: 5
-  woodCostFor1c: 25
-  stoneCostFor1c: 15
-  woodCostFor1d: 50
-  stoneCostFor1d: 30
-  showDebugMessages: 1
 --- !u!114 &1042958197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19421,15 +19341,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
-  turretGroup: {fileID: 0}
-  playerInventory: {fileID: 0}
-  woodCostFor1b: 10
-  stoneCostFor1b: 5
-  woodCostFor1c: 25
-  stoneCostFor1c: 15
-  woodCostFor1d: 50
-  stoneCostFor1d: 30
-  showDebugMessages: 1
 --- !u!114 &1060530501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25127,15 +25038,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85993b0a3cbdcff489c27da0d03cfc50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::TurretUpgradeManager
-  turretGroup: {fileID: 0}
-  playerInventory: {fileID: 0}
-  woodCostFor1b: 10
-  stoneCostFor1b: 5
-  woodCostFor1c: 25
-  stoneCostFor1c: 15
-  woodCostFor1d: 50
-  stoneCostFor1d: 30
-  showDebugMessages: 1
 --- !u!114 &1634589164
 MonoBehaviour:
   m_ObjectHideFlags: 0
