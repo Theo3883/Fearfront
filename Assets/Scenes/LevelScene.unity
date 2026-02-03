@@ -16916,6 +16916,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1895309329}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &864873467
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 864873469}
+  - component: {fileID: 864873468}
+  m_Layer: 0
+  m_Name: HighlightManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &864873468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 864873467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51c1dfdd392813e4cbce290f80e4be6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::VRHighlightManager
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
+  emissionIntensity: 0.05
+  colorTintStrength: 0.08
+  useOutline: 1
+  outlineWidth: 0.08
+  autoFindInteractors: 1
+  manualInteractors: []
+  debugLog: 0
+--- !u!4 &864873469
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 864873467}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.33377, y: 0.2, z: -2.42079}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &871414583
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31081,3 +31133,4 @@ SceneRoots:
   - {fileID: 438412233}
   - {fileID: 871414583}
   - {fileID: 741687554}
+  - {fileID: 864873469}
