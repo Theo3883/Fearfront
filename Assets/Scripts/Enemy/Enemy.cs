@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
     private bool isDead = false;
     
     private EnemySpawner spawner;
+    private AudioSource audioSource;
     
     // Attack-related fields
     private Transform playerTransform;
@@ -37,6 +38,17 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         spiderDismantle = GetComponent<SpiderDismantle>();
+        
+        // Setup AudioSource
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.spatialBlend = 1.0f; // Full 3D sound
+            audioSource.rolloffMode = AudioRolloffMode.Linear;
+            audioSource.maxDistance = 20f; // Adjusted for detection range usually
+            audioSource.playOnAwake = false;
+        }
         
         // Get component references for coordination
         playerDetector = GetComponent<NavMeshPlayerDetector>();
@@ -233,7 +245,26 @@ public class Enemy : MonoBehaviour
             stateMachine.Initialize(playerDetector, detectionRadius, playerHealth);
             
             // Subscribe to state machine events for proper movement control
+            // Subscribe to state machine events for proper movement control
             stateMachine.OnResumePathMovement += HandleResumePathMovement;
+        }
+
+        // Initialize Audio
+        if (enemyData != null && audioSource != null)
+        {
+            // Play spawn sound
+            if (enemyData.SpawnSound != null)
+            {
+                audioSource.PlayOneShot(enemyData.SpawnSound);
+            }
+
+            // Start ambient loop
+            if (enemyData.AmbientSound != null)
+            {
+                audioSource.clip = enemyData.AmbientSound;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
         }
     }
 
@@ -383,6 +414,20 @@ public class Enemy : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
+        // Play death sound
+        if (enemyData != null && enemyData.DeathSound != null)
+        {
+            if (spiderDismantle != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(enemyData.DeathSound);
+            }
+            else
+            {
+                // Fallback if object is destroyed immediately
+                AudioSource.PlayClipAtPoint(enemyData.DeathSound, transform.position);
+            }
+        }
+
         DisableAllComponents();
 
         if (spiderDismantle != null)
@@ -505,6 +550,11 @@ public class Enemy : MonoBehaviour
                 {
                     playerHealthRef.Damage(enemyData.AttackDamage);
                     attackCooldownTimer = enemyData.AttackCooldown;
+                    
+                    if (audioSource != null && enemyData.AttackSound != null)
+                    {
+                        audioSource.PlayOneShot(enemyData.AttackSound);
+                    }
                 }
             }
         }

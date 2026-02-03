@@ -24,6 +24,12 @@ public class EnemyData : ScriptableObject
     [SerializeField] private Color typeColor = Color.white;
     [SerializeField] private float visualScale = 1f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip spawnSound;
+    [SerializeField] private AudioClip ambientSound;
+    [SerializeField] private AudioClip attackSound;
+    [SerializeField] private AudioClip deathSound;
+
     /// <summary>
     /// Gets the name of this enemy variant
     /// </summary>
@@ -78,6 +84,26 @@ public class EnemyData : ScriptableObject
     /// Gets the visual scale multiplier (0.7 to 1.3)
     /// </summary>
     public float VisualScale => visualScale;
+
+    /// <summary>
+    /// Gets the spawn sound clip
+    /// </summary>
+    public AudioClip SpawnSound => spawnSound;
+
+    /// <summary>
+    /// Gets the ambient loop sound clip
+    /// </summary>
+    public AudioClip AmbientSound => ambientSound;
+
+    /// <summary>
+    /// Gets the attack sound clip
+    /// </summary>
+    public AudioClip AttackSound => attackSound;
+
+    /// <summary>
+    /// Gets the death sound clip
+    /// </summary>
+    public AudioClip DeathSound => deathSound;
 
     /// <summary>
     /// Validates that all values are in reasonable ranges
