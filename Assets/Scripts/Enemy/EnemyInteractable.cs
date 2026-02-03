@@ -17,21 +17,26 @@ public class EnemyInteractable : MonoBehaviour, IHighlightColorProvider
     [SerializeField] private float interactRange = 12f;
     
     [Header("Visual Feedback")]
-    [SerializeField] private Color hoverColor = new Color(1f, 0.3f, 0.3f, 1f);
-    [SerializeField] private Color flashColor = Color.white;
+    [SerializeField] private Color hoverColor = new Color(0.3f, 0.3f, 0.3f, 1f); // Dark tint for enemies
+    [SerializeField] private Color flashColor = Color.red;
+    [SerializeField] private float flashIntensity = 2f;
     [SerializeField] private float flashDuration = 0.15f;
     
     private XRSimpleInteractable interactable;
     private Enemy enemy;
+    private Renderer[] renderers;
     
     /// <summary>
-    /// Returns the highlight color for enemies (red by default).
+    /// Returns the highlight color for enemies (dark tint).
     /// Called by VRHighlightManager when this enemy is hovered.
     /// </summary>
     public Color GetHighlightColor()
     {
+        if (EnemyVisualsConfig.Instance != null)
+            return EnemyVisualsConfig.Instance.HoverDarkenColor;
         return hoverColor;
     }
+    
     private float lastAttackTime = -999f;
     private Coroutine flashCoroutine;
     
@@ -39,41 +44,38 @@ public class EnemyInteractable : MonoBehaviour, IHighlightColorProvider
     {
         interactable = GetComponent<XRSimpleInteractable>();
         enemy = GetComponent<Enemy>();
+        renderers = GetComponentsInChildren<Renderer>();
     }
     
     private void OnEnable()
     {
-        if (interactable == null) return;
-        interactable.activated.AddListener(OnActivated);
+        if (interactable != null) interactable.activated.AddListener(OnActivated);
+        if (enemy != null) enemy.OnHealthChanged += OnHealthChanged;
     }
     
     private void OnDisable()
     {
-        if (interactable == null) return;
-        interactable.activated.RemoveListener(OnActivated);
+        if (interactable != null) interactable.activated.RemoveListener(OnActivated);
+        if (enemy != null) enemy.OnHealthChanged -= OnHealthChanged;
+    }
+
+    private void OnHealthChanged(float current, float max)
+    {
+        // Flash on any damage (health decrease)
+        if (current < max) 
+        {
+            if (flashCoroutine != null) StopCoroutine(flashCoroutine);
+            flashCoroutine = StartCoroutine(FlashHit());
+        }
     }
     
     private void OnActivated(ActivateEventArgs args)
     {
-        Debug.Log($"[EnemyInteractable] Activated on {gameObject.name}");
+        if (enemy == null || enemy.IsDead()) return;
         
-        if (enemy == null || enemy.IsDead())
-        {
-            Debug.Log($"[EnemyInteractable] Skipped: enemy null or dead");
-            return;
-        }
+        if (Time.time - lastAttackTime < attackCooldown) return;
         
-        if (Time.time - lastAttackTime < attackCooldown)
-        {
-            Debug.Log($"[EnemyInteractable] Skipped: cooldown");
-            return;
-        }
-        
-        if (!IsInRange(args.interactorObject))
-        {
-            Debug.Log($"[EnemyInteractable] Skipped: out of range");
-            return;
-        }
+        if (!IsInRange(args.interactorObject)) return;
         
         lastAttackTime = Time.time;
         AttackEnemy();
@@ -92,18 +94,47 @@ public class EnemyInteractable : MonoBehaviour, IHighlightColorProvider
     
     private void AttackEnemy()
     {
+        // Player attacking enemy via VR interaction
         enemy.TakeDamage(attackDamage);
-        
-        if (flashCoroutine != null)
-        {
-            StopCoroutine(flashCoroutine);
-        }
-        flashCoroutine = StartCoroutine(FlashHit());
     }
     
     private IEnumerator FlashHit()
     {
-        yield return new WaitForSeconds(flashDuration);
+        Color color = flashColor;
+        float intensity = flashIntensity;
+        float duration = flashDuration;
+
+        if (EnemyVisualsConfig.Instance != null)
+        {
+            color = EnemyVisualsConfig.Instance.FlashColor;
+            intensity = EnemyVisualsConfig.Instance.FlashIntensity;
+            duration = EnemyVisualsConfig.Instance.FlashDuration;
+        }
+
+        // Enable emission and set color
+        foreach (var r in renderers)
+        {
+            if (r == null) continue;
+            foreach (var mat in r.materials)
+            {
+                mat.EnableKeyword("_EMISSION");
+                mat.SetColor("_EmissionColor", color * intensity);
+            }
+        }
+
+        yield return new WaitForSeconds(duration);
+        
+        // Restore emission (turn off or black)
+        foreach (var r in renderers)
+        {
+            if (r == null) continue;
+            foreach (var mat in r.materials)
+            {
+                mat.SetColor("_EmissionColor", Color.black);
+                mat.DisableKeyword("_EMISSION");
+            }
+        }
+        
         flashCoroutine = null;
     }
 }

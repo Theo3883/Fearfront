@@ -177,6 +177,13 @@ public class EnemySpawner : MonoBehaviour
         {
             newEnemyObject.AddComponent<EnemyInteractable>();
         }
+
+        // Add EnemyHealthBar for floating UI
+        var healthBar = newEnemyObject.GetComponent<EnemyHealthBar>();
+        if (healthBar == null)
+        {
+            newEnemyObject.AddComponent<EnemyHealthBar>();
+        }
         
         // Ensure non-trigger collider exists for raycast detection
         bool hasNonTriggerCollider = false;

@@ -183,7 +183,11 @@ public class VRHighlightManager : MonoBehaviour
         
         if (useOutline)
         {
-            CreateOutlineMeshes(target, data);
+            bool isEnemy = target.GetComponent<EnemyInteractable>() != null;
+            if (!isEnemy)
+            {
+                CreateOutlineMeshes(target, data);
+            }
         }
         
         activeHighlights[target] = data;

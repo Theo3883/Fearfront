@@ -30,6 +30,7 @@ public class Enemy : MonoBehaviour
     
     // ===== Events =====
     public event Action<EnemyState> OnStateChanged;
+    public event Action<float, float> OnHealthChanged;
 
     private void Awake()
     {
@@ -92,6 +93,7 @@ public class Enemy : MonoBehaviour
         
         ApplyVisualDifferentiation();
     }
+
 
     /// <summary>
     /// Applies visual differentiation (scale and color) from EnemyData to the enemy GameObject
@@ -410,6 +412,8 @@ public class Enemy : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= damage;
+        OnHealthChanged?.Invoke(currentHealth, healthMax);
+        
         if (currentHealth <= 0)
         {
             Die();
