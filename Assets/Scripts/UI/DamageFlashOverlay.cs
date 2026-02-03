@@ -6,10 +6,12 @@ using UnityEngine.Rendering.Universal;
 
 /// <summary>
 /// Displays a brief red flash overlay when player takes damage.
-/// Faster and less intense than DeathOverlay for better gameplay feedback.
+/// Uses panel show/hide pattern like DeathOverlay for consistency.
 /// </summary>
 public class DamageFlashOverlay : MonoBehaviour
 {
+    [Header("UI References")]
+    [SerializeField] private GameObject flashPanel;
     [SerializeField] private Image redOverlayImage;
     
     [Header("Flash Settings")]
@@ -46,6 +48,12 @@ public class DamageFlashOverlay : MonoBehaviour
                 vignette.active = true;
                 vignette.intensity.value = 0f;
             }
+        }
+        
+        // Initialize panel as hidden (like DeathOverlay pattern)
+        if (flashPanel != null)
+        {
+            flashPanel.SetActive(false);
         }
         
         if (redOverlayImage != null)
@@ -87,6 +95,12 @@ public class DamageFlashOverlay : MonoBehaviour
     /// </summary>
     private void TriggerFlash()
     {
+        // Show panel (like DeathOverlay shows overlayPanel)
+        if (flashPanel != null)
+        {
+            flashPanel.SetActive(true);
+        }
+        
         if (redOverlayImage == null)
             return;
         
@@ -129,6 +143,9 @@ public class DamageFlashOverlay : MonoBehaviour
         c.a = 0f;
         redOverlayImage.color = c;
         currentFlashCoroutine = null;
+        
+        // Hide panel after flash completes
+        HideFlashPanel();
     }
     
     /// <summary>
@@ -157,5 +174,23 @@ public class DamageFlashOverlay : MonoBehaviour
         
         vignette.intensity.value = 0f;
         currentVignetteCoroutine = null;
+        
+        // Panel hiding is coordinated by both coroutines
+        HideFlashPanel();
+    }
+    
+    /// <summary>
+    /// Hides the flash panel when both flash effects are complete.
+    /// </summary>
+    private void HideFlashPanel()
+    {
+        // Only hide if both coroutines are done
+        if (currentFlashCoroutine == null && currentVignetteCoroutine == null)
+        {
+            if (flashPanel != null)
+            {
+                flashPanel.SetActive(false);
+            }
+        }
     }
 }
