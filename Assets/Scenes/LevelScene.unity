@@ -16926,6 +16926,7 @@ GameObject:
   m_Component:
   - component: {fileID: 864873469}
   - component: {fileID: 864873468}
+  - component: {fileID: 864873470}
   m_Layer: 0
   m_Name: HighlightManager
   m_TagString: Untagged
@@ -16968,6 +16969,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &864873470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 864873467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b08ab2e9ca13d043820266c85693642, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::XRInteractionDiagnostic
 --- !u!1001 &871414583
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30460,7 +30473,7 @@ PrefabInstance:
     - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: enemyPrefab
       value: 
-      objectReference: {fileID: 8073443194988779917, guid: 48edc0c630e1b4e659a56d1d79ee46f5, type: 3}
+      objectReference: {fileID: 6946628644984969152, guid: fc586b623f8544c66a5c4441a4c69df9, type: 3}
     - target: {fileID: 8088291185939057241, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: m_Name
       value: EnemiesHandler

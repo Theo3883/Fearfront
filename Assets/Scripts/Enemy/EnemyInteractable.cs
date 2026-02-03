@@ -6,9 +6,10 @@ using System.Collections;
 /// <summary>
 /// Enables VR interaction with enemies: hover highlight, attack on trigger.
 /// Uses XRSimpleInteractable for ray-based interaction.
+/// Implements IHighlightColorProvider to provide red highlight color for enemies.
 /// </summary>
 [RequireComponent(typeof(XRSimpleInteractable))]
-public class EnemyInteractable : MonoBehaviour
+public class EnemyInteractable : MonoBehaviour, IHighlightColorProvider
 {
     [Header("Attack Settings")]
     [SerializeField] private float attackDamage = 10f;
@@ -22,6 +23,15 @@ public class EnemyInteractable : MonoBehaviour
     
     private XRSimpleInteractable interactable;
     private Enemy enemy;
+    
+    /// <summary>
+    /// Returns the highlight color for enemies (red by default).
+    /// Called by VRHighlightManager when this enemy is hovered.
+    /// </summary>
+    public Color GetHighlightColor()
+    {
+        return hoverColor;
+    }
     private float lastAttackTime = -999f;
     private Coroutine flashCoroutine;
     

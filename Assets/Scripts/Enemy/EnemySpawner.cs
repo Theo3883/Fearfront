@@ -162,39 +162,40 @@ public class EnemySpawner : MonoBehaviour
             InitializeEnemyComponents(newEnemyObject, waypoints, selectedEnemyData);
         }
         
-        // VR interaction components should be added manually to enemy prefabs
-        
-        // Configure XRSimpleInteractable for VR ray detection
-        var xrInteractable = newEnemyObject.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
-        if (xrInteractable != null)
+        // VR interaction setup
+        // Add XRSimpleInteractable for ray hover and activation
+        var simpleInteractable = newEnemyObject.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+        if (simpleInteractable == null)
         {
-            xrInteractable.interactionLayers = UnityEngine.XR.Interaction.Toolkit.InteractionLayerMask.GetMask("Default");
+            simpleInteractable = newEnemyObject.AddComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+        }
+        simpleInteractable.interactionLayers = (UnityEngine.XR.Interaction.Toolkit.InteractionLayerMask)(-1);
+        
+        // Add EnemyInteractable for attack logic and red highlight color
+        var enemyInteractable = newEnemyObject.GetComponent<EnemyInteractable>();
+        if (enemyInteractable == null)
+        {
+            newEnemyObject.AddComponent<EnemyInteractable>();
         }
         
         // Ensure non-trigger collider exists for raycast detection
-        Collider col = newEnemyObject.GetComponent<Collider>();
-        if (col == null || col.isTrigger)
+        bool hasNonTriggerCollider = false;
+        foreach (var col in newEnemyObject.GetComponentsInChildren<Collider>())
         {
-            // Check children for non-trigger collider
-            bool hasNonTriggerCollider = false;
-            foreach (var childCol in newEnemyObject.GetComponentsInChildren<Collider>())
+            if (!col.isTrigger)
             {
-                if (!childCol.isTrigger)
-                {
-                    hasNonTriggerCollider = true;
-                    break;
-                }
+                hasNonTriggerCollider = true;
+                break;
             }
-            
-            // If no valid collider found, add a CapsuleCollider
-            if (!hasNonTriggerCollider)
-            {
-                CapsuleCollider capsule = newEnemyObject.AddComponent<CapsuleCollider>();
-                capsule.isTrigger = false;
-                capsule.radius = 0.5f;
-                capsule.height = 2f;
-                capsule.center = new Vector3(0, 1f, 0);
-            }
+        }
+        
+        if (!hasNonTriggerCollider)
+        {
+            var capsule = newEnemyObject.AddComponent<CapsuleCollider>();
+            capsule.isTrigger = false;
+            capsule.radius = 0.4f;
+            capsule.height = 1f;
+            capsule.center = new Vector3(0, 0.5f, 0);
         }
     }
 

@@ -1163,8 +1163,9 @@ GameObject:
   - component: {fileID: 3998094469398739564}
   - component: {fileID: 1937001267636329137}
   - component: {fileID: 4042893614570282686}
-  - component: {fileID: 2749772084274168596}
   - component: {fileID: 5236718462279791484}
+  - component: {fileID: 7034275672613416391}
+  - component: {fileID: 7215361571234953692}
   m_Layer: 7
   m_Name: Chicken_001
   m_TagString: Enemy
@@ -1337,7 +1338,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 2
---- !u!114 &2749772084274168596
+--- !u!114 &5236718462279791484
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1346,9 +1347,61 @@ MonoBehaviour:
   m_GameObject: {fileID: 8073443194988779917}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
+  m_Script: {fileID: 11500000, guid: cf7933e111d79489693e49fa72002429, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable
+  m_EditorClassIdentifier: Fearfront.Scripts::SpiderDismantle
+  bodyParts:
+  - {fileID: 8073443194988779917}
+  - {fileID: 5991924107624755134}
+  - {fileID: 3381095806909693623}
+  - {fileID: 6867021464153949981}
+  - {fileID: 3229429652315877510}
+  - {fileID: 7715511083050917421}
+  - {fileID: 5326064399537596200}
+  - {fileID: 433562128291632652}
+  - {fileID: 3318398137926086641}
+  - {fileID: 2012003177724862246}
+  - {fileID: 2046780032333516309}
+  - {fileID: 3265425147118594853}
+  - {fileID: 3912958158885236461}
+  - {fileID: 2526930336972488262}
+  - {fileID: 6679371354676341067}
+  - {fileID: 7753664916409367051}
+  - {fileID: 1522147408450230245}
+  - {fileID: 4415429270180278534}
+  - {fileID: 619257477714565354}
+  - {fileID: 4815895955334181369}
+  - {fileID: 3675494793810674677}
+  - {fileID: 1075071017942833317}
+  - {fileID: 2160529271414352891}
+  - {fileID: 26729874575781597}
+  - {fileID: 4398918164226239946}
+  - {fileID: 2061522670501043001}
+  - {fileID: 5901410654634468949}
+  - {fileID: 8122850409471221505}
+  - {fileID: 267884628172215292}
+  - {fileID: 5931711236940251317}
+  - {fileID: 4189353851508638180}
+  - {fileID: 7615702174557395442}
+  - {fileID: 2617846854016174721}
+  - {fileID: 7595130033155774368}
+  - {fileID: 6876182440974831221}
+  explosionForce: 1
+  dismantleDelay: 2
+  sinkSpeed: 1
+  sinkDuration: 3
+--- !u!114 &7034275672613416391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073443194988779917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable
   m_InteractionManager: {fileID: 0}
   m_Colliders: []
   m_InteractionLayers:
@@ -1409,62 +1462,7 @@ MonoBehaviour:
   m_StartingHoverFilters: []
   m_StartingSelectFilters: []
   m_StartingInteractionStrengthFilters: []
-  m_AttachTransform: {fileID: 0}
-  m_SecondaryAttachTransform: {fileID: 0}
-  m_UseDynamicAttach: 0
-  m_MatchAttachPosition: 1
-  m_MatchAttachRotation: 1
-  m_SnapToColliderVolume: 1
-  m_ReinitializeDynamicAttachEverySingleGrab: 1
-  m_AttachEaseInTime: 0.15
-  m_MovementType: 2
-  m_PredictedVisualsTransform: {fileID: 2382459246418940066}
-  m_VelocityDamping: 1
-  m_VelocityScale: 1
-  m_AngularVelocityDamping: 1
-  m_AngularVelocityScale: 1
-  m_TrackPosition: 1
-  m_SmoothPosition: 0
-  m_SmoothPositionAmount: 8
-  m_TightenPosition: 0.1
-  m_TrackRotation: 1
-  m_SmoothRotation: 0
-  m_SmoothRotationAmount: 8
-  m_TightenRotation: 0.1
-  m_TrackScale: 1
-  m_SmoothScale: 0
-  m_SmoothScaleAmount: 8
-  m_TightenScale: 0.1
-  m_ThrowOnDetach: 1
-  m_ThrowSmoothingDuration: 0.25
-  m_ThrowSmoothingCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  m_ThrowVelocityScale: 1.5
-  m_ThrowAngularVelocityScale: 1
-  m_ForceGravityOnDetach: 0
-  m_RetainTransformParent: 1
-  m_StartingSingleGrabTransformers: []
-  m_StartingMultipleGrabTransformers: []
-  m_AddDefaultGrabTransformers: 1
-  m_FarAttachMode: 0
-  m_LimitLinearVelocity: 0
-  m_LimitAngularVelocity: 0
-  m_MaxLinearVelocityDelta: 10
-  m_MaxAngularVelocityDelta: 20
---- !u!114 &5236718462279791484
+--- !u!114 &7215361571234953692
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1473,49 +1471,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 8073443194988779917}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf7933e111d79489693e49fa72002429, type: 3}
+  m_Script: {fileID: 11500000, guid: 19c4f22242ec33649a8bd3d4b2aa1a6b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Fearfront.Scripts::SpiderDismantle
-  bodyParts:
-  - {fileID: 8073443194988779917}
-  - {fileID: 5991924107624755134}
-  - {fileID: 3381095806909693623}
-  - {fileID: 6867021464153949981}
-  - {fileID: 3229429652315877510}
-  - {fileID: 7715511083050917421}
-  - {fileID: 5326064399537596200}
-  - {fileID: 433562128291632652}
-  - {fileID: 3318398137926086641}
-  - {fileID: 2012003177724862246}
-  - {fileID: 2046780032333516309}
-  - {fileID: 3265425147118594853}
-  - {fileID: 3912958158885236461}
-  - {fileID: 2526930336972488262}
-  - {fileID: 6679371354676341067}
-  - {fileID: 7753664916409367051}
-  - {fileID: 1522147408450230245}
-  - {fileID: 4415429270180278534}
-  - {fileID: 619257477714565354}
-  - {fileID: 4815895955334181369}
-  - {fileID: 3675494793810674677}
-  - {fileID: 1075071017942833317}
-  - {fileID: 2160529271414352891}
-  - {fileID: 26729874575781597}
-  - {fileID: 4398918164226239946}
-  - {fileID: 2061522670501043001}
-  - {fileID: 5901410654634468949}
-  - {fileID: 8122850409471221505}
-  - {fileID: 267884628172215292}
-  - {fileID: 5931711236940251317}
-  - {fileID: 4189353851508638180}
-  - {fileID: 7615702174557395442}
-  - {fileID: 2617846854016174721}
-  - {fileID: 7595130033155774368}
-  - {fileID: 6876182440974831221}
-  explosionForce: 1
-  dismantleDelay: 2
-  sinkSpeed: 1
-  sinkDuration: 3
+  m_EditorClassIdentifier: Fearfront.Scripts::EnemyInteractable
+  attackDamage: 10
+  attackCooldown: 0.5
+  interactRange: 12
+  hoverColor: {r: 1, g: 0.3, b: 0.3, a: 1}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.15
 --- !u!1 &8122850409471221505
 GameObject:
   m_ObjectHideFlags: 0

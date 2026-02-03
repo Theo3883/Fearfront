@@ -121,7 +121,6 @@ public class TurretUpgradeVR : MonoBehaviour
         // Verifica daca e deja la nivel maxim
         if (variantGroup.CurrentVariant == TurretVariantGroup.TurretVariant.Turret1d)
         {
-            Debug.Log($"[TurretUpgradeVR] {gameObject.name} este deja la nivel maxim!");
             return false;
         }
 
@@ -131,7 +130,6 @@ public class TurretUpgradeVR : MonoBehaviour
 
         if (currentWood < woodCost || currentStone < stoneCost)
         {
-            Debug.Log($"[TurretUpgradeVR] Resurse insuficiente! Ai: {currentWood} copaci, {currentStone} pietre. Nevoie: {woodCost} copaci, {stoneCost} pietre");
             return false;
         }
 
@@ -142,7 +140,6 @@ public class TurretUpgradeVR : MonoBehaviour
         if (woodRemoved && stoneRemoved)
         {
             variantGroup.TryUpgradeOnce();
-            Debug.Log($"<color=green>✅ UPGRADE REUSIT! {gameObject.name} → {variantGroup.CurrentVariant}</color>");
             return true;
         }
         else

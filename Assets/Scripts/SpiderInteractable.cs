@@ -4,10 +4,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 /// <summary>
 /// Script pentru interactiuni cu paianjenul (spider) in VR
 /// Poate fi prins, aruncat, sau defeated prin diverse metode
+/// Implements IHighlightColorProvider for red VR highlight.
 /// </summary>
 [RequireComponent(typeof(UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable))]
 [RequireComponent(typeof(Rigidbody))]
-public class SpiderInteractable : MonoBehaviour
+public class SpiderInteractable : MonoBehaviour, IHighlightColorProvider
 {
     [Header("Spider Settings")]
     [SerializeField] private float health = 1f; // Pentru feature "kill spider"
@@ -34,6 +35,15 @@ public class SpiderInteractable : MonoBehaviour
     private bool isGrabbed = false;
     private bool isDestroyed = false;
     private AudioSource audioSource;
+    
+    /// <summary>
+    /// Returns red highlight color for spiders (they're dangerous!).
+    /// Called by VRHighlightManager when this spider is hovered.
+    /// </summary>
+    public Color GetHighlightColor()
+    {
+        return hoverColor;
+    }
     
     void Awake()
     {

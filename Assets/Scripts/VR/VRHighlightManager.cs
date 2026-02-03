@@ -31,11 +31,12 @@ public class VRHighlightManager : MonoBehaviour
         public Renderer[] renderers;
         public Material[][] originalMaterials;
         public List<GameObject> outlineObjects = new List<GameObject>();
+        public Color effectiveColor;
+        public Material outlineMaterial;
     }
     
     private Dictionary<GameObject, HighlightData> activeHighlights = new Dictionary<GameObject, HighlightData>();
     private List<XRBaseInteractor> allInteractors = new List<XRBaseInteractor>();
-    private Material outlineMaterial;
     
     private void Start()
     {
@@ -94,11 +95,6 @@ public class VRHighlightManager : MonoBehaviour
             RemoveHighlightVisual(kvp.Key, kvp.Value);
         }
         activeHighlights.Clear();
-        
-        if (outlineMaterial != null)
-        {
-            Destroy(outlineMaterial);
-        }
     }
     
     private void OnHoverEntered(HoverEnterEventArgs args)
@@ -138,16 +134,20 @@ public class VRHighlightManager : MonoBehaviour
         data.renderers = target.GetComponentsInChildren<Renderer>(true);
         data.originalMaterials = new Material[data.renderers.Length][];
         
+        // Check for custom highlight color provider (e.g., enemies use red)
+        var colorProvider = target.GetComponent<IHighlightColorProvider>();
+        data.effectiveColor = colorProvider != null ? colorProvider.GetHighlightColor() : highlightColor;
+        
         if (debugLog)
         {
-            Debug.Log($"[VRHighlightManager] Found {data.renderers.Length} renderers on {target.name}");
+            Debug.Log($"[VRHighlightManager] Found {data.renderers.Length} renderers on {target.name}, color: {data.effectiveColor}");
         }
         
         for (int i = 0; i < data.renderers.Length; i++)
         {
             if (data.renderers[i] == null) continue;
             if (data.renderers[i] is ParticleSystemRenderer) continue;
-            if (data.renderers[i] is CanvasRenderer) continue;
+            if (data.renderers[i].GetComponent<CanvasRenderer>() != null) continue;
             
             Material[] mats = data.renderers[i].materials;
             data.originalMaterials[i] = new Material[mats.Length];
@@ -163,18 +163,18 @@ public class VRHighlightManager : MonoBehaviour
                 if (mat.HasProperty("_EmissionColor"))
                 {
                     mat.EnableKeyword("_EMISSION");
-                    mat.SetColor("_EmissionColor", highlightColor * emissionIntensity);
+                    mat.SetColor("_EmissionColor", data.effectiveColor * emissionIntensity);
                 }
                 
                 if (mat.HasProperty("_BaseColor"))
                 {
                     Color orig = mat.GetColor("_BaseColor");
-                    mat.SetColor("_BaseColor", Color.Lerp(orig, highlightColor, colorTintStrength));
+                    mat.SetColor("_BaseColor", Color.Lerp(orig, data.effectiveColor, colorTintStrength));
                 }
                 else if (mat.HasProperty("_Color"))
                 {
                     Color orig = mat.GetColor("_Color");
-                    mat.SetColor("_Color", Color.Lerp(orig, highlightColor, colorTintStrength));
+                    mat.SetColor("_Color", Color.Lerp(orig, data.effectiveColor, colorTintStrength));
                 }
             }
             
@@ -216,54 +216,79 @@ public class VRHighlightManager : MonoBehaviour
             }
         }
         data.outlineObjects.Clear();
+        
+        // Destroy per-object outline material
+        if (data.outlineMaterial != null)
+        {
+            Destroy(data.outlineMaterial);
+            data.outlineMaterial = null;
+        }
     }
     
     private void CreateOutlineMeshes(GameObject target, HighlightData data)
     {
-        if (outlineMaterial == null)
-        {
-            Shader outlineShader = Shader.Find("Custom/OutlineHighlight");
-            if (outlineShader == null)
-            {
-                if (debugLog) Debug.LogWarning("[VRHighlightManager] Outline shader not found");
-                return;
-            }
-            outlineMaterial = new Material(outlineShader);
-        }
+        Shader outlineShader = Shader.Find("Custom/OutlineHighlight");
+        if (outlineShader == null) return;
         
-        outlineMaterial.SetColor("_OutlineColor", highlightColor);
-        outlineMaterial.SetFloat("_OutlineWidth", outlineWidth);
-        
-        int outlineCount = 0;
+        // Create per-highlight material so different objects can have different colors
+        data.outlineMaterial = new Material(outlineShader);
+        data.outlineMaterial.SetColor("_OutlineColor", data.effectiveColor);
+        data.outlineMaterial.SetFloat("_OutlineWidth", outlineWidth);
         
         foreach (var renderer in data.renderers)
         {
             if (renderer == null) continue;
             if (renderer is ParticleSystemRenderer) continue;
-            if (renderer is CanvasRenderer) continue;
+            if (renderer.GetComponent<CanvasRenderer>() != null) continue;
             
-            MeshFilter mf = renderer.GetComponent<MeshFilter>();
-            if (mf == null || mf.sharedMesh == null) continue;
-            
-            GameObject outlineChild = new GameObject(renderer.name + "_Outline");
-            outlineChild.transform.SetParent(renderer.transform, false);
-            outlineChild.transform.localPosition = Vector3.zero;
-            outlineChild.transform.localRotation = Quaternion.identity;
-            outlineChild.transform.localScale = Vector3.one;
-            
-            MeshFilter newMf = outlineChild.AddComponent<MeshFilter>();
-            newMf.sharedMesh = mf.sharedMesh;
-            
-            MeshRenderer newMr = outlineChild.AddComponent<MeshRenderer>();
-            newMr.material = outlineMaterial;
-            
-            data.outlineObjects.Add(outlineChild);
-            outlineCount++;
-        }
-        
-        if (debugLog)
-        {
-            Debug.Log($"[VRHighlightManager] Created {outlineCount} outline meshes for {target.name}");
+            // Handle SkinnedMeshRenderer (Animated Enemies)
+            if (renderer is SkinnedMeshRenderer smr && smr.sharedMesh != null)
+            {
+                // Create a "ghost" SMR that shares the same bones to animate with the original
+                GameObject outlineChild = new GameObject(renderer.name + "_Outline");
+                outlineChild.transform.SetParent(renderer.transform, false);
+                outlineChild.transform.localPosition = Vector3.zero;
+                outlineChild.transform.localRotation = Quaternion.identity;
+                outlineChild.transform.localScale = Vector3.one;
+                
+                SkinnedMeshRenderer newSmr = outlineChild.AddComponent<SkinnedMeshRenderer>();
+                newSmr.sharedMesh = smr.sharedMesh;
+                newSmr.rootBone = smr.rootBone;
+                newSmr.bones = smr.bones; // Critical: Share the exact same bone transforms
+                newSmr.material = data.outlineMaterial;
+                
+                // Disable shadows for the outline
+                newSmr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                newSmr.receiveShadows = false;
+                
+                data.outlineObjects.Add(outlineChild);
+            }
+            // Handle MeshRenderer (Static Objects)
+            // Skip static meshes for enemies to avoid outlining debug spheres/capsules
+            else if (renderer is MeshRenderer)
+            {
+                bool isEnemy = target.GetComponent<EnemyInteractable>() != null;
+                if (isEnemy) continue;
+
+                MeshFilter mf = renderer.GetComponent<MeshFilter>();
+                if (mf == null || mf.sharedMesh == null) continue;
+                
+                GameObject outlineChild = new GameObject(renderer.name + "_Outline");
+                outlineChild.transform.SetParent(renderer.transform, false);
+                outlineChild.transform.localPosition = Vector3.zero;
+                outlineChild.transform.localRotation = Quaternion.identity;
+                outlineChild.transform.localScale = Vector3.one;
+                
+                MeshFilter newMf = outlineChild.AddComponent<MeshFilter>();
+                newMf.sharedMesh = mf.sharedMesh;
+                
+                MeshRenderer newMr = outlineChild.AddComponent<MeshRenderer>();
+                newMr.material = data.outlineMaterial;
+                newMr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                newMr.receiveShadows = false;
+                
+                data.outlineObjects.Add(outlineChild);
+            }
         }
     }
     
