@@ -395,6 +395,14 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
+    /// Returns whether this enemy is dead
+    /// </summary>
+    public bool IsDead()
+    {
+        return isDead;
+    }
+
+    /// <summary>
     /// Damages the enemy and triggers death if health <= 0
     /// </summary>
     public void TakeDamage(float damage)

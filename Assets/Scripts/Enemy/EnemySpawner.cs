@@ -161,6 +161,41 @@ public class EnemySpawner : MonoBehaviour
         {
             InitializeEnemyComponents(newEnemyObject, waypoints, selectedEnemyData);
         }
+        
+        // VR interaction components should be added manually to enemy prefabs
+        
+        // Configure XRSimpleInteractable for VR ray detection
+        var xrInteractable = newEnemyObject.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
+        if (xrInteractable != null)
+        {
+            xrInteractable.interactionLayers = UnityEngine.XR.Interaction.Toolkit.InteractionLayerMask.GetMask("Default");
+        }
+        
+        // Ensure non-trigger collider exists for raycast detection
+        Collider col = newEnemyObject.GetComponent<Collider>();
+        if (col == null || col.isTrigger)
+        {
+            // Check children for non-trigger collider
+            bool hasNonTriggerCollider = false;
+            foreach (var childCol in newEnemyObject.GetComponentsInChildren<Collider>())
+            {
+                if (!childCol.isTrigger)
+                {
+                    hasNonTriggerCollider = true;
+                    break;
+                }
+            }
+            
+            // If no valid collider found, add a CapsuleCollider
+            if (!hasNonTriggerCollider)
+            {
+                CapsuleCollider capsule = newEnemyObject.AddComponent<CapsuleCollider>();
+                capsule.isTrigger = false;
+                capsule.radius = 0.5f;
+                capsule.height = 2f;
+                capsule.center = new Vector3(0, 1f, 0);
+            }
+        }
     }
 
     /// <summary>
