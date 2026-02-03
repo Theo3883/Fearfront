@@ -38,6 +38,14 @@ public class Enemy : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         spiderDismantle = GetComponent<SpiderDismantle>();
         
+        // Configure Rigidbody to be kinematic (NavMeshAgent handles movement)
+        // This prevents physics-based pushing between enemies
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
+        
         // Get component references for coordination
         playerDetector = GetComponent<NavMeshPlayerDetector>();
         enemyMovement = GetComponent<EnemyMovement>();
@@ -233,6 +241,8 @@ public class Enemy : MonoBehaviour
             stateMachine.Initialize(playerDetector, detectionRadius, playerHealth);
             
             // Subscribe to state machine events for proper movement control
+            stateMachine.OnEngagingPlayer += HandleEngagingPlayer;
+            stateMachine.OnDisengagingPlayer += HandleDisengagingPlayer;
             stateMachine.OnResumePathMovement += HandleResumePathMovement;
         }
     }
@@ -247,6 +257,8 @@ public class Enemy : MonoBehaviour
         
         if (stateMachine != null)
         {
+            stateMachine.OnEngagingPlayer -= HandleEngagingPlayer;
+            stateMachine.OnDisengagingPlayer -= HandleDisengagingPlayer;
             stateMachine.OnResumePathMovement -= HandleResumePathMovement;
         }
     }
@@ -270,15 +282,36 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles resuming waypoint movement after disengaging from player
+    /// Handles when enemy engages player - pause movement immediately.
+    /// </summary>
+    private void HandleEngagingPlayer()
+    {
+        if (enemyMovement != null)
+        {
+            enemyMovement.PauseMovement();
+        }
+    }
+
+    /// <summary>
+    /// Handles when enemy disengages from player - resume movement.
+    /// </summary>
+    private void HandleDisengagingPlayer()
+    {
+        if (enemyMovement != null)
+        {
+            enemyMovement.ResumeMovement();
+        }
+    }
+
+    /// <summary>
+    /// Handles resuming waypoint movement after disengaging from player.
+    /// Simplified: just resume movement, enemy continues to current waypoint.
     /// </summary>
     private void HandleResumePathMovement(Vector3 currentPosition)
     {
         if (enemyMovement != null)
         {
-            // Resume movement and find nearest waypoint ahead
             enemyMovement.ResumeMovement();
-            enemyMovement.ResumeFromNearestWaypoint(currentPosition);
         }
     }
 
@@ -459,13 +492,14 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles attack logic when enemy is in Attacking state
+    /// Handles attack logic when enemy is in Attacking state.
+    /// Enemy stays on path - pauses to attack when player is in range.
+    /// Movement is paused by OnEngagingPlayer event.
     /// </summary>
     private void HandleAttackingState(Vector3 playerPosition)
     {
         if (enemyData == null || playerTransform == null || playerHealthRef == null)
         {
-            Debug.LogWarning($"[{gameObject.name}] Cannot attack: missing data, player transform, or player health");
             return;
         }
         
@@ -484,46 +518,26 @@ public class Enemy : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
         float attackRange = enemyData.AttackRange;
 
-        // Check if player is in attack range
-        if (distanceToPlayer <= attackRange)
+        // Rotate to face player
+        Vector3 directionToPlayer = (playerPosition - transform.position).normalized;
+        directionToPlayer.y = 0; // Keep rotation horizontal
+        if (directionToPlayer.sqrMagnitude > 0.001f)
         {
-            // Pause movement to focus on attacking
-            if (enemyMovement != null)
-            {
-                enemyMovement.PauseMovement();
-            }
-            
-            // Rotate to face player
-            Vector3 directionToPlayer = (playerPosition - transform.position).normalized;
             Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
-            
-            // Execute attack if cooldown is ready
-            if (attackCooldownTimer <= 0f)
-            {
-                if (playerHealthRef.IsAlive())
-                {
-                    playerHealthRef.Damage(enemyData.AttackDamage);
-                    attackCooldownTimer = enemyData.AttackCooldown;
-                }
-            }
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
         }
-        else
+
+        // Execute attack if player is in attack range and cooldown is ready
+        if (distanceToPlayer <= attackRange && attackCooldownTimer <= 0f)
         {
-            // Too far to attack, move toward player
-            // Resume movement toward player
-            if (enemyMovement != null)
+            if (playerHealthRef.IsAlive())
             {
-                enemyMovement.ResumeMovement();
-            }
-            
-            // Move to player using NavMeshAgent
-            if (agent != null && agent.enabled)
-            {
-                agent.SetDestination(playerPosition);
+                playerHealthRef.Damage(enemyData.AttackDamage);
+                attackCooldownTimer = enemyData.AttackCooldown;
             }
         }
     }
+
 
     // ===== BACKWARD COMPATIBILITY: State transition methods =====
     // These methods are kept for backward compatibility with existing code

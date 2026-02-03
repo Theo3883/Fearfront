@@ -229,14 +229,8 @@ public class EnemySpawner : MonoBehaviour
         }
 
         EnemyPrefabFamily family = ResolvePrefabFamily();
-
-        float rand = Random.value;
-        float cumulativeChance = 0f;
-
-        // Get difficulty distribution
         (EnemyType[] types, float[] chances) = GetDifficultyDistribution(family);
 
-        // Convert distribution into available candidates (ignore missing types)
         List<EnemyData> candidates = new List<EnemyData>(types.Length);
         List<float> candidateChances = new List<float>(types.Length);
         float totalChance = 0f;

@@ -223,6 +223,142 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &28621790
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 28621791}
+  - component: {fileID: 28621793}
+  - component: {fileID: 28621792}
+  m_Layer: 5
+  m_Name: wood text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &28621791
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28621790}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 0.9541061, z: 0.80016}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 320784330}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 6, y: 37}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &28621792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28621790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 0
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_sharedMaterial: {fileID: 2164040, guid: 5302535af1044152a457ed104f1f4b91, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 108.15
+  m_fontSizeBase: 80
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 60
+  m_fontSizeMax: 160
+  m_fontStyle: 0
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 3
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: -23.51738, z: 17.393877, w: -53.24601}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &28621793
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28621790}
+  m_CullTransparentMesh: 1
 --- !u!1001 &35089271
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3003,11 +3139,149 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &267869167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267869157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
 --- !u!108 &292434983 stripped
 Light:
   m_CorrespondingSourceObject: {fileID: 7742605295972000930, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
   m_PrefabInstance: {fileID: 4239766012091141476}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &320784329
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 320784330}
+  - component: {fileID: 320784334}
+  - component: {fileID: 320784333}
+  - component: {fileID: 320784332}
+  - component: {fileID: 320784331}
+  m_Layer: 5
+  m_Name: Health UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &320784330
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320784329}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0699}
+  m_LocalScale: {x: 0.00025, y: 0.00025, z: 0.00025}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 28621791}
+  m_Father: {fileID: 722491562}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.06809999, y: 0.0933}
+  m_SizeDelta: {x: 1724.9999, y: 824}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &320784331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320784329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ad5e327296230d47b25d0ed41e9d233, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::HealthDisplay
+  healthText: {fileID: 28621792}
+--- !u!114 &320784332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320784329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &320784333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320784329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
+--- !u!223 &320784334
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320784329}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 1360118390}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 1000
+  m_TargetDisplay: 0
 --- !u!43 &352239327
 Mesh:
   m_ObjectHideFlags: 0
@@ -4106,6 +4380,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &375003039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375003029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
 --- !u!1 &378359694 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2990991723663562626, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
@@ -4233,6 +4529,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &378359704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378359694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
 --- !u!1001 &410091777
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5285,6 +5603,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5795851941569418902, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 710374891}
+    - targetCorrespondingSourceObject: {fileID: 5795851941569418902, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 710374893}
     - targetCorrespondingSourceObject: {fileID: 4089738107693141298, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1377815144}
@@ -5294,6 +5615,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4089738107693141298, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1377815145}
+    - targetCorrespondingSourceObject: {fileID: 4089738107693141298, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1377815147}
     - targetCorrespondingSourceObject: {fileID: 2446980187900651430, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 267869161}
@@ -5306,6 +5630,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2446980187900651430, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 267869165}
+    - targetCorrespondingSourceObject: {fileID: 2446980187900651430, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 267869167}
     - targetCorrespondingSourceObject: {fileID: 784324931700643486, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1634589162}
@@ -5318,6 +5645,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 784324931700643486, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1634589166}
+    - targetCorrespondingSourceObject: {fileID: 784324931700643486, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1634589168}
     - targetCorrespondingSourceObject: {fileID: 6651978689113050150, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 541910294}
@@ -5330,6 +5660,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6651978689113050150, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 541910298}
+    - targetCorrespondingSourceObject: {fileID: 6651978689113050150, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 541910300}
     - targetCorrespondingSourceObject: {fileID: 3227824939497872952, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 789332659}
@@ -5342,6 +5675,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3227824939497872952, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 789332663}
+    - targetCorrespondingSourceObject: {fileID: 3227824939497872952, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 789332665}
     - targetCorrespondingSourceObject: {fileID: 2005894096776991278, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 560364027}
@@ -5354,6 +5690,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2005894096776991278, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 560364031}
+    - targetCorrespondingSourceObject: {fileID: 2005894096776991278, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 560364033}
     - targetCorrespondingSourceObject: {fileID: 3792477327381161047, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1042958195}
@@ -5366,6 +5705,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3792477327381161047, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1042958199}
+    - targetCorrespondingSourceObject: {fileID: 3792477327381161047, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1042958201}
     - targetCorrespondingSourceObject: {fileID: 7024283813546632577, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 561435885}
@@ -5378,6 +5720,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7024283813546632577, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 561435889}
+    - targetCorrespondingSourceObject: {fileID: 7024283813546632577, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 561435891}
     - targetCorrespondingSourceObject: {fileID: 8727543983516378956, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 675086894}
@@ -5390,6 +5735,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8727543983516378956, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 675086898}
+    - targetCorrespondingSourceObject: {fileID: 8727543983516378956, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 675086900}
     - targetCorrespondingSourceObject: {fileID: 416600865910573712, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1060530499}
@@ -5402,6 +5750,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 416600865910573712, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1060530503}
+    - targetCorrespondingSourceObject: {fileID: 416600865910573712, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1060530505}
     - targetCorrespondingSourceObject: {fileID: 2990991723663562626, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 378359698}
@@ -5414,6 +5765,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2990991723663562626, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 378359702}
+    - targetCorrespondingSourceObject: {fileID: 2990991723663562626, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 378359704}
     - targetCorrespondingSourceObject: {fileID: 4141058864313150351, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 375003033}
@@ -5426,6 +5780,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4141058864313150351, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
       insertIndex: -1
       addedObject: {fileID: 375003037}
+    - targetCorrespondingSourceObject: {fileID: 4141058864313150351, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 375003039}
   m_SourcePrefab: {fileID: 100100000, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
 --- !u!1 &474212609
 GameObject:
@@ -5748,6 +6105,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &541910300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541910290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
 --- !u!1001 &553339837
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6574,6 +6953,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &560364033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560364023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
 --- !u!1 &561435881 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7024283813546632577, guid: a977e21ddc4ec4dadab873faeb4d2243, type: 3}
@@ -6701,6 +7102,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &561435891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561435881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
 --- !u!1001 &590443203
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10398,6 +10821,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &675086900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675086890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
 --- !u!1 &679568550
 GameObject:
   m_ObjectHideFlags: 0
@@ -10557,6 +11002,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &710374893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 710374883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
+--- !u!4 &722491562 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8531683108829008169, guid: db2dc60e6d8293e4a8d55f489aacfebc, type: 3}
+  m_PrefabInstance: {fileID: 632098027428963234}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &727502230
 GameObject:
   m_ObjectHideFlags: 0
@@ -11202,6 +11674,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &789332665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789332655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
 --- !u!43 &800922274
 Mesh:
   m_ObjectHideFlags: 0
@@ -17453,6 +17947,81 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1117635832220383791, guid: ba8c9dbf529ff144db80b0a13405ecd8, type: 3}
   m_PrefabInstance: {fileID: 8232806349113588821}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &933091616
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 933091617}
+  - component: {fileID: 933091619}
+  - component: {fileID: 933091618}
+  m_Layer: 0
+  m_Name: RedFlashImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &933091617
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933091616}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1325860458}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &933091618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933091616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &933091619
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933091616}
+  m_CullTransparentMesh: 1
 --- !u!1 &952736000
 GameObject:
   m_ObjectHideFlags: 0
@@ -19146,6 +19715,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &1042958201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042958191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
 --- !u!43 &1054272981
 Mesh:
   m_ObjectHideFlags: 0
@@ -19451,6 +20042,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &1060530505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060530495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
 --- !u!1001 &1080305842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22807,6 +23420,148 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &1325860453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1325860458}
+  - component: {fileID: 1325860457}
+  - component: {fileID: 1325860456}
+  - component: {fileID: 1325860455}
+  - component: {fileID: 1325860454}
+  m_Layer: 0
+  m_Name: DamageFlashCanvas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1325860454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325860453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55689a5bb4403a3409caf5e2d9e3349d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::DamageFlashOverlay
+  redOverlayImage: {fileID: 933091618}
+  flashDuration: 0.3
+  flashAlpha: 0.2
+  flashCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &1325860455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325860453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &1325860456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325860453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 1
+--- !u!223 &1325860457
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325860453}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!224 &1325860458
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325860453}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 933091617}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1327416694
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23005,6 +23760,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &1377815147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1377815137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
 --- !u!43 &1384115816
 Mesh:
   m_ObjectHideFlags: 0
@@ -25148,6 +25925,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 4, z: 3}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!114 &1634589168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634589158}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ce6742566c0443efba9d758176bc37d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::TurretVariantGroup
+  turretAName: Turret 1a
+  turretBName: Turret 1b
+  turretCName: Turret 1c
+  turretDName: Turret 1d
+  activeOnStart: 0
+  enforceEveryFrame: 0
+  turret1a: {fileID: 0}
+  turret1b: {fileID: 0}
+  turret1c: {fileID: 0}
+  turret1d: {fileID: 0}
 --- !u!1001 &1634621760
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30139,7 +30938,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8531683108829008169, guid: db2dc60e6d8293e4a8d55f489aacfebc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 320784330}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db2dc60e6d8293e4a8d55f489aacfebc, type: 3}
 --- !u!1001 &649236759337693858
@@ -30740,3 +31542,4 @@ SceneRoots:
   - {fileID: 438412233}
   - {fileID: 871414583}
   - {fileID: 741687554}
+  - {fileID: 1325860458}
