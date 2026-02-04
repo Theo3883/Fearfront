@@ -74,25 +74,28 @@ public class HealthDisplay : MonoBehaviour
         if (healthBar != null)
         {
             healthBar.UpdateHealth(currentHealth, maxHealth);
+            
+            bool isFullHealth = currentHealth >= maxHealth - 0.01f;
+            
+            if (healthBar.IsVisible == isFullHealth)
+            {
+                healthBar.SetVisible(!isFullHealth);
+            }
         }
     }
     
     private void Update()
     {
-        // Continuously apply settings to support runtime adjustment
         if (healthBar != null)
         {
-            // Only update scaling/size if changed (optimization could be added, but simple for now)
             healthBar.Width = width;
             healthBar.Height = height;
             
-            // Adjust local scale
             if (healthBar.transform.localScale != scale)
             {
                 healthBar.transform.localScale = scale;
             }
             
-            // Adjust offset (position)
             if (healthBar.transform.localPosition != offset)
             {
                 healthBar.transform.localPosition = offset;
