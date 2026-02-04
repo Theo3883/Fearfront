@@ -27,6 +27,19 @@ public class EnemyData : ScriptableObject
     [SerializeField] private Color typeColor = Color.white;
     [SerializeField] private float visualScaleMultiplier = 1f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip spawnSound;
+    [Range(0f, 1f)] [SerializeField] private float spawnVolume = 1f;
+
+    [SerializeField] private AudioClip ambientSound;
+    [Range(0f, 1f)] [SerializeField] private float ambientVolume = 0.5f; // Lower default for ambient loop
+
+    [SerializeField] private AudioClip attackSound;
+    [Range(0f, 1f)] [SerializeField] private float attackVolume = 1f;
+
+    [SerializeField] private AudioClip deathSound;
+    [Range(0f, 1f)] [SerializeField] private float deathVolume = 1f;
+
     /// <summary>
     /// Gets the name of this enemy variant
     /// </summary>
@@ -86,6 +99,46 @@ public class EnemyData : ScriptableObject
     /// Gets the visual scale multiplier (0.1 to 3.0 relative to prefab base)
     /// </summary>
     public float VisualScaleMultiplier => visualScaleMultiplier;
+
+    /// <summary>
+    /// Gets the spawn sound clip
+    /// </summary>
+    public AudioClip SpawnSound => spawnSound;
+
+    /// <summary>
+    /// Gets the volume for spawn sound (0-1)
+    /// </summary>
+    public float SpawnVolume => spawnVolume;
+
+    /// <summary>
+    /// Gets the ambient loop sound clip
+    /// </summary>
+    public AudioClip AmbientSound => ambientSound;
+
+    /// <summary>
+    /// Gets the volume for ambient sound (0-1)
+    /// </summary>
+    public float AmbientVolume => ambientVolume;
+
+    /// <summary>
+    /// Gets the attack sound clip
+    /// </summary>
+    public AudioClip AttackSound => attackSound;
+
+    /// <summary>
+    /// Gets the volume for attack sound (0-1)
+    /// </summary>
+    public float AttackVolume => attackVolume;
+
+    /// <summary>
+    /// Gets the death sound clip
+    /// </summary>
+    public AudioClip DeathSound => deathSound;
+
+    /// <summary>
+    /// Gets the volume for death sound (0-1)
+    /// </summary>
+    public float DeathVolume => deathVolume;
 
     /// <summary>
     /// Validates that all values are in reasonable ranges

@@ -6,6 +6,7 @@ using System;
 /// Enemy coordinator that manages health, death, and components (EnemyMovement, EnemyStateMachine, NavMeshPlayerDetector).
 /// This is a simplified refactoring that delegates movement and state logic to specialized components.
 /// </summary>
+[RequireComponent(typeof(AudioSource))]
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyData enemyData;
@@ -23,6 +24,8 @@ public class Enemy : MonoBehaviour
     private bool isDead = false;
     
     private EnemySpawner spawner;
+    private AudioSource audioSource;
+    private EnemySoundData soundData;
     
     // Attack-related fields
     private Transform playerTransform;
@@ -41,6 +44,7 @@ public class Enemy : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         spiderDismantle = GetComponent<SpiderDismantle>();
         initialScale = transform.localScale;
+        audioSource = GetComponent<AudioSource>();
         
         if (rb != null)
         {
@@ -198,9 +202,10 @@ public class Enemy : MonoBehaviour
     /// Sets up component dependencies and initial state
     /// Waypoints are NOT stored in Enemy; they are passed directly to EnemyMovement
     /// </summary>
-    public void Initialize(Transform[] path, EnemySpawner enemySpawner)
+    public void Initialize(Transform[] path, EnemySpawner enemySpawner, EnemySoundData familySoundData = null)
     {
         spawner = enemySpawner;
+        soundData = familySoundData;
         isDead = false;
         
         // The most reliable way to find the player is via the PlayerHealth singleton.
@@ -266,6 +271,35 @@ public class Enemy : MonoBehaviour
             stateMachine.OnEngagingPlayer += HandleEngagingPlayer;
             stateMachine.OnDisengagingPlayer += HandleDisengagingPlayer;
             stateMachine.OnResumePathMovement += HandleResumePathMovement;
+        }
+
+        // Initialize Audio using family sound data
+        if (soundData != null && audioSource != null)
+        {
+            // Configure 3D Spatial Audio
+            audioSource.spatialBlend = 1.0f; // Enable full 3D audio so sound is positional
+            audioSource.rolloffMode = AudioRolloffMode.Logarithmic; // Natural sound attenuation
+            audioSource.minDistance = 2f; // Distance where sound is at full volume
+            audioSource.maxDistance = 30f; // Distance where sound becomes inaudible
+
+            // Determine base volume for the AudioSource
+            float baseVolume = (soundData.AmbientSound != null) ? soundData.AmbientVolume : 1.0f;
+            audioSource.volume = baseVolume;
+
+            // Play spawn sound
+            if (soundData.SpawnSound != null)
+            {
+                float scale = (baseVolume > 0.01f) ? (soundData.SpawnVolume / baseVolume) : soundData.SpawnVolume;
+                audioSource.PlayOneShot(soundData.SpawnSound, scale);
+            }
+
+            // Start ambient loop
+            if (soundData.AmbientSound != null)
+            {
+                audioSource.clip = soundData.AmbientSound;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
         }
     }
 
@@ -445,6 +479,23 @@ public class Enemy : MonoBehaviour
         
         OnDeath?.Invoke();
 
+        // Play death sound
+        if (soundData != null && soundData.DeathSound != null)
+        {
+            if (spiderDismantle != null && audioSource != null)
+            {
+                // Calculate relative volume if using the attached source
+                float baseVolume = audioSource.volume;
+                float scale = (baseVolume > 0.01f) ? (soundData.DeathVolume / baseVolume) : soundData.DeathVolume;
+                audioSource.PlayOneShot(soundData.DeathSound, scale);
+            }
+            else
+            {
+                // Fallback if object is destroyed immediately - use PlayClipAtPoint (absolute volume)
+                AudioSource.PlayClipAtPoint(soundData.DeathSound, transform.position, soundData.DeathVolume);
+            }
+        }
+
         DisableAllComponents();
 
         if (spiderDismantle != null)
@@ -578,6 +629,15 @@ public class Enemy : MonoBehaviour
             if (playerHealthRef.IsAlive())
             {
                 playerHealthRef.Damage(enemyData.AttackDamage);
+                
+                // Play attack sound
+                if (audioSource != null && soundData != null && soundData.AttackSound != null)
+                {
+                    float baseVolume = audioSource.volume;
+                    float scale = (baseVolume > 0.01f) ? (soundData.AttackVolume / baseVolume) : soundData.AttackVolume;
+                    audioSource.PlayOneShot(soundData.AttackSound, scale);
+                }
+                
                 attackCooldownTimer = enemyData.AttackCooldown;
             }
         }

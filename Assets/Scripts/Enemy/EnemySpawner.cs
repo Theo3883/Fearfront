@@ -26,6 +26,11 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private EnemyData variantBoss;
     [SerializeField] private SpawnDifficulty difficultyPreset = SpawnDifficulty.Normal;
 
+    [Header("Family Sound Data")]
+    [SerializeField] private EnemySoundData spiderSounds;
+    [SerializeField] private EnemySoundData ghostSounds;
+    [SerializeField] private EnemySoundData chickenSounds;
+
     [SerializeField] private EnemyFamily prefabFamily = EnemyFamily.Spider;
 
     [Header("Available Enemy Families (Night Waves)")]
@@ -177,6 +182,20 @@ public class EnemySpawner : MonoBehaviour
     }
 
     /// <summary>
+    /// Gets the sound data for a specific enemy family
+    /// </summary>
+    private EnemySoundData GetSoundDataForFamily(EnemyFamily family)
+    {
+        switch (family)
+        {
+            case EnemyFamily.Spider: return spiderSounds;
+            case EnemyFamily.Ghost: return ghostSounds;
+            case EnemyFamily.Chicken: return chickenSounds;
+            default: return spiderSounds;
+        }
+    }
+
+    /// <summary>
     /// Spawn an enemy - public version for testing and external calls
     /// </summary>
     public void SpawnEnemy()
@@ -228,7 +247,8 @@ public class EnemySpawner : MonoBehaviour
             enemy.SetEnemyData(selectedEnemyData);
         }
         
-        enemy.Initialize(waypoints, this);
+        EnemySoundData soundData = GetSoundDataForFamily(selectedFamily);
+        enemy.Initialize(waypoints, this, soundData);
         
         if (selectedEnemyData != null)
         {
@@ -277,6 +297,11 @@ public class EnemySpawner : MonoBehaviour
             capsule.height = 1f;
             capsule.center = new Vector3(0, 0.5f, 0);
         }
+
+        // Force Tag and Layer to ensure Turrets see them
+        newEnemyObject.tag = "Enemy";
+        int enemyLayer = LayerMask.NameToLayer("Enemy");
+        if (enemyLayer >= 0) newEnemyObject.layer = enemyLayer;
     }
 
     /// <summary>
