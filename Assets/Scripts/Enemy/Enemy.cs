@@ -6,6 +6,7 @@ using System;
 /// Enemy coordinator that manages health, death, and components (EnemyMovement, EnemyStateMachine, NavMeshPlayerDetector).
 /// This is a simplified refactoring that delegates movement and state logic to specialized components.
 /// </summary>
+[RequireComponent(typeof(AudioSource))]
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private EnemyData enemyData;
@@ -22,6 +23,7 @@ public class Enemy : MonoBehaviour
     private bool isDead = false;
     
     private EnemySpawner spawner;
+    private AudioSource audioSource;
     
     // Attack-related fields
     private Transform playerTransform;
@@ -38,6 +40,7 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         spiderDismantle = GetComponent<SpiderDismantle>();
+        audioSource = GetComponent<AudioSource>();
         
         // Configure Rigidbody to be kinematic (NavMeshAgent handles movement)
         // This prevents physics-based pushing between enemies
@@ -247,6 +250,38 @@ public class Enemy : MonoBehaviour
             stateMachine.OnDisengagingPlayer += HandleDisengagingPlayer;
             stateMachine.OnResumePathMovement += HandleResumePathMovement;
         }
+
+        // Initialize Audio
+        if (enemyData != null && audioSource != null)
+        {
+            // Configure 3D Spatial Audio
+            audioSource.spatialBlend = 1.0f; // Enable full 3D audio so sound is positional
+            audioSource.rolloffMode = AudioRolloffMode.Logarithmic; // Natural sound attenuation
+            audioSource.minDistance = 2f; // Distance where sound is at full volume
+            audioSource.maxDistance = 30f; // Distance where sound becomes inaudible
+
+            // Determine base volume for the AudioSource
+            // Using AmbientVolume as the base volume for the source to support looping
+            float baseVolume = (enemyData.AmbientSound != null) ? enemyData.AmbientVolume : 1.0f;
+            audioSource.volume = baseVolume;
+
+            // Play spawn sound (scaled relative to base volume)
+            if (enemyData.SpawnSound != null)
+            {
+                // Calculate scale: Target / Base
+                // If Base is 0.5 and Target is 1.0 -> Scale = 2.0
+                float scale = (baseVolume > 0.01f) ? (enemyData.SpawnVolume / baseVolume) : enemyData.SpawnVolume;
+                audioSource.PlayOneShot(enemyData.SpawnSound, scale);
+            }
+
+            // Start ambient loop
+            if (enemyData.AmbientSound != null)
+            {
+                audioSource.clip = enemyData.AmbientSound;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
+        }
     }
 
     private void OnDestroy()
@@ -428,6 +463,23 @@ public class Enemy : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
+        // Play death sound
+        if (enemyData != null && enemyData.DeathSound != null)
+        {
+            if (spiderDismantle != null && audioSource != null)
+            {
+                // Calculate relative volume if using the attached source
+                float baseVolume = audioSource.volume;
+                float scale = (baseVolume > 0.01f) ? (enemyData.DeathVolume / baseVolume) : enemyData.DeathVolume;
+                audioSource.PlayOneShot(enemyData.DeathSound, scale);
+            }
+            else
+            {
+                // Fallback if object is destroyed immediately - use PlayClipAtPoint (absolute volume)
+                AudioSource.PlayClipAtPoint(enemyData.DeathSound, transform.position, enemyData.DeathVolume);
+            }
+        }
+
         DisableAllComponents();
 
         if (spiderDismantle != null)
@@ -549,6 +601,15 @@ public class Enemy : MonoBehaviour
             if (playerHealthRef.IsAlive())
             {
                 playerHealthRef.Damage(enemyData.AttackDamage);
+                
+                // Play attack sound
+                if (audioSource != null && enemyData.AttackSound != null)
+                {
+                    float baseVolume = audioSource.volume;
+                    float scale = (baseVolume > 0.01f) ? (enemyData.AttackVolume / baseVolume) : enemyData.AttackVolume;
+                    audioSource.PlayOneShot(enemyData.AttackSound, scale);
+                }
+                
                 attackCooldownTimer = enemyData.AttackCooldown;
             }
         }
