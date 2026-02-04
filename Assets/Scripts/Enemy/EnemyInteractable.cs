@@ -33,7 +33,7 @@ public class EnemyInteractable : MonoBehaviour, IHighlightColorProvider
     public Color GetHighlightColor()
     {
         if (EnemyVisualsConfig.Instance != null)
-            return EnemyVisualsConfig.Instance.HoverDarkenColor;
+            return EnemyVisualsConfig.Instance.HoverHighlightColor;
         return hoverColor;
     }
     

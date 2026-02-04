@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
     // ===== Events =====
     public event Action<EnemyState> OnStateChanged;
     public event Action<float, float> OnHealthChanged;
+    public event Action OnDeath;
 
     private void Awake()
     {
@@ -41,8 +42,6 @@ public class Enemy : MonoBehaviour
         spiderDismantle = GetComponent<SpiderDismantle>();
         initialScale = transform.localScale;
         
-        // Configure Rigidbody to be kinematic (NavMeshAgent handles movement)
-        // This prevents physics-based pushing between enemies
         if (rb != null)
         {
             rb.isKinematic = true;
@@ -426,6 +425,8 @@ public class Enemy : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
+        
+        OnDeath?.Invoke();
 
         DisableAllComponents();
 

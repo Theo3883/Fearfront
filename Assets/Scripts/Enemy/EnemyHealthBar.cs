@@ -28,7 +28,11 @@ public class EnemyHealthBar : MonoBehaviour
 
     private void OnEnable()
     {
-        if (enemy != null) enemy.OnHealthChanged += OnHealthChanged;
+        if (enemy != null)
+        {
+            enemy.OnHealthChanged += OnHealthChanged;
+            enemy.OnDeath += HandleDeath;
+        }
         
         // Hide by default
         if (healthBar != null) healthBar.SetVisible(false);
@@ -36,7 +40,17 @@ public class EnemyHealthBar : MonoBehaviour
 
     private void OnDisable()
     {
-        if (enemy != null) enemy.OnHealthChanged -= OnHealthChanged;
+        if (enemy != null)
+        {
+            enemy.OnHealthChanged -= OnHealthChanged;
+            enemy.OnDeath -= HandleDeath;
+        }
+    }
+
+    private void HandleDeath()
+    {
+        if (healthBar != null) healthBar.SetVisible(false);
+        this.enabled = false;
     }
 
     private void Start()
@@ -46,7 +60,6 @@ public class EnemyHealthBar : MonoBehaviour
 
     private void Update()
     {
-        // Apply Config Settings if available (Live Tweaking)
         if (EnemyVisualsConfig.Instance != null && healthBarObj != null)
         {
             healthBarObj.transform.localPosition = EnemyVisualsConfig.Instance.HealthBarOffset;

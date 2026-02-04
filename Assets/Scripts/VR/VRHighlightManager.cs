@@ -12,8 +12,8 @@ public class VRHighlightManager : MonoBehaviour
 {
     [Header("Highlight Settings")]
     [SerializeField] private Color highlightColor = new Color(0.3f, 0.7f, 1f, 1f);
-    [SerializeField] private float emissionIntensity = 0.5f;
-    [SerializeField] private float colorTintStrength = 0.4f;
+    [SerializeField] private float emissionIntensity = 1.5f; // Increased for brightness
+    [SerializeField] private float colorTintStrength = 0.05f; // Lowered to preserve texture details
     
     [Header("Outline Settings")]
     [SerializeField] private bool useOutline = true;

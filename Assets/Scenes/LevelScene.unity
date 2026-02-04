@@ -17989,7 +17989,8 @@ MonoBehaviour:
   FlashColor: {r: 1, g: 0, b: 0, a: 1}
   FlashIntensity: 1
   FlashDuration: 0.15
-  HoverDarkenColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+  BaseColorTintIntensity: 0.3
+  HoverHighlightColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1001 &871414583
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33005,15 +33006,15 @@ PrefabInstance:
     - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: ghostPrefab
       value: 
-      objectReference: {fileID: 8073443194988779917, guid: 48edc0c630e1b4e659a56d1d79ee46f5, type: 3}
+      objectReference: {fileID: 19588385245968726, guid: 3068845ba6141415a98921e3dc756fa2, type: 3}
     - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: spiderPrefab
       value: 
-      objectReference: {fileID: 8073443194988779917, guid: 48edc0c630e1b4e659a56d1d79ee46f5, type: 3}
+      objectReference: {fileID: 19588385245968726, guid: 3068845ba6141415a98921e3dc756fa2, type: 3}
     - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: chickenPrefab
       value: 
-      objectReference: {fileID: 8073443194988779917, guid: 48edc0c630e1b4e659a56d1d79ee46f5, type: 3}
+      objectReference: {fileID: 19588385245968726, guid: 3068845ba6141415a98921e3dc756fa2, type: 3}
     - target: {fileID: 8088291185939057241, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: m_Name
       value: EnemiesHandler

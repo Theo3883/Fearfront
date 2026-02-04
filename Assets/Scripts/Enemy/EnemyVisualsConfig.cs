@@ -22,8 +22,8 @@ public class EnemyVisualsConfig : MonoBehaviour
     public float FlashDuration = 0.15f;
 
     [Header("Highlight Settings")]
-    [Tooltip("Color to tint enemies when hovered (Darker = Dark Grey)")]
-    public Color HoverDarkenColor = new Color(0.2f, 0.2f, 0.2f, 1f);
+    [Tooltip("Color to tint/emit on enemies when hovered (Red for visibility)")]
+    public Color HoverHighlightColor = new Color(1f, 0f, 0f, 1f); // Bright Red
 
     private void Awake()
     {
