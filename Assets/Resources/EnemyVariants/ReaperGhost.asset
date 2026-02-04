@@ -30,4 +30,4 @@ MonoBehaviour:
   attackSound: {fileID: 0}
   attackVolume: 1
   deathSound: {fileID: 8300000, guid: edb7b000ed98f0145bf7906fad403d11, type: 3}
-  deathVolume: 1
+  deathVolume: 0.118

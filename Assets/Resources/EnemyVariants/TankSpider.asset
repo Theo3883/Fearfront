@@ -27,7 +27,7 @@ MonoBehaviour:
   spawnVolume: 1
   ambientSound: {fileID: 8300000, guid: d0528a9ae68f20240a41ad75e451ae5a, type: 3}
   ambientVolume: 0.54
-  attackSound: {fileID: 0}
-  attackVolume: 1
+  attackSound: {fileID: 8300000, guid: 607ce21b683223b43ab119d6b5805efb, type: 3}
+  attackVolume: 0.123
   deathSound: {fileID: 8300000, guid: 8e90d063e69c592418ed0c6beaa41887, type: 3}
   deathVolume: 1
