@@ -18,10 +18,15 @@ public class ResourceNode : MonoBehaviour
 
     public event Action<ResourceNode> OnDepleted; 
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip mineSound;
+    [Range(0f, 1f)] [SerializeField] private float mineVolume = 0.5f;
+
     int amount;
     bool depleted;
     Collider col; Renderer[] rends;
     PlayerInventory inv;
+    AudioSource audioSource;
 
     void Awake()
     {
@@ -29,6 +34,9 @@ public class ResourceNode : MonoBehaviour
         col = GetComponent<Collider>();
         rends = GetComponentsInChildren<Renderer>(true);
         inv = FindFirstObjectByType<PlayerInventory>();
+        
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     void Start()
@@ -46,6 +54,15 @@ public class ResourceNode : MonoBehaviour
         int give = Mathf.Min(amountPerCollect, amount);
         amount -= give;
         inv.Add(type, give); // vezi PlayerInventory de mai jos
+        
+        // Play mine sound
+        if (mineSound != null && audioSource != null)
+        {
+            // Pitch variation for variety
+            audioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
+            audioSource.PlayOneShot(mineSound, mineVolume);
+        }
+
         if (sawdustFX)
         {
             Vector3 pos = fxAnchor ? fxAnchor.position : transform.position + Vector3.up * 1f;

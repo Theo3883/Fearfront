@@ -21,6 +21,18 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float regenRate = 5f;  // Health per second
     private float lastDamageTime = 0f;
     
+    // Audio system
+    [Header("Audio")]
+    [SerializeField] private AudioClip deathSound;
+    [Range(0f, 1f)]
+    [SerializeField] private float deathVolume = 0.8f;
+    [SerializeField] private AudioClip damageSound;
+    [Range(0f, 1f)]
+    [SerializeField] private float damageVolume = 0.6f;
+    [SerializeField] private float damageSoundCooldown = 0.2f;
+    private float lastDamageSoundTime = -999f;
+    private AudioSource audioSource;
+    
     public event Action<float, float> OnHealthChanged; // (currentHealth, maxHealth)
     public event Action OnDeath;
     public event Action OnRespawn;
@@ -68,6 +80,15 @@ public class PlayerHealth : MonoBehaviour
         spawnPosition = transform.position;
         isDead = false;
         isImmune = false;
+        
+        // Audio Setup
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        audioSource.playOnAwake = false;
+        audioSource.spatialBlend = 0f; // 2D sound for player
     }
     
     private void Update()
@@ -135,6 +156,16 @@ public class PlayerHealth : MonoBehaviour
             return;
 
         lastDamageTime = Time.time; // Track last damage time for regen
+        
+        // Play damage sound with cooldown
+        if (damageSound != null && audioSource != null && amount > 0)
+        {
+            if (Time.time > lastDamageSoundTime + damageSoundCooldown)
+            {
+                audioSource.PlayOneShot(damageSound, damageVolume);
+                lastDamageSoundTime = Time.time;
+            }
+        }
 
         currentHealth -= amount;
         if (currentHealth < 0f)
@@ -177,6 +208,13 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         isDead = true;
+        
+        // Play death sound
+        if (deathSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(deathSound, deathVolume);
+        }
+        
         OnDeath?.Invoke();
         
         DisablePlayerMovement();

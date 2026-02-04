@@ -207,6 +207,8 @@ MonoBehaviour:
   amountPerCollect: 10
   selfRespawn: 0
   selfRespawnSeconds: 30
+  mineSound: {fileID: 8300000, guid: 668f5c135ed54b54097085ef36a5e8db, type: 3}
+  mineVolume: 0.5
   fxAnchor: {fileID: 5647422655484556955}
 --- !u!64 &6918044959268677026
 MeshCollider:

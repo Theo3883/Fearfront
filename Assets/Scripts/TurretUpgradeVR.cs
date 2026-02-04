@@ -51,8 +51,12 @@ public class TurretUpgradeVR : MonoBehaviour
     [SerializeField] private float proximityHideRadius = 5f;  // hide when player is farther than this (hysteresis)
     [SerializeField] private Transform playerTransform;        // if null, auto-find XR camera or PlayerHealth
 
+    [Header("Audio")]
+    // Build sound moved to TowerScript.cs
+
     private TurretVariantGroup variantGroup;
     private UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable interactable;
+    private AudioSource audioSource;
     private PlayerInventory inventory;
     private bool isHovering = false;
     private float visibleUntil = 0f;
@@ -108,6 +112,9 @@ public class TurretUpgradeVR : MonoBehaviour
         {
             interactable = GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
         }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
 
         if (interactable == null)
         {
@@ -224,13 +231,23 @@ public class TurretUpgradeVR : MonoBehaviour
 
         if (woodRemoved && stoneRemoved)
         {
+            // Play sound via TowerScript if present
+            TowerScript tower = GetComponent<TowerScript>();
+            if (tower != null)
+            {
+                tower.PlayBuildSound();
+            }
+
             variantGroup.TryUpgradeOnce();
+
             RefreshUpgradeUI();
             return true;
         }
         else
         {
-            Debug.LogError("[TurretUpgradeVR] Eroare la deducerea resurselor!");
+            // The instruction's snippet for the else block uses 'cost.WoodCost' and 'cost.StoneCost'
+            // which are not defined in the current context. I will adapt it to use the existing 'woodCost' and 'stoneCost'.
+            Debug.Log($"[TurretUpgradeVR] Cannot upgrade! Need {woodCost} wood, {stoneCost} stone.");
             return false;
         }
     }

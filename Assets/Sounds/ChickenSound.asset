@@ -15,9 +15,9 @@ MonoBehaviour:
   family: 0
   spawnSound: {fileID: 0}
   spawnVolume: 1
-  ambientSound: {fileID: 0}
-  ambientVolume: 0.5
-  attackSound: {fileID: 0}
-  attackVolume: 1
-  deathSound: {fileID: 0}
+  ambientSound: {fileID: 8300000, guid: 26fd3dd9c4bc76c43bcb4e6bf4b20e8b, type: 3}
+  ambientVolume: 0.36
+  attackSound: {fileID: 8300000, guid: 52d33b87ecd14da4a885c77e0baa8b5a, type: 3}
+  attackVolume: 0.15
+  deathSound: {fileID: 8300000, guid: 52d33b87ecd14da4a885c77e0baa8b5a, type: 3}
   deathVolume: 1

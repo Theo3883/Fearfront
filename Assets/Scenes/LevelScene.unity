@@ -25047,7 +25047,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Fearfront.Scripts::BackgroundMusic
   dayClip: {fileID: 8300000, guid: da8609a8514c96641b82d8bf2b63a755, type: 3}
   nightClip: {fileID: 8300000, guid: 31a1e8cd27c782d42af9e8c6798d920e, type: 3}
-  volume: 0.064
+  volume: 0.1
   fadeDuration: 2
   persistBetweenScenes: 1
 --- !u!4 &1355906369
@@ -32730,6 +32730,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 932205440}
   - {fileID: 1486651301}
   - {fileID: 1872204120}
   - {fileID: 1895309329}
@@ -32801,7 +32802,6 @@ Transform:
   - {fileID: 1220893056}
   - {fileID: 1108722785}
   - {fileID: 624593513}
-  - {fileID: 932205440}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2114234272
@@ -33292,6 +33292,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 19588385245968726, guid: 3068845ba6141415a98921e3dc756fa2, type: 3}
     - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: ghostSounds
+      value: 
+      objectReference: {fileID: 11400000, guid: 53230454d7b2d454eb6dd2e826dc8c21, type: 2}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: variantBoss
       value: 
       objectReference: {fileID: 11400000, guid: 4d903c80340444b468eb12280c08c73b, type: 2}
@@ -33308,6 +33312,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 6946628644984969152, guid: fc586b623f8544c66a5c4441a4c69df9, type: 3}
     - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: spiderSounds
+      value: 
+      objectReference: {fileID: 11400000, guid: 8b0833bfb2ad1a943b126af1c5b3c25d, type: 2}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: variantHeavy
       value: 
       objectReference: {fileID: 11400000, guid: 95b14c7c3321748459f583ff5429cb39, type: 2}
@@ -33319,6 +33327,10 @@ PrefabInstance:
       propertyPath: chickenPrefab
       value: 
       objectReference: {fileID: 8073443194988779917, guid: 48edc0c630e1b4e659a56d1d79ee46f5, type: 3}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: chickenSounds
+      value: 
+      objectReference: {fileID: 11400000, guid: 98f083f9c0bbe0f4f951f0d41c7479fb, type: 2}
     - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: variantNormal
       value: 
@@ -35214,6 +35226,10 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 2265517794615222922}
+    - target: {fileID: 5108096407728944165, guid: b92ef1ea90969694dad8b5a041481aac, type: 3}
+      propertyPath: dongSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 3036aac440081a54f997601c6123ba00, type: 3}
     - target: {fileID: 6424352523928510692, guid: b92ef1ea90969694dad8b5a041481aac, type: 3}
       propertyPath: m_Name
       value: PlayerOverlayCanvas
@@ -35756,6 +35772,10 @@ PrefabInstance:
     - target: {fileID: 1117635832220383791, guid: ba8c9dbf529ff144db80b0a13405ecd8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2600839374547756892, guid: ba8c9dbf529ff144db80b0a13405ecd8, type: 3}
+      propertyPath: targetActive
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2600839374547756892, guid: ba8c9dbf529ff144db80b0a13405ecd8, type: 3}
       propertyPath: slots.Array.size
@@ -36447,6 +36467,11 @@ MonoBehaviour:
   immunityDuration: 3
   regenDelay: 5
   regenRate: 5
+  deathSound: {fileID: 8300000, guid: 38aff46a04ea1c44ba9d6bfbd4b1812b, type: 3}
+  deathVolume: 0.8
+  damageSound: {fileID: 8300000, guid: 4aa018c6b885e194295fa085b27ae742, type: 3}
+  damageVolume: 0.5
+  damageSoundCooldown: 0.2
 --- !u!4 &8942952550638667650
 Transform:
   m_ObjectHideFlags: 0
@@ -36544,3 +36569,4 @@ SceneRoots:
   - {fileID: 871414583}
   - {fileID: 741687554}
   - {fileID: 8017830290236794606}
+  - {fileID: 1355906369}

@@ -18,7 +18,13 @@ public class NightAnnouncementOverlay : MonoBehaviour
     [SerializeField] private float fadeInDuration = 0.5f;
     [SerializeField] private float fadeOutDuration = 0.5f;
     
+    [Header("Audio")]
+    [SerializeField] private AudioClip dongSound;
+    [Range(0f, 1f)]
+    [SerializeField] private float dongVolume = 0.8f;
+    
     private CanvasGroup canvasGroup;
+    private AudioSource audioSource;
     
     private void Awake()
     {
@@ -32,6 +38,15 @@ public class NightAnnouncementOverlay : MonoBehaviour
             }
             overlayPanel.SetActive(false);
         }
+        
+        // Audio Setup
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        audioSource.playOnAwake = false;
+        audioSource.spatialBlend = 0f; // 2D UI sound
         
         ConfigureCanvas();
     }
@@ -57,6 +72,12 @@ public class NightAnnouncementOverlay : MonoBehaviour
         nightText.text = $"NIGHT {nightNumber}";
         overlayPanel.SetActive(true);
         canvasGroup.alpha = 0f;
+        
+        // Play dong sound
+        if (dongSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(dongSound, dongVolume);
+        }
         
         // Fade In
         float elapsed = 0f;

@@ -25,7 +25,10 @@ public class TowerScript : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioClip shootSound;
     [Range(0f, 1f)]
-    [SerializeField] private float shootVolume = 0.8f; // Increased default volume
+    [SerializeField] private float shootVolume = 0.8f;
+    [SerializeField] private AudioClip buildSound;
+    [Range(0f, 1f)]
+    [SerializeField] private float buildVolume = 1f;
     [Range(0f, 1f)]
     [SerializeField] private float spatialBlend = 0.7f; // 0 = 2D, 1 = 3D
     private AudioSource audioSource;
@@ -65,12 +68,7 @@ public class TowerScript : MonoBehaviour
 
         if (gun != null) gunInitialLocalRotation = gun.localRotation;
         
-        // Audio Setup
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
+        
         // Audio Setup
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
@@ -523,5 +521,18 @@ public class TowerScript : MonoBehaviour
         if (from == null || to == null) return;
         if (!from.HasProperty(prop) || !to.HasProperty(prop)) return;
         to.SetFloat(prop, from.GetFloat(prop));
+    }
+    
+    /// <summary>
+    /// Plays the build sound at the tower's position.
+    /// Useful for upgrade sounds.
+    /// </summary>
+    public void PlayBuildSound()
+    {
+        if (buildSound != null)
+        {
+            // Use PlayClipAtPoint so it works even if object is destroyed (e.g. replaced by upgrade)
+            AudioSource.PlayClipAtPoint(buildSound, transform.position, buildVolume);
+        }
     }
 }

@@ -237,6 +237,8 @@ MonoBehaviour:
   amountPerCollect: 5
   selfRespawn: 0
   selfRespawnSeconds: 30
+  mineSound: {fileID: 8300000, guid: 5a2cb6505ad75064a982212c55fc73d0, type: 3}
+  mineVolume: 0.2
   fxAnchor: {fileID: 2732274218578478223}
 --- !u!4 &4499283743595205709 stripped
 Transform:

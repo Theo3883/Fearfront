@@ -22,9 +22,15 @@ public class EnemyInteractable : MonoBehaviour, IHighlightColorProvider
     [SerializeField] private float flashIntensity = 2f;
     [SerializeField] private float flashDuration = 0.15f;
     
+    [Header("Audio")]
+    [SerializeField] private AudioClip hitSound;
+    [Range(0f, 1f)]
+    [SerializeField] private float hitVolume = 0.7f;
+    
     private XRSimpleInteractable interactable;
     private Enemy enemy;
     private Renderer[] renderers;
+    private AudioSource audioSource;
     
     /// <summary>
     /// Returns the highlight color for enemies (dark tint).
@@ -45,6 +51,10 @@ public class EnemyInteractable : MonoBehaviour, IHighlightColorProvider
         interactable = GetComponent<XRSimpleInteractable>();
         enemy = GetComponent<Enemy>();
         renderers = GetComponentsInChildren<Renderer>();
+        
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
     }
     
     private void OnEnable()
@@ -95,7 +105,16 @@ public class EnemyInteractable : MonoBehaviour, IHighlightColorProvider
     private void AttackEnemy()
     {
         // Player attacking enemy via VR interaction
-        enemy.TakeDamage(attackDamage);
+        if (enemy != null)
+        {
+            enemy.TakeDamage(attackDamage);
+            
+            // Play hit sound
+            if (hitSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(hitSound, hitVolume);
+            }
+        }
     }
     
     private IEnumerator FlashHit()
