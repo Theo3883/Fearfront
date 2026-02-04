@@ -231,14 +231,23 @@ public class TurretUpgradeVR : MonoBehaviour
 
         if (woodRemoved && stoneRemoved)
         {
-            // Play sound via TowerScript if present
-            TowerScript tower = GetComponent<TowerScript>();
+            // 1. Perform upgrade (activates the new turret child)
+            variantGroup.TryUpgradeOnce();
+
+            // 2. Play sound via TowerScript (now active in children)
+            // Use GetComponentInChildren to find the script on the newly active child (Turret 1a/1b...)
+            TowerScript tower = GetComponentInChildren<TowerScript>();
             if (tower != null)
             {
                 tower.PlayBuildSound();
             }
-
-            variantGroup.TryUpgradeOnce();
+            else
+            {
+                 // Try looking on self just in case
+                 tower = GetComponent<TowerScript>();
+                 if (tower != null) tower.PlayBuildSound();
+                 else Debug.LogWarning("[TurretUpgradeVR] Could not find TowerScript in children to play build sound!");
+            }
 
             RefreshUpgradeUI();
             return true;

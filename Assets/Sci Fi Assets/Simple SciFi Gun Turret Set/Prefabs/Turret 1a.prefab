@@ -326,7 +326,7 @@ MonoBehaviour:
   forceMuzzleVfxOneShot: 1
   forceMuzzleVfxUrpMaterial: 1
   shootSound: {fileID: 8300000, guid: 083bcb241616fb74092abd8988e3c26b, type: 3}
-  shootVolume: 0.8
+  shootVolume: 1
   buildSound: {fileID: 8300000, guid: ceff7bfaf5bb3994691ed7815be6ecc3, type: 3}
   buildVolume: 1
   spatialBlend: 0.7

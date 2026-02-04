@@ -76,9 +76,18 @@ public class TowerScript : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
         audioSource.playOnAwake = false;
-        audioSource.spatialBlend = 1.0f; // 3D Sound
-        audioSource.minDistance = 1.0f; 
-        audioSource.maxDistance = 25.0f; // Distance attenuation
+        
+        // Use the serialized spatialBlend value
+        audioSource.spatialBlend = spatialBlend; 
+        
+        // Improve falloff curve
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
+        audioSource.minDistance = 5.0f;  // Full volume within 5 meters
+        audioSource.maxDistance = 100.0f; // Audible up to 100 meters
+        
+        // Preload audio to reduce latency
+        if (shootSound != null) shootSound.LoadAudioData();
+        if (buildSound != null) buildSound.LoadAudioData();
         
         StartCoroutine(shootLogic());
     }
@@ -531,8 +540,14 @@ public class TowerScript : MonoBehaviour
     {
         if (buildSound != null)
         {
+            Debug.Log($"[TowerScript] Playing build sound: {buildSound.name}");
             // Use PlayClipAtPoint so it works even if object is destroyed (e.g. replaced by upgrade)
+            // Note: PlayClipAtPoint creates a temporary 3D AudioSource with default settings (Min=1, Max=500, Rolloff=Log)
             AudioSource.PlayClipAtPoint(buildSound, transform.position, buildVolume);
+        }
+        else
+        {
+            Debug.LogWarning("[TowerScript] PlayBuildSound called but buildSound is NULL!");
         }
     }
 }
