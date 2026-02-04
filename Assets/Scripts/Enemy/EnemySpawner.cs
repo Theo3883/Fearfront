@@ -58,7 +58,6 @@ public class EnemySpawner : MonoBehaviour
 
     private void HookIntoLightingManager()
     {
-        Debug.Log("<color=cyan>[EnemySpawner] Searching for LightingManager...</color>");
         
         // Find ALL instances to handle potential duplicates/ghost objects
         Sydewa.LightingManager[] managers = FindObjectsByType<Sydewa.LightingManager>(FindObjectsSortMode.None);
@@ -74,7 +73,6 @@ public class EnemySpawner : MonoBehaviour
         foreach (var manager in managers)
         {
             int count = (manager.events != null) ? manager.events.Count : 0;
-            Debug.Log($"<color=cyan>[EnemySpawner] Found instance on GameObject '{manager.gameObject.name}' with {count} events.</color>");
             
             if (count > 0)
             {
@@ -89,35 +87,29 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
-        Debug.Log($"<color=cyan>[EnemySpawner] Hooking into valid manager on '{targetManager.gameObject.name}'...</color>");
-
+        
         foreach (var evt in targetManager.events)
         {
-            // Debug.Log($"<color=cyan>[EnemySpawner] Checking Event: '{evt.eventName}'</color>");
             
             if (evt.eventName == "Start Night")
             {
                 evt.Event.RemoveListener(StartNightWave); 
                 evt.Event.AddListener(StartNightWave);
-                Debug.Log($"<color=green>[EnemySpawner] SUCCESS: Hooked into 'Start Night'</color>");
             }
             else if (evt.eventName == "End Night")
             {
                 evt.Event.RemoveListener(EndNightWave);
                 evt.Event.AddListener(EndNightWave);
-                Debug.Log($"<color=green>[EnemySpawner] SUCCESS: Hooked into 'End Night'</color>");
             }
             else if (evt.eventName == "Start Day")
             {
                 evt.Event.RemoveListener(StartDayEvent);
                 evt.Event.AddListener(StartDayEvent);
-                Debug.Log($"<color=green>[EnemySpawner] SUCCESS: Hooked into 'Start Day'</color>");
             }
             else if (evt.eventName == "End Day")
             {
                 evt.Event.RemoveListener(EndDayEvent);
                 evt.Event.AddListener(EndDayEvent);
-                Debug.Log($"<color=green>[EnemySpawner] SUCCESS: Hooked into 'End Day'</color>");
             }
         }
     }

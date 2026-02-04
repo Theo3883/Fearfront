@@ -469,10 +469,14 @@ public class Enemy : MonoBehaviour
         if (playerDetector != null)
             playerDetector.enabled = false;
         
-        if (rb != null)
+        if (rb != null && !rb.isKinematic)
         {
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
+        }
+        
+        if (rb != null)
+        {
             rb.isKinematic = true;
         }
         

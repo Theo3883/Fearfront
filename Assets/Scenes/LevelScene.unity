@@ -15,12 +15,12 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.43164617, g: 0.39663205, b: 0.52480876, a: 1}
+  m_FogColor: {r: 0.43163812, g: 0.39661577, b: 0.52482885, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.0047499994
+  m_FogDensity: 0.004375
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.94922614, g: 0.7497573, b: 0.2528985, a: 1}
+  m_AmbientSkyColor: {r: 0.9539689, g: 0.77313197, b: 0.32268387, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 0.2
@@ -30480,6 +30480,18 @@ PrefabInstance:
       propertyPath: enemyPrefab
       value: 
       objectReference: {fileID: 6946628644984969152, guid: fc586b623f8544c66a5c4441a4c69df9, type: 3}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: ghostPrefab
+      value: 
+      objectReference: {fileID: 19588385245968726, guid: 3068845ba6141415a98921e3dc756fa2, type: 3}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: spiderPrefab
+      value: 
+      objectReference: {fileID: 6946628644984969152, guid: fc586b623f8544c66a5c4441a4c69df9, type: 3}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: chickenPrefab
+      value: 
+      objectReference: {fileID: 8073443194988779917, guid: 48edc0c630e1b4e659a56d1d79ee46f5, type: 3}
     - target: {fileID: 8088291185939057241, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: m_Name
       value: EnemiesHandler
@@ -30539,15 +30551,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 191548452443476970, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.13052626
+      value: 0.19509037
       objectReference: {fileID: 0}
     - target: {fileID: 191548452443476970, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.9914449
+      value: 0.9807853
+      objectReference: {fileID: 0}
+    - target: {fileID: 485717636450277197, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
+      propertyPath: StartTime
+      value: 16.5
       objectReference: {fileID: 0}
     - target: {fileID: 485717636450277197, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: TimeOfDay
-      value: 17
+      value: 16.5
       objectReference: {fileID: 0}
     - target: {fileID: 485717636450277197, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: IsEventsOn
@@ -30583,7 +30599,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 485717636450277197, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: events.Array.data[1].executed
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 485717636450277197, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: events.Array.data[2].executed
@@ -30611,19 +30627,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 485717636450277197, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: events.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 485717636450277197, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: events.Array.data[1].Event.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 485717636450277197, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: events.Array.data[2].Event.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 485717636450277197, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: events.Array.data[3].Event.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 485717636450277197, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: events.Array.data[0].Event.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -30811,23 +30827,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7742605295972000930, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: m_Color.b
-      value: 0.2528985
+      value: 0.32268387
       objectReference: {fileID: 0}
     - target: {fileID: 7742605295972000930, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: m_Color.g
-      value: 0.7497573
+      value: 0.77313197
       objectReference: {fileID: 0}
     - target: {fileID: 7742605295972000930, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: m_Color.r
-      value: 0.94922614
+      value: 0.9539689
       objectReference: {fileID: 0}
     - target: {fileID: 7742605295972000930, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: m_Intensity
-      value: 0.5833334
+      value: 0.625
       objectReference: {fileID: 0}
     - target: {fileID: 7742605295972000930, guid: 70d83b3800b3c0f4fa115a7637a3e90c, type: 3}
       propertyPath: m_Shadows.m_Strength
-      value: 0.20833331
+      value: 0.1875
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
