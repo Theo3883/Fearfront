@@ -25047,8 +25047,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Fearfront.Scripts::BackgroundMusic
   dayClip: {fileID: 8300000, guid: da8609a8514c96641b82d8bf2b63a755, type: 3}
   nightClip: {fileID: 8300000, guid: 31a1e8cd27c782d42af9e8c6798d920e, type: 3}
-  volume: 0.1
-  fadeDuration: 2
+  volume: 0.8
+  fadeDuration: 3
   persistBetweenScenes: 1
 --- !u!4 &1355906369
 Transform:
