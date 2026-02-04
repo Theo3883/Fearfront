@@ -115,6 +115,7 @@ public class EnemyHealthBar : MonoBehaviour
                 dynamicHeight = heightDiff + 0.5f; // reduced margin to 0.5
             }
         }
+
         
         Vector3 finalOffset = new Vector3(0, dynamicHeight, 0);
 

@@ -12,7 +12,7 @@ public class EnemyStateMachine : MonoBehaviour
     [SerializeField] private PlayerHealth playerHealth;
     
     private EnemyState currentState = EnemyState.Moving;
-    private bool requirePlayerOnNavMesh = false; // Default: NavMesh check disabled, distance-only
+    private bool requirePlayerOnNavMesh = true;
 
     // Events
     public event Action<EnemyState> OnStateChanged;

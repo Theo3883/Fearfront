@@ -28,6 +28,19 @@ public class EnemySpawner : MonoBehaviour
 
     [SerializeField] private EnemyFamily prefabFamily = EnemyFamily.Spider;
 
+    [Header("Available Enemy Families (Night Waves)")]
+    [SerializeField] private bool useSpiders = true;
+    [SerializeField] private bool useGhosts = true;
+    [SerializeField] private bool useChickens = false;
+
+    [Header("Spawn Limits")]
+    [SerializeField] private int baseMaxSpawns = 20;
+    [SerializeField] private float spawnsMultiplierPerNight = 1.5f;
+    private int currentNightSpawnCount = 0;
+    private float nightStartTime = 0f;
+    private float nightDurationSeconds = 180f;
+    private Sydewa.LightingManager lightingManager;
+
 
     private void Start()
     {
@@ -83,6 +96,8 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
 
+        lightingManager = targetManager;
+        CalculateNightDuration();
         
         foreach (var evt in targetManager.events)
         {
@@ -108,6 +123,40 @@ public class EnemySpawner : MonoBehaviour
                 evt.Event.AddListener(EndDayEvent);
             }
         }
+    }
+
+    private void CalculateNightDuration()
+    {
+        if (lightingManager == null)
+        {
+            Debug.LogWarning("[EnemySpawner] LightingManager not found, using default night duration.");
+            nightDurationSeconds = 180f;
+            return;
+        }
+
+        float startNightTime = -1f;
+        float endNightTime = -1f;
+
+       foreach (var evt in lightingManager.events)
+        {
+            if (evt.eventName == "Start Night")
+                startNightTime = evt.Time;
+            else if (evt.eventName == "End Night")
+                endNightTime = evt.Time;
+        }
+
+        if (startNightTime < 0 || endNightTime < 0)
+        {
+            Debug.LogWarning("[EnemySpawner] Could not find Start Night or End Night events, using default duration.");
+            nightDurationSeconds = 180f;
+            return;
+        }
+
+        float nightHours = endNightTime < startNightTime ? (24f - startNightTime) + endNightTime : endNightTime - startNightTime;
+        float cycleDuration = lightingManager.CycleDuration;
+        nightDurationSeconds = (nightHours / 24f) * cycleDuration;
+
+        Debug.Log($"[EnemySpawner] Calculated night duration: {nightDurationSeconds}s (Night: {startNightTime}:00 - {endNightTime}:00, Cycle: {cycleDuration}s)");
     }
 
     private EnemyData GetVariantData(EnemyVariantType type)
@@ -140,24 +189,10 @@ public class EnemySpawner : MonoBehaviour
             Debug.LogWarning("Spawn point not on NavMesh. Enemies may not navigate correctly.");
         }
         
+        EnemyFamily selectedFamily = isDayEventActive ? EnemyFamily.Chicken : GetRandomAvailableFamily();
+        
         EnemyData selectedEnemyData = GetRandomEnemyType();
-        GameObject prefabToUse = spiderPrefab;
-
-        if (selectedEnemyData != null)
-        {
-            if (selectedEnemyData.Family == EnemyFamily.Spider)
-            {
-                if (spiderPrefab != null) prefabToUse = spiderPrefab;
-            }
-            else if (selectedEnemyData.Family == EnemyFamily.Ghost)
-            {
-                if (ghostPrefab != null) prefabToUse = ghostPrefab;
-            }
-            else if (selectedEnemyData.Family == EnemyFamily.Chicken)
-            {
-                if (chickenPrefab != null) prefabToUse = chickenPrefab;
-            }
-        }
+        GameObject prefabToUse = GetPrefabForFamily(selectedFamily);
         
         if (prefabToUse == null) 
         {
@@ -310,19 +345,12 @@ public class EnemySpawner : MonoBehaviour
         EndDayEvent(); // Ensure day event is over
         
         isNightWaveActive = true;
+        currentNightSpawnCount = 0;
+        nightStartTime = Time.time;
         
-        // Difficulty handling
-        // Night 1 is base difficulty (multiplier 1.0)
-        // Night 2+ scales up
-        if (currentNight > 1)
-        {
-            float addedDifficulty = (currentNight - 1) * difficultyScalePerNight;
-            difficultyMultiplier = 1.0f + addedDifficulty;
-        }
-        else 
-        {
-            difficultyMultiplier = 1.0f;
-        }
+        float baseMultiplier = 0.5f;
+        float addedDifficulty = (currentNight - 1) * difficultyScalePerNight;
+        difficultyMultiplier = baseMultiplier + addedDifficulty;
 
         // Reset Boss flag for the new night
         bossSpawnedThisNight = false;
@@ -375,17 +403,36 @@ public class EnemySpawner : MonoBehaviour
     {
         while (isNightWaveActive || isDayEventActive)
         {
+            int maxSpawnsThisNight = Mathf.RoundToInt(baseMaxSpawns * Mathf.Pow(spawnsMultiplierPerNight, currentNight - 1));
+            if (isNightWaveActive && currentNightSpawnCount >= maxSpawnsThisNight)
+            {
+                yield break;
+            }
+            
             float currentInterval = spawnInterval;
             
-            // Progressive Difficulty: Spawn faster each night
-            if (isNightWaveActive && currentNight > 1)
+            if (isNightWaveActive)
             {
-                // Decrease interval by 0.5s per night, clamped to 0.5s minimum
-                float reduction = (currentNight - 1) * 0.5f;
-                currentInterval = Mathf.Max(0.5f, spawnInterval - reduction);
+                float elapsedTime = Time.time - nightStartTime;
+                float nightProgress = Mathf.Clamp01(elapsedTime / nightDurationSeconds);
+                int remainingSpawns = maxSpawnsThisNight - currentNightSpawnCount;
+                float remainingTime = nightDurationSeconds - elapsedTime;
+                
+                if (remainingSpawns > 0 && remainingTime > 0)
+                {
+                    float baseInterval = remainingTime / remainingSpawns;
+                    float progressMultiplier = Mathf.Lerp(2f, 0.5f, nightProgress);
+                    currentInterval = Mathf.Max(0.5f, baseInterval * progressMultiplier);
+                }
+                else
+                {
+                    currentInterval = 0.5f;
+                }
             }
 
             SpawnEnemy();
+            
+            if (isNightWaveActive) currentNightSpawnCount++;
             
             yield return new WaitForSeconds(currentInterval);
         }
@@ -414,22 +461,7 @@ public class EnemySpawner : MonoBehaviour
         }
         else if (isNightWaveActive)
         {
-            // Night Logic
-            if (currentNight == 1)
-            {
-                // Night 1: Spiders Only
-                targetedFamily = EnemyFamily.Spider;
-            }
-            else if (currentNight == 2)
-            {
-                // Night 2: Ghosts Only
-                targetedFamily = EnemyFamily.Ghost;
-            }
-            else
-            {
-                // Night 3+: Mixed (Spiders + Ghosts)
-                targetedFamily = Random.value > 0.5f ? EnemyFamily.Spider : EnemyFamily.Ghost;
-            }
+            targetedFamily = GetRandomAvailableFamily();
         }
 
         // Logic for Variants (Normal, Fast, Boss, etc)
@@ -437,11 +469,16 @@ public class EnemySpawner : MonoBehaviour
         float[] chances;
 
         bool forceBoss = false;
-        // Check for Boss Spawn (Night 2+, once per night)
-        if (isNightWaveActive && currentNight >= 2 && !bossSpawnedThisNight)
+        if (isNightWaveActive && currentNight >= 3 && !bossSpawnedThisNight)
         {
-            forceBoss = true;
-            bossSpawnedThisNight = true; 
+            float elapsedTime = Time.time - nightStartTime;
+            float nightProgress = Mathf.Clamp01(elapsedTime / nightDurationSeconds);
+            
+            if (nightProgress >= 0.9f)
+            {
+                forceBoss = true;
+                bossSpawnedThisNight = true;
+            }
         }
 
         if (forceBoss)
@@ -523,6 +560,38 @@ public class EnemySpawner : MonoBehaviour
     private EnemyFamily ResolvePrefabFamily()
     {
         return prefabFamily;
+    }
+
+    private EnemyFamily GetRandomAvailableFamily()
+    {
+        if (currentNight == 1)
+        {
+            return EnemyFamily.Spider;
+        }
+        else if (currentNight == 2)
+        {
+            return EnemyFamily.Ghost;
+        }
+        else
+        {
+            var available = new System.Collections.Generic.List<EnemyFamily>();
+            if (useSpiders && spiderPrefab != null) available.Add(EnemyFamily.Spider);
+            if (useGhosts && ghostPrefab != null) available.Add(EnemyFamily.Ghost);
+            if (useChickens && chickenPrefab != null) available.Add(EnemyFamily.Chicken);
+            
+            if (available.Count == 0) return EnemyFamily.Spider;
+            return available[Random.Range(0, available.Count)];
+        }
+    }
+
+    private GameObject GetPrefabForFamily(EnemyFamily family)
+    {
+        switch (family)
+        {
+            case EnemyFamily.Ghost: return ghostPrefab ?? spiderPrefab;
+            case EnemyFamily.Chicken: return chickenPrefab ?? spiderPrefab;
+            default: return spiderPrefab;
+        }
     }
 
     private EnemyData FindAnyValidVariantForFamily(EnemyFamily family)

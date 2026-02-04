@@ -298,10 +298,6 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void HandleEngagingPlayer()
     {
-        if (enemyMovement != null)
-        {
-            enemyMovement.PauseMovement();
-        }
     }
 
     /// <summary>
@@ -524,37 +520,50 @@ public class Enemy : MonoBehaviour
             return;
         }
         
-        // Don't attack if player is immune
         if (playerHealthRef.IsImmune)
         {
             return;
         }
 
-        // Update cooldown timer
         if (attackCooldownTimer > 0f)
         {
             attackCooldownTimer -= Time.deltaTime;
         }
 
-        // Use Horizontal (XZ) distance for attack range check. 
-        // This ensures that tall enemies can attack at their base range even if the player is standing.
         Vector3 enemyPos = transform.position;
         float distanceXZ = Vector2.Distance(new Vector2(enemyPos.x, enemyPos.z), new Vector2(playerPosition.x, playerPosition.z));
         float attackRange = enemyData.AttackRange;
+        float distanceY = Mathf.Abs(enemyPos.y - playerPosition.y);
 
-        // Rotate to face player
         Vector3 directionToPlayer = (playerPosition - enemyPos).normalized;
-        directionToPlayer.y = 0; // Keep rotation horizontal
+        directionToPlayer.y = 0;
         if (directionToPlayer.sqrMagnitude > 0.001f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
         }
 
-        // Execute attack if player is in horizontal range and cooldown is ready
-        // We include a small Y check (e.g. 3m) just to ensure the player isn't 100m in the air.
-        float distanceY = Mathf.Abs(enemyPos.y - playerPosition.y);
-        if (distanceXZ <= attackRange && distanceY < 3.0f && attackCooldownTimer <= 0f)
+        if (distanceXZ > attackRange)
+        {
+            if (agent != null && agent.enabled && agent.isOnNavMesh)
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(playerPosition, out hit, 5f, NavMesh.AllAreas))
+                {
+                    agent.isStopped = false;
+                    agent.SetDestination(hit.position);
+                }
+            }
+            return;
+        }
+
+        if (agent != null && agent.enabled && agent.isOnNavMesh)
+        {
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+        }
+
+        if (distanceY < 3.0f && attackCooldownTimer <= 0f)
         {
             if (playerHealthRef.IsAlive())
             {
