@@ -103,12 +103,22 @@ public class Enemy : MonoBehaviour
     {
         if (enemyData == null) return;
         
-        // Apply relative scaling
+        // Apply relative scaling with random variation (±15%)
+        float scaleVariation = UnityEngine.Random.Range(0.85f, 1.15f);
         float multiplier = Mathf.Clamp(enemyData.VisualScaleMultiplier, 0.1f, 5.0f);
-        transform.localScale = initialScale * multiplier;
+        transform.localScale = initialScale * multiplier * scaleVariation;
         
-        // Apply color from EnemyData to all child renderers
+        // Apply color from EnemyData with random HSV variation
         Color typeColor = enemyData.TypeColor;
+        
+        // Add per-instance color variety (except for Boss variants)
+        if (enemyData.VariantType != EnemyVariantType.Boss)
+        {
+            Color.RGBToHSV(typeColor, out float h, out float s, out float v);
+            h = (h + UnityEngine.Random.Range(-0.1f, 0.1f) + 1f) % 1.0f; // Hue shift ±10%
+            s = Mathf.Clamp01(s * UnityEngine.Random.Range(0.8f, 1.2f)); // Saturation variation ±20%
+            typeColor = Color.HSVToRGB(h, s, v);
+        }
         bool isGhost = enemyData.Family == EnemyFamily.Ghost;
         Shader urpLit = null;
         if (isGhost)
