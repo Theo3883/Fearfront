@@ -510,8 +510,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4269171645614483139}
   m_Father: {fileID: 8881504610387854135}
@@ -829,7 +829,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.0000000021598878, y: -9.668729e-10, z: 0.000000001146775}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8881504610387854135}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -982,7 +982,7 @@ Transform:
   m_LocalRotation: {x: 0.0000001629207, y: 1, z: -0.000000043711413, w: 0.00000013315805}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5774262285195872425}
   m_Father: {fileID: 5260241464314499896}
@@ -1161,11 +1161,12 @@ GameObject:
   - component: {fileID: 1148166099904503607}
   - component: {fileID: 7250877841948120146}
   - component: {fileID: 3998094469398739564}
-  - component: {fileID: 1937001267636329137}
   - component: {fileID: 4042893614570282686}
   - component: {fileID: 5236718462279791484}
   - component: {fileID: 7034275672613416391}
   - component: {fileID: 7215361571234953692}
+  - component: {fileID: 7649405386261363999}
+  - component: {fileID: 1610069037079473941}
   m_Layer: 7
   m_Name: Chicken_001
   m_TagString: Enemy
@@ -1184,7 +1185,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2382459246418940066}
   - {fileID: 5260241464314499896}
@@ -1295,27 +1296,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 1
---- !u!135 &1937001267636329137
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8073443194988779917}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.2
-  m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!195 &4042893614570282686
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1325,19 +1305,19 @@ NavMeshAgent:
   m_GameObject: {fileID: 8073443194988779917}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.2
+  m_Radius: 2.28
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 1
+  m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 0.5
+  m_Height: 3.79
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 2
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &5236718462279791484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1479,7 +1459,49 @@ MonoBehaviour:
   interactRange: 12
   hoverColor: {r: 1, g: 0.3, b: 0.3, a: 1}
   flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashIntensity: 2
   flashDuration: 0.15
+--- !u!114 &7649405386261363999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073443194988779917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e2180581d194122b12bb7735f57703, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Fearfront.Scripts::EnemyAnimatorSpeedSync
+  agent: {fileID: 4042893614570282686}
+  referenceMoveSpeed: 5
+  animSpeedAtReference: 1
+  minAnimSpeed: 0.25
+  maxAnimSpeed: 2
+  smoothing: 12
+--- !u!136 &1610069037079473941
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073443194988779917}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.21
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.57, z: 0}
 --- !u!1 &8122850409471221505
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,7 +7,10 @@ using UnityEngine;
 public class EnemyData : ScriptableObject
 {
     [SerializeField] private string enemyName = "Enemy";
-    [SerializeField] private EnemyType enemyType = EnemyType.FastSpider;
+    
+    [Header("Classification")]
+    [SerializeField] private EnemyFamily family = EnemyFamily.Spider;
+    [SerializeField] private EnemyVariantType variantType = EnemyVariantType.Normal;
     
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
@@ -22,7 +25,7 @@ public class EnemyData : ScriptableObject
     
     [Header("Visual")]
     [SerializeField] private Color typeColor = Color.white;
-    [SerializeField] private float visualScale = 1f;
+    [SerializeField] private float visualScaleMultiplier = 1f;
 
     /// <summary>
     /// Gets the name of this enemy variant
@@ -30,9 +33,14 @@ public class EnemyData : ScriptableObject
     public string EnemyName => enemyName;
 
     /// <summary>
-    /// Gets the type of this enemy
+    /// Gets the family of this enemy (Spider, Ghost, etc)
     /// </summary>
-    public EnemyType Type => enemyType;
+    public EnemyFamily Family => family;
+
+    /// <summary>
+    /// Gets the generic variant type (Fast, Tank, etc)
+    /// </summary>
+    public EnemyVariantType VariantType => variantType;
 
     /// <summary>
     /// Gets the movement speed in meters per second
@@ -75,9 +83,9 @@ public class EnemyData : ScriptableObject
     public Color TypeColor => typeColor;
 
     /// <summary>
-    /// Gets the visual scale multiplier (0.7 to 1.3)
+    /// Gets the visual scale multiplier (0.1 to 3.0 relative to prefab base)
     /// </summary>
-    public float VisualScale => visualScale;
+    public float VisualScaleMultiplier => visualScaleMultiplier;
 
     /// <summary>
     /// Validates that all values are in reasonable ranges
@@ -132,9 +140,9 @@ public class EnemyData : ScriptableObject
             return false;
         }
 
-        if (visualScale < 0.1f || visualScale > 12f)
+        if (visualScaleMultiplier < 0.1f || visualScaleMultiplier > 5f)
         {
-            Debug.LogWarning($"EnemyData '{enemyName}': visualScale should be between 0.1 and 12.0");
+            Debug.LogWarning($"EnemyData '{enemyName}': visualScaleMultiplier should be between 0.1 and 5.0");
             return false;
         }
 

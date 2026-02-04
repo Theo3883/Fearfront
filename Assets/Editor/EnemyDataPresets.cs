@@ -3,275 +3,179 @@ using UnityEngine;
 using System.IO;
 
 /// <summary>
-/// Editor utility to create preset EnemyData variants
+/// Editor utility to create generic EnemyData variant presets.
+/// Generates stats templates (Fast, Tank, etc) that can be applied to any EnemyFamily.
 /// </summary>
 public class EnemyDataPresets
 {
     private const string ENEMY_VARIANTS_PATH = "Assets/Resources/EnemyVariants/";
 
-    [MenuItem("Assets/Create/Enemy Variants/Create All Presets")]
+    [MenuItem("Assets/Create/Enemy Variants/Create All Generic Presets")]
     public static void CreateAllPresets()
     {
         CreateDirectory(ENEMY_VARIANTS_PATH);
         
-        CreateFastSpiderPreset();
-        CreateTankSpiderPreset();
-        CreateVenomSpiderPreset();
-        CreateGoliathSpiderPreset();
-
-        CreateFastChickenPreset();
-        CreateTankChickenPreset();
-        CreateRabidChickenPreset();
-        CreateGiantChickenPreset();
-
-        CreateWispGhostPreset();
-        CreatePhantomGhostPreset();
-        CreatePoltergeistGhostPreset();
-        CreateReaperGhostPreset();
+        CreateNormalPreset();
+        CreateFastPreset();
+        CreateTankPreset();
+        CreateRangedPreset();
+        CreateHeavyPreset();
+        CreateBossPreset();
         
-        Debug.Log("All enemy variant presets created successfully!");
+        Debug.Log("All generic enemy variant presets created successfully!");
         AssetDatabase.Refresh();
     }
 
-    [MenuItem("Assets/Create/Enemy Variants/FastSpider")]
-    public static void CreateFastSpiderPreset()
+    [MenuItem("Assets/Create/Enemy Variants/Generic - Normal")]
+    public static void CreateNormalPreset()
+    {
+        CreateGenericPreset(
+            "Normal",
+            EnemyVariantType.Normal,
+            moveSpeed: 3.5f,
+            health: 20f,
+            damage: 10f,
+            range: 2f,
+            cooldown: 1.5f,
+            detection: 20f,
+            color: Color.white,
+            scaleMultiplier: 1.0f
+        );
+    }
+
+    [MenuItem("Assets/Create/Enemy Variants/Generic - Fast")]
+    public static void CreateFastPreset()
+    {
+        CreateGenericPreset(
+            "Fast",
+            EnemyVariantType.Fast,
+            moveSpeed: 5.5f,
+            health: 15f,
+            damage: 8f,
+            range: 2f,
+            cooldown: 1.0f,
+            detection: 25f,
+            color: new Color(1f, 0.5f, 0f), // Orange
+            scaleMultiplier: 0.8f
+        );
+    }
+
+    [MenuItem("Assets/Create/Enemy Variants/Generic - Tank")]
+    public static void CreateTankPreset()
+    {
+        CreateGenericPreset(
+            "Tank",
+            EnemyVariantType.Tank,
+            moveSpeed: 2.0f,
+            health: 60f,
+            damage: 15f,
+            range: 2f,
+            cooldown: 2.0f,
+            detection: 18f,
+            color: new Color(0.5f, 0.2f, 0.1f), // Brown
+            scaleMultiplier: 1.3f
+        );
+    }
+
+    [MenuItem("Assets/Create/Enemy Variants/Generic - Ranged")]
+    public static void CreateRangedPreset()
+    {
+        CreateGenericPreset(
+            "Ranged",
+            EnemyVariantType.Ranged,
+            moveSpeed: 3.0f,
+            health: 30f,
+            damage: 12f,
+            range: 8f,   // Increased range
+            cooldown: 2.2f,
+            detection: 30f,
+            color: new Color(0.5f, 0.8f, 0.2f), // Lime/Green
+            scaleMultiplier: 1.0f
+        );
+    }
+
+    [MenuItem("Assets/Create/Enemy Variants/Generic - Heavy")]
+    public static void CreateHeavyPreset()
+    {
+        CreateGenericPreset(
+            "Heavy",
+            EnemyVariantType.Heavy,
+            moveSpeed: 1.5f,
+            health: 120f,
+            damage: 25f,
+            range: 2.5f,
+            cooldown: 2.5f,
+            detection: 25f,
+            color: new Color(0.3f, 0.1f, 0.3f), // Purple
+            scaleMultiplier: 1.6f
+        );
+    }
+
+    [MenuItem("Assets/Create/Enemy Variants/Generic - Boss")]
+    public static void CreateBossPreset()
+    {
+        CreateGenericPreset(
+            "Boss",
+            EnemyVariantType.Boss,
+            moveSpeed: 1.8f,
+            health: 300f,
+            damage: 40f,
+            range: 3.5f,
+            cooldown: 3.0f,
+            detection: 50f,
+            color: new Color(0.8f, 0.0f, 0.0f), // Dark Red
+            scaleMultiplier: 2.5f
+        );
+    }
+
+    /// <summary>
+    /// Helper to create a generic enemy data asset
+    /// </summary>
+    private static void CreateGenericPreset(
+        string variantName,
+        EnemyVariantType variantType,
+        float moveSpeed,
+        float health,
+        float damage,
+        float range,
+        float cooldown,
+        float detection,
+        Color color,
+        float scaleMultiplier)
     {
         EnemyData data = ScriptableObject.CreateInstance<EnemyData>();
         
         // Use reflection to set private fields
-        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, "FastSpider");
-        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, EnemyType.FastSpider);
-        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 4.5f);
-        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 20f);
-        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 20f);
-        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 8f);
-        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2f);
-        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1.5f);
-        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 18f);
-        typeof(EnemyData).GetField("typeColor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, new Color(1f, 0.5f, 0f)); // Orange
-        typeof(EnemyData).GetField("visualScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 0.7f);
+        SetField(data, "enemyName", variantName);
+        SetField(data, "family", EnemyFamily.Spider); // Default family, user should change if needed
+        SetField(data, "variantType", variantType);
         
-        SaveEnemyData(data, "FastSpider");
-    }
-
-    [MenuItem("Assets/Create/Enemy Variants/TankSpider")]
-    public static void CreateTankSpiderPreset()
-    {
-        EnemyData data = ScriptableObject.CreateInstance<EnemyData>();
+        SetField(data, "moveSpeed", moveSpeed);
+        SetField(data, "health", health);
+        SetField(data, "maxHealth", health); // Start with full health
         
-        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, "TankSpider");
-        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, EnemyType.TankSpider);
-        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2f);
-        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 80f);
-        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 80f);
-        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 15f);
-        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2f);
-        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1.5f);
-        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 12f);
-        typeof(EnemyData).GetField("typeColor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, new Color(0.5f, 0.2f, 0.1f)); // Brown
-        typeof(EnemyData).GetField("visualScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1.3f);
+        SetField(data, "attackDamage", damage);
+        SetField(data, "attackRange", range);
+        SetField(data, "attackCooldown", cooldown);
+        SetField(data, "detectionRadius", detection);
         
-        SaveEnemyData(data, "TankSpider");
-    }
-
-    [MenuItem("Assets/Create/Enemy Variants/VenomSpider")]
-    public static void CreateVenomSpiderPreset()
-    {
-        EnemyData data = ScriptableObject.CreateInstance<EnemyData>();
+        SetField(data, "typeColor", color);
+        SetField(data, "visualScaleMultiplier", scaleMultiplier);
         
-        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, "VenomSpider");
-        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, EnemyType.VenomSpider);
-        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 3.5f);
-        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 50f);
-        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 50f);
-        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 12f);
-        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 3f);
-        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1.8f);
-        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 20f);
-        typeof(EnemyData).GetField("typeColor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, new Color(0.5f, 0.8f, 0.2f)); // Lime
-        typeof(EnemyData).GetField("visualScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1f);
-        
-        SaveEnemyData(data, "VenomSpider");
+        SaveEnemyData(data, variantName);
     }
 
-    [MenuItem("Assets/Create/Enemy Variants/GoliathSpider")]
-    public static void CreateGoliathSpiderPreset()
+    private static void SetField(object target, string fieldName, object value)
     {
-        EnemyData data = ScriptableObject.CreateInstance<EnemyData>();
-        
-        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, "GoliathSpider");
-        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, EnemyType.GoliathSpider);
-        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1.5f);
-        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 120f);
-        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 120f);
-        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 20f);
-        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2f);
-        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1.5f);
-        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 25f);
-        typeof(EnemyData).GetField("typeColor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, new Color(0.3f, 0.1f, 0.3f)); // Purple
-        typeof(EnemyData).GetField("visualScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1.3f);
-        
-        SaveEnemyData(data, "GoliathSpider");
-    }
-
-    [MenuItem("Assets/Create/Enemy Variants/FastChicken")]
-    public static void CreateFastChickenPreset()
-    {
-        EnemyData data = ScriptableObject.CreateInstance<EnemyData>();
-
-        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, "FastChicken");
-        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, EnemyType.FastChicken);
-        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 5.5f);
-        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 15f);
-        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 15f);
-        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 6f);
-        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 10f);
-        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1.2f);
-        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 25f);
-        typeof(EnemyData).GetField("typeColor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, new Color(1f, 0.9f, 0.2f));
-        typeof(EnemyData).GetField("visualScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 6.9f);
-
-        SaveEnemyData(data, "FastChicken");
-    }
-
-    [MenuItem("Assets/Create/Enemy Variants/TankChicken")]
-    public static void CreateTankChickenPreset()
-    {
-        EnemyData data = ScriptableObject.CreateInstance<EnemyData>();
-
-        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, "TankChicken");
-        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, EnemyType.TankChicken);
-        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2.5f);
-        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 60f);
-        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 60f);
-        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 12f);
-        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 10f);
-        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2.0f);
-        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 18f);
-        typeof(EnemyData).GetField("typeColor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, new Color(0.7f, 0.4f, 0.2f));
-        typeof(EnemyData).GetField("visualScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 7.8f);
-
-        SaveEnemyData(data, "TankChicken");
-    }
-
-    [MenuItem("Assets/Create/Enemy Variants/RabidChicken")]
-    public static void CreateRabidChickenPreset()
-    {
-        EnemyData data = ScriptableObject.CreateInstance<EnemyData>();
-
-        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, "RabidChicken");
-        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, EnemyType.RabidChicken);
-        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 4.2f);
-        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 30f);
-        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 30f);
-        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 10f);
-        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 10f);
-        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1.0f);
-        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 30f);
-        typeof(EnemyData).GetField("typeColor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, new Color(0.9f, 0.2f, 0.2f));
-        typeof(EnemyData).GetField("visualScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 7.2f);
-
-        SaveEnemyData(data, "RabidChicken");
-    }
-
-    [MenuItem("Assets/Create/Enemy Variants/GiantChicken")]
-    public static void CreateGiantChickenPreset()
-    {
-        EnemyData data = ScriptableObject.CreateInstance<EnemyData>();
-
-        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, "GiantChicken");
-        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, EnemyType.GiantChicken);
-        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1.8f);
-        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 120f);
-        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 120f);
-        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 18f);
-        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 10f);
-        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2.5f);
-        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 22f);
-        typeof(EnemyData).GetField("typeColor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, new Color(1f, 1f, 1f));
-        typeof(EnemyData).GetField("visualScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 8.7f);
-
-        SaveEnemyData(data, "GiantChicken");
-    }
-
-    [MenuItem("Assets/Create/Enemy Variants/WispGhost")]
-    public static void CreateWispGhostPreset()
-    {
-        EnemyData data = ScriptableObject.CreateInstance<EnemyData>();
-
-        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, "WispGhost");
-        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, EnemyType.WispGhost);
-        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 6.0f);
-        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 12f);
-        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 12f);
-        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 7f);
-        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 10f);
-        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1.3f);
-        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 35f);
-        typeof(EnemyData).GetField("typeColor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, new Color(0.25f, 0.9f, 1f));
-        typeof(EnemyData).GetField("visualScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2.2f);
-
-        SaveEnemyData(data, "WispGhost");
-    }
-
-    [MenuItem("Assets/Create/Enemy Variants/PhantomGhost")]
-    public static void CreatePhantomGhostPreset()
-    {
-        EnemyData data = ScriptableObject.CreateInstance<EnemyData>();
-
-        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, "PhantomGhost");
-        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, EnemyType.PhantomGhost);
-        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 3.5f);
-        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 40f);
-        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 40f);
-        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 12f);
-        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 10f);
-        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 1.8f);
-        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 30f);
-        typeof(EnemyData).GetField("typeColor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, new Color(0.2f, 0.35f, 1f));
-        typeof(EnemyData).GetField("visualScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2.4f);
-
-        SaveEnemyData(data, "PhantomGhost");
-    }
-
-    [MenuItem("Assets/Create/Enemy Variants/PoltergeistGhost")]
-    public static void CreatePoltergeistGhostPreset()
-    {
-        EnemyData data = ScriptableObject.CreateInstance<EnemyData>();
-
-        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, "PoltergeistGhost");
-        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, EnemyType.PoltergeistGhost);
-        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2.8f);
-        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 70f);
-        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 70f);
-        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 15f);
-        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 10f);
-        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2.2f);
-        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 28f);
-        typeof(EnemyData).GetField("typeColor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, new Color(0.25f, 1f, 0.35f));
-        typeof(EnemyData).GetField("visualScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2.6f);
-
-        SaveEnemyData(data, "PoltergeistGhost");
-    }
-
-    [MenuItem("Assets/Create/Enemy Variants/ReaperGhost")]
-    public static void CreateReaperGhostPreset()
-    {
-        EnemyData data = ScriptableObject.CreateInstance<EnemyData>();
-
-        typeof(EnemyData).GetField("enemyName", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, "ReaperGhost");
-        typeof(EnemyData).GetField("enemyType", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, EnemyType.ReaperGhost);
-        typeof(EnemyData).GetField("moveSpeed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2.0f);
-        typeof(EnemyData).GetField("health", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 110f);
-        typeof(EnemyData).GetField("maxHealth", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 110f);
-        typeof(EnemyData).GetField("attackDamage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 22f);
-        typeof(EnemyData).GetField("attackRange", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 10f);
-        typeof(EnemyData).GetField("attackCooldown", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2.5f);
-        typeof(EnemyData).GetField("detectionRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 25f);
-        typeof(EnemyData).GetField("typeColor", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, new Color(0.08f, 0.08f, 0.1f));
-        typeof(EnemyData).GetField("visualScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(data, 2.8f);
-
-        SaveEnemyData(data, "ReaperGhost");
+        var field = typeof(EnemyData).GetField(fieldName, System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        if (field != null)
+        {
+            field.SetValue(target, value);
+        }
+        else
+        {
+            Debug.LogError($"Could not find field '{fieldName}' in EnemyData");
+        }
     }
 
     private static void CreateDirectory(string path)
@@ -288,6 +192,7 @@ public class EnemyDataPresets
     {
         CreateDirectory(ENEMY_VARIANTS_PATH);
         string path = $"{ENEMY_VARIANTS_PATH}{typeName}.asset";
+        path = AssetDatabase.GenerateUniqueAssetPath(path);
         AssetDatabase.CreateAsset(data, path);
     }
 }

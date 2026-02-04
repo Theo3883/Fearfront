@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private EnemyData enemyData;
     private float healthMax = 0f;
     private float currentHealth = 0f;
+    private Vector3 initialScale = Vector3.one;
     
     [SerializeField] private NavMeshPlayerDetector playerDetector;
     [SerializeField] private EnemyMovement enemyMovement;
@@ -38,6 +39,7 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         spiderDismantle = GetComponent<SpiderDismantle>();
+        initialScale = transform.localScale;
         
         // Configure Rigidbody to be kinematic (NavMeshAgent handles movement)
         // This prevents physics-based pushing between enemies
@@ -102,13 +104,13 @@ public class Enemy : MonoBehaviour
     {
         if (enemyData == null) return;
         
-        // Get visual scale from EnemyData and clamp to reasonable range [0.5, 12.0]
-        float scale = Mathf.Clamp(enemyData.VisualScale, 0.5f, 12.0f);
-        transform.localScale = Vector3.one * scale;
+        // Apply relative scaling
+        float multiplier = Mathf.Clamp(enemyData.VisualScaleMultiplier, 0.1f, 5.0f);
+        transform.localScale = initialScale * multiplier;
         
         // Apply color from EnemyData to all child renderers
         Color typeColor = enemyData.TypeColor;
-        bool isGhost = IsGhostType(enemyData.Type);
+        bool isGhost = enemyData.Family == EnemyFamily.Ghost;
         Shader urpLit = null;
         if (isGhost)
         {
@@ -168,10 +170,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private bool IsGhostType(EnemyType type)
-    {
-        return type == EnemyType.WispGhost || type == EnemyType.PhantomGhost || type == EnemyType.PoltergeistGhost || type == EnemyType.ReaperGhost;
-    }
+
 
     /// <summary>
     /// Initialize the enemy with waypoints and spawner reference
@@ -432,7 +431,7 @@ public class Enemy : MonoBehaviour
 
         if (spiderDismantle != null)
         {
-            if (enemyData != null && (IsGhostType(enemyData.Type) || IsChickenType(enemyData.Type)))
+            if (enemyData != null && (enemyData.Family == EnemyFamily.Ghost || enemyData.Family == EnemyFamily.Chicken))
             {
                 // Chicken/Ghost meshes tend to have pivots that make them appear to sink too fast.
                 // Slow the motion down while preserving overall sink distance.
@@ -447,13 +446,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private static bool IsChickenType(EnemyType type)
-    {
-        return type == EnemyType.FastChicken
-               || type == EnemyType.TankChicken
-               || type == EnemyType.RabidChicken
-               || type == EnemyType.GiantChicken;
-    }
+
 
     /// <summary>
     /// Disables all movement and combat components
