@@ -1389,6 +1389,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Fearfront.Scripts::PlayerHealth
   maxHealth: 100
   immunityDuration: 3
+  regenDelay: 5
+  regenRate: 5
 --- !u!1 &6881786991903392761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1579,7 +1581,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ad5e327296230d47b25d0ed41e9d233, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Fearfront.Scripts::HealthDisplay
-  healthText: {fileID: 202425127572141888}
+  healthBar: {fileID: 0}
+  width: 200
+  height: 20
+  scale: {x: 0.001, y: 0.001, z: 0.001}
+  offset: {x: 0, y: 0.05, z: 0}
 --- !u!1 &7296751379273283448
 GameObject:
   m_ObjectHideFlags: 0
