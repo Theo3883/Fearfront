@@ -41,6 +41,9 @@ public class EnemySpawner : MonoBehaviour
     private float nightDurationSeconds = 180f;
     private Sydewa.LightingManager lightingManager;
 
+    [Header("UI")]
+    [SerializeField] private NightAnnouncementOverlay nightAnnouncement;
+
 
     private void Start()
     {
@@ -342,7 +345,7 @@ public class EnemySpawner : MonoBehaviour
     /// </summary>
     public void StartNightWave()
     {
-        EndDayEvent(); // Ensure day event is over
+        EndDayEvent();
         
         isNightWaveActive = true;
         currentNightSpawnCount = 0;
@@ -352,10 +355,14 @@ public class EnemySpawner : MonoBehaviour
         float addedDifficulty = (currentNight - 1) * difficultyScalePerNight;
         difficultyMultiplier = baseMultiplier + addedDifficulty;
 
-        // Reset Boss flag for the new night
         bossSpawnedThisNight = false;
 
         Debug.Log($"<color=red>Night {currentNight} Started!</color> Difficulty: x{difficultyMultiplier:F2}");
+        
+        if (nightAnnouncement != null)
+        {
+            nightAnnouncement.ShowNightAnnouncement(currentNight);
+        }
         
         if (activeSpawnCoroutine != null) StopCoroutine(activeSpawnCoroutine);
         activeSpawnCoroutine = StartCoroutine(SpawnRoutine());
