@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 using System.Collections.Generic;
+using Sydewa;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -13,29 +14,25 @@ public class EnemySpawner : MonoBehaviour
         Ghost
     }
 
-    [SerializeField] private GameObject enemyPrefab;
+    [Header("Specific Prefabs")]
+    [SerializeField] private GameObject spiderPrefab;
+    [SerializeField] private GameObject ghostPrefab;
+    [SerializeField] private GameObject chickenPrefab;
+
     [SerializeField] private EnemyRoute[] availableRoutes;
-    [SerializeField] private int enemiesToSpawn = 10;
     [SerializeField] private float spawnInterval = 2f;
     [SerializeField] private Transform spawnPoint;
-    [SerializeField] private bool infiniteWaves = false;
-    [SerializeField] private float delayBetweenWaves = 3f;
-    [SerializeField] private float waveTimeThreshold = 30f;
-
-    // Phase 4 - Enemy type variants
+    
     [SerializeField] private List<EnemyData> enemyTypeVariants = new List<EnemyData>();
     [SerializeField] private SpawnDifficulty difficultyPreset = SpawnDifficulty.Normal;
     [SerializeField] private EnemyPrefabFamily prefabFamily = EnemyPrefabFamily.Auto;
     [SerializeField] private bool autoLoadVariantsFromResourcesOnStart = true;
 
-    private int waveCount = 0;
-    private float waveStartTime = 0f;
-
     private void Start()
     {
-        if (enemyPrefab == null)
+        if (spiderPrefab == null && ghostPrefab == null && chickenPrefab == null)
         {
-            Debug.LogError("Enemy prefab not assigned!");
+            Debug.LogError("No enemy prefabs (Spider/Ghost/Chicken) assigned in Inspector!");
             return;
         }
 
@@ -55,8 +52,74 @@ public class EnemySpawner : MonoBehaviour
         {
             LoadEnemyVariantsFromResources();
         }
+        
+        HookIntoLightingManager();
+    }
 
-        StartCoroutine(SpawnWavesCoroutine());
+    private void HookIntoLightingManager()
+    {
+        Debug.Log("<color=cyan>[EnemySpawner] Searching for LightingManager...</color>");
+        
+        // Find ALL instances to handle potential duplicates/ghost objects
+        Sydewa.LightingManager[] managers = FindObjectsByType<Sydewa.LightingManager>(FindObjectsSortMode.None);
+        
+        if (managers == null || managers.Length == 0)
+        {
+             Debug.LogError("<color=red>[EnemySpawner] FATAL: Could not find ANY object of type Sydewa.LightingManager in the scene!</color>");
+             return;
+        }
+
+        Sydewa.LightingManager targetManager = null;
+        
+        foreach (var manager in managers)
+        {
+            int count = (manager.events != null) ? manager.events.Count : 0;
+            Debug.Log($"<color=cyan>[EnemySpawner] Found instance on GameObject '{manager.gameObject.name}' with {count} events.</color>");
+            
+            if (count > 0)
+            {
+                targetManager = manager;
+                break; // Found the good one
+            }
+        }
+        
+        if (targetManager == null)
+        {
+            Debug.LogError("<color=red>[EnemySpawner] Found LightingManager(s), but ALL have 0 events! Please check Inspector configuration.</color>");
+            return;
+        }
+
+        Debug.Log($"<color=cyan>[EnemySpawner] Hooking into valid manager on '{targetManager.gameObject.name}'...</color>");
+
+        foreach (var evt in targetManager.events)
+        {
+            // Debug.Log($"<color=cyan>[EnemySpawner] Checking Event: '{evt.eventName}'</color>");
+            
+            if (evt.eventName == "Start Night")
+            {
+                evt.Event.RemoveListener(StartNightWave); 
+                evt.Event.AddListener(StartNightWave);
+                Debug.Log($"<color=green>[EnemySpawner] SUCCESS: Hooked into 'Start Night'</color>");
+            }
+            else if (evt.eventName == "End Night")
+            {
+                evt.Event.RemoveListener(EndNightWave);
+                evt.Event.AddListener(EndNightWave);
+                Debug.Log($"<color=green>[EnemySpawner] SUCCESS: Hooked into 'End Night'</color>");
+            }
+            else if (evt.eventName == "Start Day")
+            {
+                evt.Event.RemoveListener(StartDayEvent);
+                evt.Event.AddListener(StartDayEvent);
+                Debug.Log($"<color=green>[EnemySpawner] SUCCESS: Hooked into 'Start Day'</color>");
+            }
+            else if (evt.eventName == "End Day")
+            {
+                evt.Event.RemoveListener(EndDayEvent);
+                evt.Event.AddListener(EndDayEvent);
+                Debug.Log($"<color=green>[EnemySpawner] SUCCESS: Hooked into 'End Day'</color>");
+            }
+        }
     }
 
     private void LoadEnemyVariantsFromResources()
@@ -73,48 +136,11 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnWavesCoroutine()
-    {
-        while (true)
-        {
-            waveCount++;
-            waveStartTime = Time.time;
-            
-            yield return StartCoroutine(SpawnWaveCoroutine());
-            
-            if (!infiniteWaves)
-                break;
-            
-            yield return new WaitForSeconds(delayBetweenWaves);
-        }
-    }
-
-    private IEnumerator SpawnWaveCoroutine()
-    {
-        int spawnedInWave = 0;
-        float waveEndTime = Time.time + waveTimeThreshold;
-
-        while (Time.time < waveEndTime)
-        {
-            if (spawnedInWave < enemiesToSpawn)
-            {
-                SpawnEnemy();
-                spawnedInWave++;
-                yield return new WaitForSeconds(spawnInterval);
-            }
-            else
-            {
-                break;
-            }
-        }
-    }
-
     /// <summary>
     /// Spawn an enemy - public version for testing and external calls
     /// </summary>
     public void SpawnEnemy()
     {
-        // Sample spawn point to nearest NavMesh position
         NavMeshHit hit;
         Vector3 spawnPosition = spawnPoint.position;
         if (NavMesh.SamplePosition(spawnPoint.position, out hit, 10.0f, NavMesh.AllAreas))
@@ -126,7 +152,32 @@ public class EnemySpawner : MonoBehaviour
             Debug.LogWarning("Spawn point not on NavMesh. Enemies may not navigate correctly.");
         }
         
-        GameObject newEnemyObject = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+        EnemyData selectedEnemyData = GetRandomEnemyType();
+        GameObject prefabToUse = spiderPrefab;
+
+        if (selectedEnemyData != null)
+        {
+            if (IsTypeInFamily(selectedEnemyData.Type, EnemyPrefabFamily.Spider))
+            {
+                if (spiderPrefab != null) prefabToUse = spiderPrefab;
+            }
+            else if (IsTypeInFamily(selectedEnemyData.Type, EnemyPrefabFamily.Ghost))
+            {
+                if (ghostPrefab != null) prefabToUse = ghostPrefab;
+            }
+            else if (IsTypeInFamily(selectedEnemyData.Type, EnemyPrefabFamily.Chicken))
+            {
+                if (chickenPrefab != null) prefabToUse = chickenPrefab;
+            }
+        }
+        
+        if (prefabToUse == null) 
+        {
+             Debug.LogError("Attempted to spawn enemy but resolved prefab is NULL! Check Inspector assignments.");
+             return;
+        }
+        
+        GameObject newEnemyObject = Instantiate(prefabToUse, spawnPosition, Quaternion.identity);
         
         Enemy enemy = newEnemyObject.GetComponent<Enemy>();
         if (enemy == null)
@@ -146,24 +197,23 @@ public class EnemySpawner : MonoBehaviour
 
         Transform[] waypoints = randomRoute.GetWaypoints();
         
-        // CRITICAL: Set enemy data BEFORE Initialize() to avoid null warnings
-        EnemyData selectedEnemyData = GetRandomEnemyType();
         if (selectedEnemyData != null)
         {
             enemy.SetEnemyData(selectedEnemyData);
         }
         
-        // Now initialize with data already set
         enemy.Initialize(waypoints, this);
         
-        // Initialize refactored components (now with EnemyData already assigned)
         if (selectedEnemyData != null)
         {
             InitializeEnemyComponents(newEnemyObject, waypoints, selectedEnemyData);
         }
         
-        // VR interaction setup
-        // Add XRSimpleInteractable for ray hover and activation
+        if (difficultyMultiplier > 1.0f && !isDayEventActive) 
+        {
+            enemy.ApplyDifficulty(difficultyMultiplier);
+        }
+        
         var simpleInteractable = newEnemyObject.GetComponent<UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable>();
         if (simpleInteractable == null)
         {
@@ -171,21 +221,18 @@ public class EnemySpawner : MonoBehaviour
         }
         simpleInteractable.interactionLayers = (UnityEngine.XR.Interaction.Toolkit.InteractionLayerMask)(-1);
         
-        // Add EnemyInteractable for attack logic and red highlight color
         var enemyInteractable = newEnemyObject.GetComponent<EnemyInteractable>();
         if (enemyInteractable == null)
         {
             newEnemyObject.AddComponent<EnemyInteractable>();
         }
 
-        // Add EnemyHealthBar for floating UI
         var healthBar = newEnemyObject.GetComponent<EnemyHealthBar>();
         if (healthBar == null)
         {
             newEnemyObject.AddComponent<EnemyHealthBar>();
         }
         
-        // Ensure non-trigger collider exists for raycast detection
         bool hasNonTriggerCollider = false;
         foreach (var col in newEnemyObject.GetComponentsInChildren<Collider>())
         {
@@ -214,37 +261,29 @@ public class EnemySpawner : MonoBehaviour
     /// </summary>
     private void InitializeEnemyComponents(GameObject enemyObject, Transform[] waypoints, EnemyData enemyData)
     {
-        // Find or get player reference
         PlayerHealth playerHealth = FindPlayerHealth();
         if (playerHealth == null)
         {
             Debug.LogWarning("Could not find player or PlayerHealth component. Enemy movement and detection will work, but state machine may not engage properly without player reference.");
         }
 
-        // Get/add NavMeshPlayerDetector and initialize it
         NavMeshPlayerDetector detector = enemyObject.GetComponent<NavMeshPlayerDetector>();
         if (detector == null)
         {
             detector = enemyObject.AddComponent<NavMeshPlayerDetector>();
         }
         
-        // Only set player reference if player was found
         if (playerHealth != null)
         {
             detector.SetPlayerReference(playerHealth.transform);
         }
 
-        // EnemyMovement is already initialized by Enemy.Initialize(), so we don't re-initialize it here
-        // This avoids double-initialization of waypoints
-
-        // Get/add EnemyStateMachine and initialize it
         EnemyStateMachine stateMachine = enemyObject.GetComponent<EnemyStateMachine>();
         if (stateMachine == null)
         {
             stateMachine = enemyObject.AddComponent<EnemyStateMachine>();
         }
         
-        // Initialize state machine with player health (may be null, state machine should handle this)
         stateMachine.Initialize(detector, enemyData.DetectionRadius, playerHealth);
     }
 
@@ -260,74 +299,170 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+
+
+    // Difficulty & Wave Control
+    private int currentNight = 1; // Start at Night 1
+    private float difficultyMultiplier = 1.0f;
+    [SerializeField] private float difficultyScalePerNight = 0.1f; // +10% per night
+
+    // Wave State
+    private bool isNightWaveActive = false;
+    private bool isDayEventActive = false;
+    private Coroutine activeSpawnCoroutine;
+
+    // --- Time-Based Event Hooks (Called by LightingManager) ---
+
     /// <summary>
-    /// Gets a random enemy type based on difficulty preset
+    /// Call this at 18:00
+    /// </summary>
+    public void StartNightWave()
+    {
+        EndDayEvent(); // Ensure day event is over
+        
+        isNightWaveActive = true;
+        
+        // Difficulty handling
+        // Night 1 is base difficulty (multiplier 1.0)
+        // Night 2+ scales up
+        if (currentNight > 1)
+        {
+            float addedDifficulty = (currentNight - 1) * difficultyScalePerNight;
+            difficultyMultiplier = 1.0f + addedDifficulty;
+        }
+        else 
+        {
+            difficultyMultiplier = 1.0f;
+        }
+
+        Debug.Log($"<color=red>Night {currentNight} Started!</color> Difficulty: x{difficultyMultiplier:F2}");
+        
+        if (activeSpawnCoroutine != null) StopCoroutine(activeSpawnCoroutine);
+        activeSpawnCoroutine = StartCoroutine(SpawnRoutine());
+    }
+
+    /// <summary>
+    /// Call this at 06:00
+    /// </summary>
+    public void EndNightWave()
+    {
+        isNightWaveActive = false;
+        Debug.Log($"<color=green>Night {currentNight} Ended!</color>");
+        currentNight++;
+        
+        if (activeSpawnCoroutine != null) StopCoroutine(activeSpawnCoroutine);
+        activeSpawnCoroutine = null;
+    }
+
+    /// <summary>
+    /// Call this at 12:00
+    /// </summary>
+    public void StartDayEvent()
+    {
+        if (isNightWaveActive) return;
+        isDayEventActive = true;
+        Debug.Log("<color=yellow>Day Event Started! (Chickens)</color>");
+        
+        if (activeSpawnCoroutine != null) StopCoroutine(activeSpawnCoroutine);
+        activeSpawnCoroutine = StartCoroutine(SpawnRoutine());
+    }
+
+    /// <summary>
+    /// Call this at 16:00
+    /// </summary>
+    public void EndDayEvent()
+    {
+        isDayEventActive = false;
+        Debug.Log("<color=yellow>Day Event Ended!</color>");
+        
+        if (activeSpawnCoroutine != null) StopCoroutine(activeSpawnCoroutine);
+        activeSpawnCoroutine = null;
+    }
+
+    private IEnumerator SpawnRoutine()
+    {
+        while (isNightWaveActive || isDayEventActive)
+        {
+            float currentInterval = spawnInterval;
+            if (isNightWaveActive && currentNight > 1)
+            {
+                currentInterval = Mathf.Max(0.5f, spawnInterval / (1f + (currentNight * 0.05f)));
+            }
+
+            SpawnEnemy();
+            
+            yield return new WaitForSeconds(currentInterval);
+        }
+    }
+
+    /// <summary>
+    /// Gets a random enemy type based on specific night/day logic
     /// </summary>
     private EnemyData GetRandomEnemyType()
     {
-        if (enemyTypeVariants.Count == 0)
+        if (enemyTypeVariants.Count == 0) return null;
+
+        EnemyPrefabFamily targetedFamily = EnemyPrefabFamily.Auto;
+
+        if (isDayEventActive)
         {
-            Debug.LogWarning("EnemySpawner has no Enemy Type Variants assigned! Spawning with default values.");
-            return null;
+            // Day Logic: Chickens
+            targetedFamily = EnemyPrefabFamily.Chicken;
+        }
+        else if (isNightWaveActive)
+        {
+            // Night Logic
+            if (currentNight == 1)
+            {
+                // Night 1: Spiders Only
+                targetedFamily = EnemyPrefabFamily.Spider;
+            }
+            else if (currentNight == 2)
+            {
+                // Night 2: Ghosts Only
+                targetedFamily = EnemyPrefabFamily.Ghost;
+            }
+            else
+            {
+                // Night 3+: Mixed (Spiders + Ghosts)
+                // 50/50 chance for family
+                targetedFamily = Random.value > 0.5f ? EnemyPrefabFamily.Spider : EnemyPrefabFamily.Ghost;
+            }
+        }
+        else
+        {
+            // Fallback if called outside events (e.g. manual debug spawn)
+            targetedFamily = ResolvePrefabFamily();
         }
 
-        EnemyPrefabFamily family = ResolvePrefabFamily();
-        (EnemyType[] types, float[] chances) = GetDifficultyDistribution(family);
+        // Get distribution for the chosen family
+        (EnemyType[] types, float[] chances) = GetDifficultyDistribution(targetedFamily);
 
-        List<EnemyData> candidates = new List<EnemyData>(types.Length);
-        List<float> candidateChances = new List<float>(types.Length);
+        List<EnemyData> candidates = new List<EnemyData>();
+        List<float> candidateChances = new List<float>();
         float totalChance = 0f;
 
         for (int i = 0; i < types.Length; i++)
         {
             EnemyData data = FindEnemyDataByType(types[i]);
-            if (data == null)
-            {
-                continue;
-            }
+            if (data == null) continue;
 
             float chance = Mathf.Max(0f, chances[i]);
-            if (chance <= 0f)
-            {
-                continue;
-            }
+            if (chance <= 0f) continue;
 
             candidates.Add(data);
             candidateChances.Add(chance);
             totalChance += chance;
         }
 
-        // If none of the requested types exist, fall back to any valid variant (prefer same family)
-        if (candidates.Count == 0)
-        {
-            EnemyData fallback = FindAnyValidVariantForFamily(family);
-            if (fallback != null)
-            {
-                return fallback;
-            }
+        if (candidates.Count == 0) return FindAnyValidVariantForFamily(targetedFamily);
 
-            // Last resort: first available non-null
-            for (int i = 0; i < enemyTypeVariants.Count; i++)
-            {
-                if (enemyTypeVariants[i] != null)
-                {
-                    return enemyTypeVariants[i];
-                }
-            }
-
-            return null;
-        }
-
-        // Weighted pick
         float pick = Random.value * totalChance;
         float cumulative = 0f;
         for (int i = 0; i < candidates.Count; i++)
         {
             cumulative += candidateChances[i];
-            if (pick <= cumulative)
-            {
-                return candidates[i];
-            }
+            if (pick <= cumulative) return candidates[i];
         }
 
         return candidates[candidates.Count - 1];
@@ -337,23 +472,13 @@ public class EnemySpawner : MonoBehaviour
     /// Gets the type distribution and probabilities based on difficulty
     /// </summary>
     private (EnemyType[], float[]) GetDifficultyDistribution(EnemyPrefabFamily family)
-    {
+    {   
         switch (difficultyPreset)
         {
-            case SpawnDifficulty.Easy:
-                return GetFamilyDistribution_Easy(family);
-
-            case SpawnDifficulty.Normal:
-                return GetFamilyDistribution_Normal(family);
-
-            case SpawnDifficulty.Hard:
-                return GetFamilyDistribution_Hard(family);
-
-            default:
-                return (
-                    new[] { EnemyType.FastSpider },
-                    new[] { 1f }
-                );
+            case SpawnDifficulty.Easy: return GetFamilyDistribution_Easy(family);
+            case SpawnDifficulty.Normal: return GetFamilyDistribution_Normal(family);
+            case SpawnDifficulty.Hard: return GetFamilyDistribution_Hard(family);
+            default: return (new[] { EnemyType.FastSpider }, new[] { 1f });
         }
     }
 
@@ -364,23 +489,6 @@ public class EnemySpawner : MonoBehaviour
             return prefabFamily;
         }
 
-        if (enemyPrefab == null)
-        {
-            return EnemyPrefabFamily.Spider;
-        }
-
-        string name = enemyPrefab.name;
-        if (string.IsNullOrEmpty(name))
-        {
-            return EnemyPrefabFamily.Spider;
-        }
-
-        string lower = name.ToLowerInvariant();
-        if (lower.Contains("chicken")) return EnemyPrefabFamily.Chicken;
-        if (lower.Contains("ghost")) return EnemyPrefabFamily.Ghost;
-        if (lower.Contains("spider")) return EnemyPrefabFamily.Spider;
-
-        // Default to spider to preserve legacy behavior/tests
         return EnemyPrefabFamily.Spider;
     }
 
@@ -570,29 +678,27 @@ public class EnemySpawner : MonoBehaviour
         if (enemy != null)
         {
             Debug.Log($"Enemy '{enemy.gameObject.name}' reached end of path. Despawning.");
-            Destroy(enemy.gameObject, 0.1f); // Small delay to allow event processing to complete
+            Destroy(enemy.gameObject, 0.1f);
         }
-    }
-    
-    public void SetEnemiesToSpawn(int count) { enemiesToSpawn = count; }
-    public void SetSpawnInterval(float interval) { spawnInterval = Mathf.Max(0.1f, interval); }
-    public void SetInfiniteWaves(bool infinite) { infiniteWaves = infinite; }
-    public void SetWaveTimeThreshold(float threshold) { waveTimeThreshold = Mathf.Max(0.1f, threshold); }
-    public int GetWaveCount() { return waveCount; }
-    
-    /// <summary>
-    /// Public setter for enemy prefab (for testing)
-    /// </summary>
-    public void SetEnemyPrefab(GameObject prefab)
-    {
-        enemyPrefab = prefab;
     }
 
     /// <summary>
-    /// Public setter for spawn point (for testing)
+    /// Public setters for testing and runtime configuration
     /// </summary>
-    public void SetSpawnPoint(Transform spawnPointTransform)
+    public void SetSpawnInterval(float interval) { spawnInterval = Mathf.Max(0.1f, interval); }
+    public void SetSpawnPoint(Transform spawnPointTransform) { spawnPoint = spawnPointTransform; }
+    
+    public void SetSpiderPrefab(GameObject prefab) { spiderPrefab = prefab; }
+    public void SetGhostPrefab(GameObject prefab) { ghostPrefab = prefab; }
+    public void SetChickenPrefab(GameObject prefab) { chickenPrefab = prefab; }
+
+    /// <summary>
+    /// Legacy setter for tests - sets all specific prefabs
+    /// </summary>
+    public void SetEnemyPrefab(GameObject prefab)
     {
-        spawnPoint = spawnPointTransform;
+        spiderPrefab = prefab;
+        ghostPrefab = prefab;
+        chickenPrefab = prefab;
     }
 }

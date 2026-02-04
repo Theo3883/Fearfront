@@ -665,5 +665,37 @@ public class Enemy : MonoBehaviour
         if (enemyMovement != null)
             enemyMovement.ResumeMovement();
     }
+
+    /// <summary>
+    /// Applies a difficulty multiplier to the enemy's stats (Health, Damage, Speed)
+    /// </summary>
+    public void ApplyDifficulty(float multiplier)
+    {
+        if (multiplier <= 1.0f) return;
+
+        // Scale Health
+        float oldMax = healthMax;
+        healthMax *= multiplier;
+        currentHealth = (currentHealth / oldMax) * healthMax; // Maintain % health if called mid-life (though usually called at spawn)
+        
+        OnHealthChanged?.Invoke(currentHealth, healthMax);
+
+        // Scale Move Speed
+        if (enemyMovement != null)
+        {
+            // Note: EnemyMovement config is usually in EnemyData, but we might need to override it 
+            // or we assume EnemyMovement reads from EnemyData. 
+            // Since EnemyMovement.Initialize reads from EnemyData, we can't easily change it there without a setter.
+            // However, we can modify the agent speed directly if needed, or if EnemyMovement has a method.
+            // Checking EnemyData again... it's a ScriptableObject, so we shouldn't modify it directly at runtime 
+            // as it would affect all enemies.
+            
+            // To properly scale speed, we should adjust the NavMeshAgent or the component controlling it.
+            if (agent != null)
+            {
+                agent.speed *= Mathf.Sqrt(multiplier); // Scale speed less aggressively (sqrt)
+            }
+        }
+    }
 }
 
