@@ -23,6 +23,7 @@ public class TurretVariantGroup : MonoBehaviour
 
     [Header("Default")]
     [SerializeField] private TurretVariant activeOnStart = TurretVariant.Turret1a;
+    [SerializeField] private bool startEmpty = true; // start with no turret built
     [SerializeField] private bool enforceEveryFrame = false; // optional safety if something else re-enables variants
 
     // Cached refs (optional)
@@ -32,11 +33,23 @@ public class TurretVariantGroup : MonoBehaviour
     [SerializeField] private GameObject turret1d;
 
     public TurretVariant CurrentVariant { get; private set; } = TurretVariant.Turret1a;
+    public bool HasBuiltTurret => hasBuilt;
+
+    private bool hasBuilt = true;
 
     private void Awake()
     {
         CacheChildrenIfNeeded();
-        SetVariant(activeOnStart);
+        if (startEmpty)
+        {
+            hasBuilt = false;
+            SetAllInactive();
+        }
+        else
+        {
+            hasBuilt = true;
+            SetVariant(activeOnStart);
+        }
     }
 
     private void LateUpdate()
@@ -56,12 +69,19 @@ public class TurretVariantGroup : MonoBehaviour
 
     public void SetVariant(TurretVariant variant)
     {
+        hasBuilt = true;
         CurrentVariant = variant;
         ApplyVariant(variant);
     }
 
     public bool TryUpgradeOnce()
     {
+        if (!hasBuilt)
+        {
+            SetVariant(TurretVariant.Turret1a);
+            return true;
+        }
+
         TurretVariant next = GetNextVariant(CurrentVariant);
         if (next == CurrentVariant) return false;
         SetVariant(next);
@@ -83,6 +103,15 @@ public class TurretVariantGroup : MonoBehaviour
         SetActiveSafe(turret1b, variant == TurretVariant.Turret1b);
         SetActiveSafe(turret1c, variant == TurretVariant.Turret1c);
         SetActiveSafe(turret1d, variant == TurretVariant.Turret1d);
+    }
+
+    private void SetAllInactive()
+    {
+        CacheChildrenIfNeeded();
+        SetActiveSafe(turret1a, false);
+        SetActiveSafe(turret1b, false);
+        SetActiveSafe(turret1c, false);
+        SetActiveSafe(turret1d, false);
     }
 
     private static TurretVariant GetNextVariant(TurretVariant current)
