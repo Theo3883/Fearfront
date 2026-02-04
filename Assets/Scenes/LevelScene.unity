@@ -31082,6 +31082,42 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 367148934}
+    - target: {fileID: 3426667703784004793, guid: 4c71ef7ffc5019246bf60090cd5b59a3, type: 3}
+      propertyPath: width
+      value: 280
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426667703784004793, guid: 4c71ef7ffc5019246bf60090cd5b59a3, type: 3}
+      propertyPath: height
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426667703784004793, guid: 4c71ef7ffc5019246bf60090cd5b59a3, type: 3}
+      propertyPath: scale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426667703784004793, guid: 4c71ef7ffc5019246bf60090cd5b59a3, type: 3}
+      propertyPath: scale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426667703784004793, guid: 4c71ef7ffc5019246bf60090cd5b59a3, type: 3}
+      propertyPath: scale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426667703784004793, guid: 4c71ef7ffc5019246bf60090cd5b59a3, type: 3}
+      propertyPath: offset.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426667703784004793, guid: 4c71ef7ffc5019246bf60090cd5b59a3, type: 3}
+      propertyPath: offset.y
+      value: -80
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426667703784004793, guid: 4c71ef7ffc5019246bf60090cd5b59a3, type: 3}
+      propertyPath: offset.z
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3426667703784004793, guid: 4c71ef7ffc5019246bf60090cd5b59a3, type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6782154364509373412, guid: 4c71ef7ffc5019246bf60090cd5b59a3, type: 3}
       propertyPath: m_Name
       value: XR Origin (VR)
@@ -31131,7 +31167,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1633126202607543710, guid: 4c71ef7ffc5019246bf60090cd5b59a3, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c71ef7ffc5019246bf60090cd5b59a3, type: 3}

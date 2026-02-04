@@ -14,6 +14,12 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float immunityDuration = 3f;
     private bool isImmune = false;
     private float immunityTimer = 0f;
+
+    // Regeneration system
+    [Header("Regeneration")]
+    [SerializeField] private float regenDelay = 5f; // Seconds to wait after damage
+    [SerializeField] private float regenRate = 5f;  // Health per second
+    private float lastDamageTime = 0f;
     
     public event Action<float, float> OnHealthChanged; // (currentHealth, maxHealth)
     public event Action OnDeath;
@@ -76,6 +82,21 @@ public class PlayerHealth : MonoBehaviour
                 OnImmunityEnded?.Invoke();
             }
         }
+
+        // Handle Health Regeneration
+        HandleHealthRegeneration();
+    }
+
+    private void HandleHealthRegeneration()
+    {
+        // Don't regen if dead or already full health
+        if (isDead || currentHealth >= maxHealth) return;
+
+        // Check if enough time has passed since last damage
+        if (Time.time > lastDamageTime + regenDelay)
+        {
+            Heal(regenRate * Time.deltaTime);
+        }
     }
 
     /// <summary>
@@ -112,6 +133,8 @@ public class PlayerHealth : MonoBehaviour
         // Don't take damage if dead or immune
         if (isDead || isImmune)
             return;
+
+        lastDamageTime = Time.time; // Track last damage time for regen
 
         currentHealth -= amount;
         if (currentHealth < 0f)
