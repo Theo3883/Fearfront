@@ -17,11 +17,17 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float spawnInterval = 2f;
     [SerializeField] private Transform spawnPoint;
     
-    [SerializeField] private List<EnemyData> enemyTypeVariants = new List<EnemyData>();
+    [Header("Enemy Variants (Manual Assignment)")]
+    [SerializeField] private EnemyData variantNormal;
+    [SerializeField] private EnemyData variantFast;
+    [SerializeField] private EnemyData variantTank;
+    [SerializeField] private EnemyData variantRanged;
+    [SerializeField] private EnemyData variantHeavy;
+    [SerializeField] private EnemyData variantBoss;
     [SerializeField] private SpawnDifficulty difficultyPreset = SpawnDifficulty.Normal;
 
     [SerializeField] private EnemyFamily prefabFamily = EnemyFamily.Spider;
-    [SerializeField] private bool autoLoadVariantsFromResourcesOnStart = true;
+
 
     private void Start()
     {
@@ -43,7 +49,7 @@ public class EnemySpawner : MonoBehaviour
             spawnPoint = transform;
         }
 
-        LoadEnemyVariantsFromResources();        
+        
         HookIntoLightingManager();
     }
 
@@ -104,17 +110,17 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    private void LoadEnemyVariantsFromResources()
+    private EnemyData GetVariantData(EnemyVariantType type)
     {
-        EnemyData[] loaded = Resources.LoadAll<EnemyData>("EnemyVariants");
-        if (loaded == null || loaded.Length == 0)
+        switch (type)
         {
-            return;
-        }
-
-        for (int i = 0; i < loaded.Length; i++)
-        {
-            AddEnemyTypeVariant(loaded[i]);
+            case EnemyVariantType.Normal: return variantNormal;
+            case EnemyVariantType.Fast: return variantFast;
+            case EnemyVariantType.Tank: return variantTank;
+            case EnemyVariantType.Ranged: return variantRanged;
+            case EnemyVariantType.Heavy: return variantHeavy;
+            case EnemyVariantType.Boss: return variantBoss;
+            default: return variantNormal; // Fallback
         }
     }
 
@@ -388,9 +394,17 @@ public class EnemySpawner : MonoBehaviour
     /// <summary>
     /// Gets a random enemy type based on specific night/day logic
     /// </summary>
+    /// <summary>
+    /// Gets a random enemy type based on specific night/day logic
+    /// </summary>
     private EnemyData GetRandomEnemyType()
     {
-        if (enemyTypeVariants.Count == 0) return null;
+        // Safety check: ensure at least Normal variant is assigned
+        if (variantNormal == null) 
+        {
+            Debug.LogError("EnemySpawner: variantNormal is not assigned in the Inspector!");
+            return null;
+        }
 
         EnemyFamily targetedFamily = ResolvePrefabFamily();
 
@@ -401,16 +415,6 @@ public class EnemySpawner : MonoBehaviour
         else if (isNightWaveActive)
         {
             // Night Logic
-            
-            // Check for Boss Spawn (Night 2+, once per night)
-            if (currentNight >= 2 && !bossSpawnedThisNight)
-            {
-                 // Force Boss spawn
-                 bossSpawnedThisNight = true;
-                 // Determine family for boss based on night logic below, or default to Spider/current night's theme
-                 // For simplicity, let's use the standard night logic to pick family, but force variant to Boss
-            }
-
             if (currentNight == 1)
             {
                 // Night 1: Spiders Only
@@ -424,36 +428,20 @@ public class EnemySpawner : MonoBehaviour
             else
             {
                 // Night 3+: Mixed (Spiders + Ghosts)
-                // 50/50 chance for family
                 targetedFamily = Random.value > 0.5f ? EnemyFamily.Spider : EnemyFamily.Ghost;
             }
         }
 
-        // Handling Boss Override
-        if (bossSpawnedThisNight && currentNight >= 2)
-        {
-             // If we just set the flag this frame (implicitly, via the check above - logic flow is slightly tricky here)
-             // Actually, the cleanest way is to check if we SHOULD spawn a boss now.
-             // Let's refactor the check slightly.
-        }
-        
-        // Re-injecting Boss Logic cleanly:
-        if (isNightWaveActive && currentNight >= 2 && !bossSpawnedThisNight && activeSpawnCoroutine != null)
-        {
-            // Note: activeSpawnCoroutine check is just to ensure we are in the loop, but !bossSpawnedThisNight is key.
-            // Wait - I already set the flag above? No, I added comments above. Let's do the real logic here.
-            // Actually, I'll remove the comments above and put the logic here.
-        }
-        
-        // Refined Logic Block:
+        // Logic for Variants (Normal, Fast, Boss, etc)
         EnemyVariantType[] types;
         float[] chances;
 
         bool forceBoss = false;
+        // Check for Boss Spawn (Night 2+, once per night)
         if (isNightWaveActive && currentNight >= 2 && !bossSpawnedThisNight)
         {
             forceBoss = true;
-            bossSpawnedThisNight = true; // Mark as spawned
+            bossSpawnedThisNight = true; 
         }
 
         if (forceBoss)
@@ -463,7 +451,9 @@ public class EnemySpawner : MonoBehaviour
         }
         else
         {
-             (types, chances) = GetDifficultyDistribution();
+             var distribution = GetDifficultyDistribution();
+             types = distribution.Item1;
+             chances = distribution.Item2;
         }
         
         List<EnemyData> candidates = new List<EnemyData>();
@@ -472,15 +462,12 @@ public class EnemySpawner : MonoBehaviour
 
         for (int i = 0; i < types.Length; i++)
         {
-            // Look up specific data asset that matches Family + Variant
             EnemyData data = FindEnemyData(targetedFamily, types[i]);
             
-            // If explicit boss is requested but not found for this family, try finding ANY boss
+            // Fallback for Boss if specific family boss isn't found
             if (forceBoss && data == null)
             {
-                 data = FindEnemyData(EnemyFamily.Spider, EnemyVariantType.Boss); // Fallback to Spider Boss
-                 if (data == null) data = FindEnemyData(EnemyFamily.Ghost, EnemyVariantType.Boss);
-                 if (data == null) data = FindEnemyData(EnemyFamily.Chicken, EnemyVariantType.Boss);
+                data = variantBoss; // Just use the assigned Boss slot
             }
 
             if (data == null) continue;
@@ -493,7 +480,7 @@ public class EnemySpawner : MonoBehaviour
             totalChance += chance;
         }
 
-        if (candidates.Count == 0) return FindAnyValidVariantForFamily(targetedFamily);
+        if (candidates.Count == 0) return variantNormal;
 
         float pick = Random.value * totalChance;
         float cumulative = 0f;
@@ -538,53 +525,20 @@ public class EnemySpawner : MonoBehaviour
         return prefabFamily;
     }
 
-
-
-
-
-
-
     private EnemyData FindAnyValidVariantForFamily(EnemyFamily family)
     {
-        // Prefer variants that match the family, but fall back if none exist.
-        for (int pass = 0; pass < 2; pass++)
-        {
-            for (int i = 0; i < enemyTypeVariants.Count; i++)
-            {
-                EnemyData data = enemyTypeVariants[i];
-                if (data == null || !data.IsValid())
-                {
-                    continue;
-                }
-
-                if (pass == 1)
-                {
-                    return data;
-                }
-
-                if (data.Family == family)
-                {
-                    return data;
-                }
-            }
-        }
-
-        return null;
+         return variantNormal;
     }
 
     /// <summary>
     /// Finds EnemyData by Family AND Variant
     /// </summary>
+    /// <summary>
+    /// Finds EnemyData by Family AND Variant
+    /// </summary>
     private EnemyData FindEnemyData(EnemyFamily family, EnemyVariantType variant)
     {
-        foreach (EnemyData data in enemyTypeVariants)
-        {
-            if (data != null && data.Family == family && data.VariantType == variant && data.IsValid())
-            {
-                return data;
-            }
-        }
-        return null;
+        return GetVariantData(variant);
     }
 
     /// <summary>
@@ -598,14 +552,6 @@ public class EnemySpawner : MonoBehaviour
     /// <summary>
     /// Adds an enemy type variant to available types
     /// </summary>
-    public void AddEnemyTypeVariant(EnemyData data)
-    {
-        if (data != null && !enemyTypeVariants.Contains(data))
-        {
-            enemyTypeVariants.Add(data);
-        }
-    }
-
     private EnemyRoute GetRandomRoute()
     {
         if (availableRoutes.Length == 0)
@@ -621,11 +567,9 @@ public class EnemySpawner : MonoBehaviour
     /// </summary>
     private PlayerHealth FindPlayerHealth()
     {
-        // First try PlayerHealth singleton
         if (PlayerHealth.Instance != null)
             return PlayerHealth.Instance;
 
-        // Try to find by tag
         GameObject playerObject = null;
         try { playerObject = GameObject.FindWithTag("Player"); }
         catch { playerObject = null; }

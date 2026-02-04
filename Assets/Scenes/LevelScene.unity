@@ -33008,13 +33008,49 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 19588385245968726, guid: 3068845ba6141415a98921e3dc756fa2, type: 3}
     - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: variantBoss
+      value: 
+      objectReference: {fileID: 11400000, guid: 4d903c80340444b468eb12280c08c73b, type: 2}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: variantFast
+      value: 
+      objectReference: {fileID: 11400000, guid: 407c3e98c8bbe18419d9e88ec9160e78, type: 2}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: variantTank
+      value: 
+      objectReference: {fileID: 11400000, guid: 089bd52d20bd34d47bf861538a5d2e94, type: 2}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: spiderPrefab
       value: 
       objectReference: {fileID: 19588385245968726, guid: 3068845ba6141415a98921e3dc756fa2, type: 3}
     - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: variantHeavy
+      value: 
+      objectReference: {fileID: 11400000, guid: 95b14c7c3321748459f583ff5429cb39, type: 2}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: chickenPrefab
       value: 
       objectReference: {fileID: 19588385245968726, guid: 3068845ba6141415a98921e3dc756fa2, type: 3}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: variantNormal
+      value: 
+      objectReference: {fileID: 11400000, guid: 58b7fc1afc45a0142a7f9f4c20c4a02d, type: 2}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: variantRanged
+      value: 
+      objectReference: {fileID: 11400000, guid: a8b72de10031d8f4cb23ba8eba44fa5e, type: 2}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: enemyTypeVariants.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: 'enemyTypeVariants.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 48effa71fcebcd34d9b5822ddea8944e, type: 2}
+    - target: {fileID: 2301835023153419676, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
+      propertyPath: 'enemyTypeVariants.Array.data[5]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 48effa71fcebcd34d9b5822ddea8944e, type: 2}
     - target: {fileID: 8088291185939057241, guid: d40d2594cab055241810a6c7606dfb48, type: 3}
       propertyPath: m_Name
       value: EnemiesHandler

@@ -99,7 +99,7 @@ public class EnemyStateMachine : MonoBehaviour
     /// <returns>True if player is in range; also requires NavMesh if requirePlayerOnNavMesh is true</returns>
     public bool ShouldEngagePlayer(Vector3 playerPosition)
     {
-        if (playerDetector == null || playerHealth == null)
+        if (playerHealth == null)
         {
             return false;
         }
@@ -110,9 +110,12 @@ public class EnemyStateMachine : MonoBehaviour
             return false;
         }
 
-        // Calculate distance from enemy to player
-        float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
-        bool isInRange = distanceToPlayer <= detectionRange;
+        // Calculate Horizontal (XZ) distance from enemy to player
+        Vector3 enemyPos = transform.position;
+        float distanceXZ = Vector2.Distance(new Vector2(enemyPos.x, enemyPos.z), new Vector2(playerPosition.x, playerPosition.z));
+        float distanceY = Mathf.Abs(enemyPos.y - playerPosition.y);
+        
+        bool isInRange = distanceXZ <= detectionRange && distanceY < 10.0f;
 
         // If NavMesh check is disabled, only check distance
         if (!requirePlayerOnNavMesh)
@@ -121,7 +124,7 @@ public class EnemyStateMachine : MonoBehaviour
         }
 
         // If NavMesh check is enabled, check both conditions
-        bool isOnNavMesh = playerDetector.IsPlayerOnNavMesh();
+        bool isOnNavMesh = playerDetector != null && playerDetector.IsPlayerOnNavMesh();
         return isInRange && isOnNavMesh;
     }
 

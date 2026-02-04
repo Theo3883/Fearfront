@@ -149,15 +149,27 @@ public class Enemy : MonoBehaviour
                     }
 
                     // Support both Built-in and SRP shaders (URP/HDRP)
+                    float intensity = 1.0f;
+                    if (EnemyVisualsConfig.Instance != null)
+                        intensity = EnemyVisualsConfig.Instance.BaseColorTintIntensity;
+
+                    // FORCE BOOST for Ghosts (Dark texture needs more tint)
+                    if (isGhost) intensity = Mathf.Max(intensity, 0.8f);
+
+                    // Lerp from White (no tint) to TypeColor based on intensity
+                    Color appliedColor = Color.Lerp(Color.white, typeColor, intensity);
+
                     if (mat.HasProperty("_Color"))
-                        mat.SetColor("_Color", typeColor);
+                        mat.SetColor("_Color", appliedColor);
                     if (mat.HasProperty("_BaseColor"))
-                        mat.SetColor("_BaseColor", typeColor);
+                        mat.SetColor("_BaseColor", appliedColor);
 
                     // Some shaders use emission for visible tinting
                     if (mat.HasProperty("_EmissionColor"))
                     {
-                        mat.SetColor("_EmissionColor", typeColor * 0.35f);
+                        // Boost emission for Ghosts to make them glow in their color
+                        float emissionBoost = isGhost ? 2.0f : 0.35f;
+                        mat.SetColor("_EmissionColor", typeColor * emissionBoost);
                         mat.EnableKeyword("_EMISSION");
                     }
 
@@ -321,7 +333,6 @@ public class Enemy : MonoBehaviour
         
         if (stateMachine == null || playerDetector == null || enemyMovement == null)
         {
-        Debug.LogWarning($"Enemy '{gameObject.name}' missing required components");
             return;
         }
         
@@ -331,7 +342,7 @@ public class Enemy : MonoBehaviour
         Vector3 playerPosition = Vector3.zero;
         bool havePlayerPosition = false;
         
-        // Priority 1: PlayerHealth singleton transform (most reliable in VR)
+        // Priority 1: PlayerHealth singleton (most reliable)
         if (playerHealth != null)
         {
             playerPosition = playerHealth.transform.position;
@@ -346,7 +357,7 @@ public class Enemy : MonoBehaviour
                 playerPosition = xrOrigin.transform.position;
                 havePlayerPosition = true;
             }
-            // Priority 3: Main Camera (fallback for non-VR)
+            // Priority 3: Main Camera (fallback)
             else if (Camera.main != null)
             {
                 playerPosition = Camera.main.transform.position;
@@ -508,7 +519,7 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void HandleAttackingState(Vector3 playerPosition)
     {
-        if (enemyData == null || playerTransform == null || playerHealthRef == null)
+        if (enemyData == null || playerHealthRef == null)
         {
             return;
         }
@@ -525,11 +536,14 @@ public class Enemy : MonoBehaviour
             attackCooldownTimer -= Time.deltaTime;
         }
 
-        float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
+        // Use Horizontal (XZ) distance for attack range check. 
+        // This ensures that tall enemies can attack at their base range even if the player is standing.
+        Vector3 enemyPos = transform.position;
+        float distanceXZ = Vector2.Distance(new Vector2(enemyPos.x, enemyPos.z), new Vector2(playerPosition.x, playerPosition.z));
         float attackRange = enemyData.AttackRange;
 
         // Rotate to face player
-        Vector3 directionToPlayer = (playerPosition - transform.position).normalized;
+        Vector3 directionToPlayer = (playerPosition - enemyPos).normalized;
         directionToPlayer.y = 0; // Keep rotation horizontal
         if (directionToPlayer.sqrMagnitude > 0.001f)
         {
@@ -537,8 +551,10 @@ public class Enemy : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
         }
 
-        // Execute attack if player is in attack range and cooldown is ready
-        if (distanceToPlayer <= attackRange && attackCooldownTimer <= 0f)
+        // Execute attack if player is in horizontal range and cooldown is ready
+        // We include a small Y check (e.g. 3m) just to ensure the player isn't 100m in the air.
+        float distanceY = Mathf.Abs(enemyPos.y - playerPosition.y);
+        if (distanceXZ <= attackRange && distanceY < 3.0f && attackCooldownTimer <= 0f)
         {
             if (playerHealthRef.IsAlive())
             {

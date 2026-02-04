@@ -15,11 +15,11 @@ MonoBehaviour:
   enemyName: Boss
   family: 0
   variantType: 5
-  moveSpeed: 2.5
+  moveSpeed: 1.8
   health: 300
   maxHealth: 300
   attackDamage: 40
-  attackRange: 3.5
+  attackRange: 5
   attackCooldown: 3
   detectionRadius: 50
   typeColor: {r: 0.8, g: 0, b: 0, a: 1}

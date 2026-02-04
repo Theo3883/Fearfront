@@ -35,7 +35,7 @@ public class EnemyDataPresets
             moveSpeed: 3.5f,
             health: 20f,
             damage: 10f,
-            range: 3.5f, // Increased from 2.0f
+            range: 1.5f, // Close melee range
             cooldown: 1.5f,
             detection: 20f,
             color: Color.white,
@@ -52,7 +52,7 @@ public class EnemyDataPresets
             moveSpeed: 5.5f,
             health: 15f,
             damage: 8f,
-            range: 3.5f, // Increased from 2.0f
+            range: 1.5f, // Close melee range
             cooldown: 1.0f,
             detection: 25f,
             color: new Color(1f, 0.5f, 0f), // Orange
@@ -69,7 +69,7 @@ public class EnemyDataPresets
             moveSpeed: 2.0f,
             health: 60f,
             damage: 15f,
-            range: 4.0f, // Increased from 2.0f
+            range: 1.5f, // Close melee range
             cooldown: 2.0f,
             detection: 18f,
             color: new Color(0.5f, 0.2f, 0.1f), // Brown
@@ -103,7 +103,7 @@ public class EnemyDataPresets
             moveSpeed: 1.5f,
             health: 120f,
             damage: 25f,
-            range: 3.0f, // Increased from 2.5f
+            range: 1.5f, // Close melee range
             cooldown: 2.5f,
             detection: 25f,
             color: new Color(0.3f, 0.1f, 0.3f), // Purple

@@ -101,12 +101,29 @@ public class EnemyHealthBar : MonoBehaviour
 
     private void CreateHealthBar()
     {
+        // Detect optimal height based on collider
+        float dynamicHeight = offset.y;
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+        {
+            float topY = col.bounds.max.y;
+            float rootY = transform.position.y;
+            
+            float heightDiff = topY - rootY;
+            if (heightDiff > 0.1f)
+            {
+                dynamicHeight = heightDiff + 0.5f; // reduced margin to 0.5
+            }
+        }
+        
+        Vector3 finalOffset = new Vector3(0, dynamicHeight, 0);
+
         // 1. Create a container object for offset/rotation
         healthBarObj = new GameObject("HealthBarContainer");
         healthBarObj.transform.SetParent(this.transform, false);
-        healthBarObj.transform.localPosition = offset;
+        healthBarObj.transform.localPosition = finalOffset;
         healthBarObj.transform.localScale = scale;
-
+        
         // 2. Add HealthBarUI component
         healthBar = healthBarObj.AddComponent<HealthBarUI>();
         healthBar.Width = width;
