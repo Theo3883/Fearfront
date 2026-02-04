@@ -233,6 +233,8 @@ MonoBehaviour:
   projectileDamage: 40
   muzzleVfxPrefab: {fileID: 1743301284569550, guid: ad2ab49d0a2a17148bd51c93d977bdbc, type: 3}
   parentMuzzleVfxToGun: 1
+  forceMuzzleVfxOneShot: 1
+  forceMuzzleVfxUrpMaterial: 1
   turnSpeed: 50
   turretYawOffsetDegrees: -90
   rotateGunPitch: 1

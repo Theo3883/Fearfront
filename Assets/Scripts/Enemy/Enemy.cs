@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
     
     // ===== Events =====
     public event Action<EnemyState> OnStateChanged;
+    public event Action<float, float> OnHealthChanged;
 
     private void Awake()
     {
@@ -38,6 +39,14 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
         spiderDismantle = GetComponent<SpiderDismantle>();
+        
+        // Configure Rigidbody to be kinematic (NavMeshAgent handles movement)
+        // This prevents physics-based pushing between enemies
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
         
         // Setup AudioSource
         audioSource = GetComponent<AudioSource>();
@@ -54,6 +63,7 @@ public class Enemy : MonoBehaviour
         playerDetector = GetComponent<NavMeshPlayerDetector>();
         enemyMovement = GetComponent<EnemyMovement>();
         stateMachine = GetComponent<EnemyStateMachine>();
+        audioSource = GetComponent<AudioSource>(); // Initialize AudioSource reference
         
         if (playerDetector == null)
             Debug.LogError($"Enemy '{gameObject.name}' missing NavMeshPlayerDetector component!");
@@ -96,6 +106,7 @@ public class Enemy : MonoBehaviour
         
         ApplyVisualDifferentiation();
     }
+
 
     /// <summary>
     /// Applies visual differentiation (scale and color) from EnemyData to the enemy GameObject
@@ -245,7 +256,8 @@ public class Enemy : MonoBehaviour
             stateMachine.Initialize(playerDetector, detectionRadius, playerHealth);
             
             // Subscribe to state machine events for proper movement control
-            // Subscribe to state machine events for proper movement control
+            stateMachine.OnEngagingPlayer += HandleEngagingPlayer;
+            stateMachine.OnDisengagingPlayer += HandleDisengagingPlayer;
             stateMachine.OnResumePathMovement += HandleResumePathMovement;
         }
 
@@ -278,6 +290,8 @@ public class Enemy : MonoBehaviour
         
         if (stateMachine != null)
         {
+            stateMachine.OnEngagingPlayer -= HandleEngagingPlayer;
+            stateMachine.OnDisengagingPlayer -= HandleDisengagingPlayer;
             stateMachine.OnResumePathMovement -= HandleResumePathMovement;
         }
     }
@@ -301,15 +315,36 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles resuming waypoint movement after disengaging from player
+    /// Handles when enemy engages player - pause movement immediately.
+    /// </summary>
+    private void HandleEngagingPlayer()
+    {
+        if (enemyMovement != null)
+        {
+            enemyMovement.PauseMovement();
+        }
+    }
+
+    /// <summary>
+    /// Handles when enemy disengages from player - resume movement.
+    /// </summary>
+    private void HandleDisengagingPlayer()
+    {
+        if (enemyMovement != null)
+        {
+            enemyMovement.ResumeMovement();
+        }
+    }
+
+    /// <summary>
+    /// Handles resuming waypoint movement after disengaging from player.
+    /// Simplified: just resume movement, enemy continues to current waypoint.
     /// </summary>
     private void HandleResumePathMovement(Vector3 currentPosition)
     {
         if (enemyMovement != null)
         {
-            // Resume movement and find nearest waypoint ahead
             enemyMovement.ResumeMovement();
-            enemyMovement.ResumeFromNearestWaypoint(currentPosition);
         }
     }
 
@@ -393,6 +428,14 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
+    /// Returns whether this enemy is dead
+    /// </summary>
+    public bool IsDead()
+    {
+        return isDead;
+    }
+
+    /// <summary>
     /// Damages the enemy and triggers death if health <= 0
     /// </summary>
     public void TakeDamage(float damage)
@@ -400,6 +443,8 @@ public class Enemy : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= damage;
+        OnHealthChanged?.Invoke(currentHealth, healthMax);
+        
         if (currentHealth <= 0)
         {
             Die();
@@ -469,10 +514,14 @@ public class Enemy : MonoBehaviour
         if (playerDetector != null)
             playerDetector.enabled = false;
         
-        if (rb != null)
+        if (rb != null && !rb.isKinematic)
         {
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
+        }
+        
+        if (rb != null)
+        {
             rb.isKinematic = true;
         }
         
@@ -504,13 +553,14 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles attack logic when enemy is in Attacking state
+    /// Handles attack logic when enemy is in Attacking state.
+    /// Enemy stays on path - pauses to attack when player is in range.
+    /// Movement is paused by OnEngagingPlayer event.
     /// </summary>
     private void HandleAttackingState(Vector3 playerPosition)
     {
         if (enemyData == null || playerTransform == null || playerHealthRef == null)
         {
-            Debug.LogWarning($"[{gameObject.name}] Cannot attack: missing data, player transform, or player health");
             return;
         }
         
@@ -529,51 +579,31 @@ public class Enemy : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(transform.position, playerPosition);
         float attackRange = enemyData.AttackRange;
 
-        // Check if player is in attack range
-        if (distanceToPlayer <= attackRange)
+        // Rotate to face player
+        Vector3 directionToPlayer = (playerPosition - transform.position).normalized;
+        directionToPlayer.y = 0; // Keep rotation horizontal
+        if (directionToPlayer.sqrMagnitude > 0.001f)
         {
-            // Pause movement to focus on attacking
-            if (enemyMovement != null)
-            {
-                enemyMovement.PauseMovement();
-            }
-            
-            // Rotate to face player
-            Vector3 directionToPlayer = (playerPosition - transform.position).normalized;
             Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
-            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
-            
-            // Execute attack if cooldown is ready
-            if (attackCooldownTimer <= 0f)
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
+        }
+
+        // Execute attack if player is in attack range and cooldown is ready
+        if (distanceToPlayer <= attackRange && attackCooldownTimer <= 0f)
+        {
+            if (playerHealthRef.IsAlive())
             {
-                if (playerHealthRef.IsAlive())
-                {
-                    playerHealthRef.Damage(enemyData.AttackDamage);
-                    attackCooldownTimer = enemyData.AttackCooldown;
+                playerHealthRef.Damage(enemyData.AttackDamage);
+                attackCooldownTimer = enemyData.AttackCooldown;
                     
                     if (audioSource != null && enemyData.AttackSound != null)
                     {
                         audioSource.PlayOneShot(enemyData.AttackSound);
                     }
-                }
-            }
-        }
-        else
-        {
-            // Too far to attack, move toward player
-            // Resume movement toward player
-            if (enemyMovement != null)
-            {
-                enemyMovement.ResumeMovement();
-            }
-            
-            // Move to player using NavMeshAgent
-            if (agent != null && agent.enabled)
-            {
-                agent.SetDestination(playerPosition);
             }
         }
     }
+
 
     // ===== BACKWARD COMPATIBILITY: State transition methods =====
     // These methods are kept for backward compatibility with existing code
@@ -688,6 +718,38 @@ public class Enemy : MonoBehaviour
     {
         if (enemyMovement != null)
             enemyMovement.ResumeMovement();
+    }
+
+    /// <summary>
+    /// Applies a difficulty multiplier to the enemy's stats (Health, Damage, Speed)
+    /// </summary>
+    public void ApplyDifficulty(float multiplier)
+    {
+        if (multiplier <= 1.0f) return;
+
+        // Scale Health
+        float oldMax = healthMax;
+        healthMax *= multiplier;
+        currentHealth = (currentHealth / oldMax) * healthMax; // Maintain % health if called mid-life (though usually called at spawn)
+        
+        OnHealthChanged?.Invoke(currentHealth, healthMax);
+
+        // Scale Move Speed
+        if (enemyMovement != null)
+        {
+            // Note: EnemyMovement config is usually in EnemyData, but we might need to override it 
+            // or we assume EnemyMovement reads from EnemyData. 
+            // Since EnemyMovement.Initialize reads from EnemyData, we can't easily change it there without a setter.
+            // However, we can modify the agent speed directly if needed, or if EnemyMovement has a method.
+            // Checking EnemyData again... it's a ScriptableObject, so we shouldn't modify it directly at runtime 
+            // as it would affect all enemies.
+            
+            // To properly scale speed, we should adjust the NavMeshAgent or the component controlling it.
+            if (agent != null)
+            {
+                agent.speed *= Mathf.Sqrt(multiplier); // Scale speed less aggressively (sqrt)
+            }
+        }
     }
 }
 

@@ -20,6 +20,6 @@ MonoBehaviour:
   attackDamage: 10
   attackRange: 10
   attackCooldown: 1
-  detectionRadius: 30
+  detectionRadius: 12
   typeColor: {r: 0.9, g: 0.2, b: 0.2, a: 1}
   visualScale: 7.2

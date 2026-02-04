@@ -21,7 +21,6 @@ public class ProjectileScript : MonoBehaviour
     [Header("Hit")]
     [SerializeField] private bool useTriggerHits = true; // safer when enemies/projectiles use kinematic rigidbodies
     [SerializeField] private bool useSpherecastHits = true; // recommended for fast projectiles (prevents tunneling)
-    [SerializeField] private bool debugLogs = false;
 
     private Collider cachedCollider;
     private float hitRadius = 0.1f;
@@ -60,6 +59,7 @@ public class ProjectileScript : MonoBehaviour
         if (target == null)
         {
             Destroy(gameObject);
+
             return;
         }
 
@@ -136,10 +136,10 @@ public class ProjectileScript : MonoBehaviour
         if (enemy == null) return false;
 
         enemy.TakeDamage(damage);
-        if (debugLogs)
-        {
-            Debug.Log($"Projectile hit '{enemy.gameObject.name}' for {damage} damage. RemainingHealth={enemy.GetHealth()}");
-        }
+        // if (debugLogs)
+        // {
+        //     Debug.Log($"Projectile hit '{enemy.gameObject.name}' for {damage} damage. RemainingHealth={enemy.GetHealth()}");
+        // }
         Destroy(gameObject);
         return true;
     }

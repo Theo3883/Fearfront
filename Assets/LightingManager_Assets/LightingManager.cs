@@ -140,7 +140,6 @@ public class LightingManager : MonoBehaviour
                     {
                         eventInfo.executed = true;
                         eventInfo.Event.Invoke();
-                        Debug.Log("Event: " + eventInfo.eventName);
                     }
                 }
 
@@ -149,7 +148,6 @@ public class LightingManager : MonoBehaviour
                     DayCycleCompleted = true;
                     ResetEvents();
                     
-                    Debug.Log("Day completed + reset");
                 }
                 else if(TimeOfDay > ResetEventsTime)
                 {
