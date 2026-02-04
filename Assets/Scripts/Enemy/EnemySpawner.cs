@@ -243,6 +243,11 @@ public class EnemySpawner : MonoBehaviour
             capsule.height = 1f;
             capsule.center = new Vector3(0, 0.5f, 0);
         }
+
+        // Force Tag and Layer to ensure Turrets see them
+        newEnemyObject.tag = "Enemy";
+        int enemyLayer = LayerMask.NameToLayer("Enemy");
+        if (enemyLayer >= 0) newEnemyObject.layer = enemyLayer;
     }
 
     /// <summary>

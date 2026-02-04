@@ -22,6 +22,14 @@ public class TowerScript : MonoBehaviour
     [SerializeField] private bool forceMuzzleVfxOneShot = true;
     [SerializeField] private bool forceMuzzleVfxUrpMaterial = true;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip shootSound;
+    [Range(0f, 1f)]
+    [SerializeField] private float shootVolume = 0.8f; // Increased default volume
+    [Range(0f, 1f)]
+    [SerializeField] private float spatialBlend = 0.7f; // 0 = 2D, 1 = 3D
+    private AudioSource audioSource;
+
     [Header("Aiming")]
     [SerializeField] private float turnSpeed = 8f; // higher = snappier (smoothing factor)
     [SerializeField] private float turretYawOffsetDegrees = 0f; // set to 90/-90 if the model faces sideways
@@ -56,6 +64,24 @@ public class TowerScript : MonoBehaviour
         }
 
         if (gun != null) gunInitialLocalRotation = gun.localRotation;
+        
+        // Audio Setup
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        // Audio Setup
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        audioSource.playOnAwake = false;
+        audioSource.spatialBlend = 1.0f; // 3D Sound
+        audioSource.minDistance = 1.0f; 
+        audioSource.maxDistance = 25.0f; // Distance attenuation
+        
         StartCoroutine(shootLogic());
     }
 
@@ -113,6 +139,11 @@ public class TowerScript : MonoBehaviour
 
                 SpawnMuzzleVfx(spawnPos, spawnRot);
 
+                if (shootSound != null && audioSource != null)
+                {
+                    audioSource.PlayOneShot(shootSound, shootVolume);
+                }
+
                 GameObject newProjectile = Instantiate(projectile, spawnPos, spawnRot);
 
                 // Some projectile prefabs may put the script on a child; be robust.
@@ -129,8 +160,10 @@ public class TowerScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // Debug.Log($"[TowerScript] OnTriggerEnter with: {other.name} (Tag: {other.tag})");
         if (other.CompareTag("Enemy") && !enemies.Contains(other.gameObject))
         {
+            Debug.Log($"[TowerScript] Enemy DETECTED: {other.name}");
             enemies.Add(other.gameObject);
 
             // Optional: only change target when a NEW enemy is detected.

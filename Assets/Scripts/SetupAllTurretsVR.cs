@@ -215,5 +215,54 @@ public class SetupAllTurretsVR : MonoBehaviour
         }
 
         Debug.Log("========================================");
+    } // End CheckTurretSetup
+
+    [ContextMenu("Audio 🔊 Setup Sunet pentru TOATE")]
+    void SetupAudioForAll()
+    {
+        if (defaultShootSound == null)
+        {
+            Debug.LogError("‼️ ERROR: Te rog pune un sunet în câmpul 'Default Shoot Sound' al acestui script înainte să rulezi comanda!");
+            return;
+        }
+
+        Debug.Log("========================================");
+        Debug.Log("🔊 Starting Audio Setup (Sound + Volume)...");
+
+        TowerScript[] allTowers = FindObjectsByType<TowerScript>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+
+        int count = 0;
+
+        foreach (var tower in allTowers)
+        {
+#if UNITY_EDITOR
+            UnityEditor.SerializedObject so = new UnityEditor.SerializedObject(tower);
+            
+            // Set Sound
+            UnityEditor.SerializedProperty audioProp = so.FindProperty("shootSound");
+            if (audioProp != null)
+            {
+                audioProp.objectReferenceValue = defaultShootSound;
+            }
+
+            // Set Volume
+            UnityEditor.SerializedProperty volumeProp = so.FindProperty("shootVolume");
+            if (volumeProp != null)
+            {
+                volumeProp.floatValue = defaultVolume;
+            }
+
+            so.ApplyModifiedProperties();
+            count++;
+#endif
+        }
+
+        Debug.Log($"✅ GATA! Am pus sunetul si volumul ({defaultVolume}) pe {count} turele.");
+        Debug.Log("========================================");
     }
+    
+    [Header("Audio Setup")]
+    public AudioClip defaultShootSound;
+    [Range(0f, 1f)]
+    public float defaultVolume = 0.5f;
 }

@@ -23,3 +23,11 @@ MonoBehaviour:
   detectionRadius: 12
   typeColor: {r: 1, g: 1, b: 1, a: 1}
   visualScale: 8.7
+  spawnSound: {fileID: 0}
+  spawnVolume: 1
+  ambientSound: {fileID: 8300000, guid: 26fd3dd9c4bc76c43bcb4e6bf4b20e8b, type: 3}
+  ambientVolume: 0.209
+  attackSound: {fileID: 8300000, guid: 52d33b87ecd14da4a885c77e0baa8b5a, type: 3}
+  attackVolume: 0.203
+  deathSound: {fileID: 8300000, guid: 52d33b87ecd14da4a885c77e0baa8b5a, type: 3}
+  deathVolume: 1
